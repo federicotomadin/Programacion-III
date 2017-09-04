@@ -7,13 +7,13 @@ include_once "Persona.php";
 class Fabrica
 {
 
-public $_Empleado=array();
+public $_Empleado;
 public $_razonSocial;
 
 
 public function __construct($razonSocial)
 {
-    $this->_Empleado[]="";
+    $this->_Empleado=array();
     $this->_razonSocial=$razonSocial;
 }
 
@@ -26,16 +26,41 @@ public function AgregarEmpleado($Empleado)
 public function CalcularSueldos()
 {
     $acum=0;
-    foreach($this->_Empleado as $item => $legajo)
+    foreach($this->_Empleado as $item)
     {
-       echo "indicie de mi array $_Empleado ";
+       $acum+=$item->getSueldo();
     }
+    return $acum;
 }
 
  function EliminarEmpleado($empleado)
 {
-     unset($this->_Empleado[$empleado]);
+  
+for($i=0;$i<count($this->_Empleado);$i++)
+{
+    if($this->_Empleado[$i]==$empleado)
+    {
+        unset($this->_Empleado[$i]);
+    }
 }
+
+}
+
+public function EliminarEmpleadosRepetidos()
+{
+  return array_unique($this->_Empleado);
+}
+
+public function ToString()
+{
+    echo "Razon Social  ".$this->_razonSocial."<br>";
+    echo "Empleados"."<br>";
+    foreach($this->_Empleado as $item)
+    {
+        $item->ToString();
+    }
+}
+
 
 
 

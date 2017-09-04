@@ -14,16 +14,12 @@ $empleado1->ToString();
 $empleado1->Hablar("Español");
 
 $fabrica1->AgregarEmpleado($empleado1);
-$fabrica1->AgregarEmpleado($empleado2);
+$fabrica1->AgregarEmpleado($empleado1);
 
 //print_r($fabrica1->_Empleado);
+//$fabrica1->EliminarEmpleado($empleado2);
 
- //$fabrica1->EliminarEmpleado($empleado2);
-
- $fabrica1->CalcularSueldos();
-
- //$fabrica1->EliminarEmpleado($empleado2);
-
+$fabrica1->ToString();
 
 
 
