@@ -7,7 +7,7 @@ class  Empleado extends Persona
     protected $_legajo;
     protected $_sueldo;
 
-    function __construct($nombre,$apellido,$dni,$sexo,$legajo,$sueldo)
+    function __Empleado($nombre,$apellido,$dni,$sexo,$legajo,$sueldo)
     {
         parent::__construct($nombre,$apellido,$dni,$sexo);
 
