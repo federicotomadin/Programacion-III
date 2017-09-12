@@ -35,7 +35,7 @@ $tituloVentana = "PRODUCTOS - con archivos y AJAX -";
 									<input type="file" name="archivo" id="archivo" /> 
 									
 									<input type="button" class="MiBotonUTN" onclick="Main.AgregarProducto()" value="Guardar"  />
-									<input type="hidden" id="hdnQueHago" name="queHago" value="agregar" />
+									<input type="hidden" id="hdnQueHago" name="queHago" value="mostrarGrilla" />								
 								</form>
 							</div>
 						</td>

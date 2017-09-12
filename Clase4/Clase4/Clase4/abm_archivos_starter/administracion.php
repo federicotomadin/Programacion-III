@@ -5,8 +5,6 @@ require_once ("clases/archivo.php");
 $queHago = isset($_POST['queHago']) ? $_POST['queHago'] : NULL;
 
 
-
-
 switch($queHago){
 
 	case "mostrarGrilla":
@@ -39,14 +37,9 @@ switch($queHago){
 		break;
 		
 	case "agregar":
-	$res = Archivo::Subir(); 
-	$codBarra = isset($_POST['codBarra']) ? $_POST['codBarra'] : NULL;
-	$nombre = isset($_POST['nombre']) ? $_POST['nombre'] : NULL;
-	$archivo = $res["PathTemporal"];
-
-	$p = new Producto($codBarra, $nombre, $archivo);
+	
 	 
-	if(archivo::Subir()){
+	if(Archivo::Subir()){
 	echo  "El archivo se subio correctamente";
 	break;
 	}

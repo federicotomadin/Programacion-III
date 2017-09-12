@@ -7,7 +7,7 @@ var Main;
     var ajax = new Ajax();
     function MostrarGrilla() {
         var parametros = "queHago=mostrarGrilla";
-        ajax.Post("http://localhost/clase04/abm_archivos/administracion.php", MostrarGrillaSuccess, parametros, Fail);
+        ajax.Post("http://localhost/clase4/abm_archivos/administracion.php", MostrarGrillaSuccess, parametros, Fail);
     }
     Main.MostrarGrilla = MostrarGrilla;
     function AgregarProducto() {
@@ -23,7 +23,7 @@ var Main;
             return;
         }
         var parametros = "queHago=eliminar&codBarra=" + codBarra;
-        ajax.Post("http://localhost/clase04/abm_archivos/administracion.php", DeleteSuccess, parametros, Fail);
+        ajax.Post("http://localhost/clase4/abm_archivos/administracion.php", DeleteSuccess, parametros, Fail);
     }
     Main.EliminarProducto = EliminarProducto;
     function ModificarProducto(codBarra, nombre) {
