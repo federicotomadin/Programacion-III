@@ -4,6 +4,9 @@ require_once ("clases/archivo.php");
 
 $queHago = isset($_POST['queHago']) ? $_POST['queHago'] : NULL;
 
+
+
+
 switch($queHago){
 
 	case "mostrarGrilla":
@@ -36,6 +39,21 @@ switch($queHago){
 		break;
 		
 	case "agregar":
+	$res = Archivo::Subir(); 
+	$codBarra = isset($_POST['codBarra']) ? $_POST['codBarra'] : NULL;
+	$nombre = isset($_POST['nombre']) ? $_POST['nombre'] : NULL;
+	$archivo = $res["PathTemporal"];
+
+	$p = new Producto($codBarra, $nombre, $archivo);
+	 
+	if(archivo::Subir()){
+	echo  "El archivo se subio correctamente";
+	break;
+	}
+	
+	else  { echo "El archivo no pudo subirse correctamente";}
+	
+     break;
 	case "modificar":
 
 		$res = Archivo::Subir();
@@ -52,11 +70,12 @@ switch($queHago){
 		$p = new Producto($codBarra, $nombre, $archivo);
 		
 		if($queHago === "agregar"){
-			if(!Producto::Guardar($p)){
-				echo "Error al generar archivo";
-				break;
+			if(archivo::Subir());
+			echo  "El archivo se subio correctamente";
+			break;
 			}
-		}
+			else echo "El archivo no pudo subirse correctamente";
+		
 
 		if($queHago === "modificar"){
 			if(!Producto::Modificar($p)){

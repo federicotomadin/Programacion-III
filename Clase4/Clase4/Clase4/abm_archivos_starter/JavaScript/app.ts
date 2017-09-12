@@ -12,7 +12,7 @@ namespace Main{
 
             let parametros:string = `queHago=mostrarGrilla`;
 
-            ajax.Post("http://localhost/clase04/abm_archivos_starter/administracion.php", 
+            ajax.Post("http://localhost/clase4/abm_archivos_starter/administracion.php", 
                         MostrarGrillaSuccess, 
                         parametros, 
                         Fail);            
@@ -37,7 +37,7 @@ namespace Main{
 
             let parametros:string = `queHago=eliminar&codBarra=${codBarra}`;
             
-            ajax.Post("http://localhost/clase04/abm_archivos_starter/administracion.php", 
+            ajax.Post("http://localhost/clase4/abm_archivos_starter/administracion.php", 
             DeleteSuccess, 
             parametros, 
             Fail);

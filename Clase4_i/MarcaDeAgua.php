@@ -1,7 +1,7 @@
 <?php
 
 $destino="../clase4/imagen/Fotos.png";
-move_uploaded_file($_FILES["archivo"]["tmp_name"], $destino);
+move_uploaded_file($_FILES["archivo"]["tmp_name"], $destino);  //con este metodo lo muevo al $destino
 //die();
 
 
@@ -20,7 +20,7 @@ imagecopy($im, $estampa, imagesx($im) - $sx - $margen_dcho, imagesy($im) - $sy -
 
 // Imprimir y liberar memoria
 header('Content-type: image/png');
-imagepng($im,"../clase4/imagen/Fotos.png");
+imagepng($im,"../clase4/imagen/Fotos.png"); //con este metodo lo genero en esta ruta
 imagedestroy($im);
 
 
