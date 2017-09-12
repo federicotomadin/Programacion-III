@@ -36,10 +36,14 @@ public function __Auto($marca,$color,$precio=null,$fecha=null)
     $this->_marca=$marca;
     $this->color=$color;
     if($precio<>null)
-
+  {
     $this->_precio=$precio;
+  }
+  
     if($fecha<>null)
+    {
     $this->fecha;
+    }
 }   
 
 

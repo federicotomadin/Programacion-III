@@ -2,6 +2,7 @@
 
 $destino="../clase4/imagen/Fotos.png";
 move_uploaded_file($_FILES["archivo"]["tmp_name"], $destino);
+//die();
 
 
 $im = imagecreatefrompng("FotoDos.png");
@@ -19,7 +20,7 @@ imagecopy($im, $estampa, imagesx($im) - $sx - $margen_dcho, imagesy($im) - $sy -
 
 // Imprimir y liberar memoria
 header('Content-type: image/png');
-imagepng($im,"../Clase4/imagen/FotoGenerada.png");
+imagepng($im,"../clase4/imagen/Fotos.png");
 imagedestroy($im);
 
 
