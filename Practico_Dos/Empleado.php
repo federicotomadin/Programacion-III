@@ -50,6 +50,18 @@ class  Empleado extends Persona
       return parent::ToString()." - "."Legajo: ".$this->getLegajo()." - "."Sueldo ".$this->getSueldo()."<br>";
    }
 
+   function MostrarEmpleado()
+   {
+       return 'Apellido: '.$this->getApellido().' Imagen: '.$this->getPathFoto();
+   }
+
+   static function Archivar($empleado)
+   {   
+       $archivo = fopen('Archivos/EmpleadosImagen.txt',"a");
+       fwrite($archivo,$empleado->MostrarEmpleado()."\r\n");         
+       fclose($archivo);
+   }
+
 
 
 

@@ -8,30 +8,18 @@ include("Empleado.php");
 $miarray = array();
 $arrayPath = array();
 
-$gestor = fopen("empleados.txt","r");
 
-while(!feof($gestor))
-{
- if(($lector = fgets($gestor)) != false)
- {
-     $miarray = explode("-",$lector);
-     for($i=0;$i<count($miarray);$i++)
-     {
-      
-          echo $miarray[$i]."-";
-         
-         //Comentarle al profe que el explode rompe el nombre de la foto
-         //fotos/dni-apellido.extension
-         //Comentarle que cambie el guion por el guion bajo
-       
-             echo "<br>";
-             $imagen = $miarray[$i];
-             echo "<img src = $imagen>";
-         
-     }
-     echo"<br>";
- }
+
+$archivo = fopen('Archivos/EmpleadosImagen.txt',"r");       
+while(!feof($archivo))
+{   
+    $aux = fgets($archivo);
+    $cadena = explode("Imagen: ",$aux);
+    if($cadena[0] == "")break;  
+    echo '<img src= '.$cadena[1].' alt="Smiley face" height="100" width="100"><br><h5>'.$cadena[0].'</h5><br>';     
 }
+fclose($archivo);  
+
 
 ?>
 </body>
