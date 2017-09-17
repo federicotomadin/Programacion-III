@@ -17,6 +17,7 @@ class  Empleado extends Persona
        
     }
 
+
     public function getLegajo()
     {
         return $this->_legajo;
@@ -26,14 +27,7 @@ class  Empleado extends Persona
     {
         return $this->_sueldo;
     }
-
-    public  function  Hablar($idioma)
-    {
-
-        echo "El Empleado habla: ".$idioma."<br>";
-
-    }
-
+    
     public function getPathFoto()
     {
         return $this->_pathFoto;
@@ -42,6 +36,13 @@ class  Empleado extends Persona
     public function setPathFoto($pathFoto)
     {
         $this->pathFoto = $pathFoto;
+    }
+
+    public  function  Hablar($idioma)
+    {
+
+        echo "El Empleado habla: ".$idioma."<br>";
+
     }
 
    public function ToString()

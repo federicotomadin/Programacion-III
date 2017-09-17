@@ -1,0 +1,1 @@
+Nombre: Ignacio - Apellido: Sanabria - Dni: 40950733 - Sexo: M - Legajo: 1 - Sueldo: 5000.00 - ./fotos/40950733_Sanabria.gif
