@@ -29,8 +29,9 @@ else
     echo "El empleado posee un archivo que no es un imagen valida.";
 }
 
-$gestor = fopen("empleados.txt","a");
-$escribir = fwrite($gestor,$employee->toString()."\r\n");
+$gestor = fopen("empleados.txt","a+");
+$escribir = fwrite($gestor,$employee->ToString()."\r\n");
+
 if($escribir == false)
 {
     echo "El empleado no pudo ser agregado al archivo <br>";
@@ -40,6 +41,7 @@ else
 {
     echo "El empleado fue correctamente archivado <br>";
     echo $irAMostrar;
+    echo $irAlIndex;
 }
 fclose($gestor);
 echo "<br>";

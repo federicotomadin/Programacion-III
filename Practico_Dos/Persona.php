@@ -39,7 +39,7 @@
 
     public function ToString()
     {
-     echo "Nombre: ".$this->getNombre()." - "."Apellido: ".$this->getApellido()." - "."Dni: ".$this->getDni()." - "."Sexo".$this->getSexo();
+     return  "Nombre: ".$this->getNombre()." - "."Apellido: ".$this->getApellido()." - "."Dni: ".$this->getDni()." - "."Sexo".$this->getSexo();
        
     }
 }
