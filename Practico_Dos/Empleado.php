@@ -35,7 +35,7 @@ class  Empleado extends Persona
 
     public function setPathFoto($pathFoto)
     {
-        $this->pathFoto = $pathFoto;
+        $this->_pathFoto = $pathFoto;
     }
 
     public  function  Hablar($idioma)

@@ -5,7 +5,7 @@ include("Empleado.php");
 
 $irAMostrar = "<a href =\"mostrar.php\">Mostrar Empleado</a>";
 $irAIndex = "<a href =\"index.html\">Ir a Index</a>";
-$imagen;
+
 if(isset($_POST["AgregarEmpleado"]))
 {
 $employee = new Empleado($_POST["nombre"],$_POST["apellido"],$_POST["dni"],$_POST["sexo"],$_POST["legajo"],$_POST["sueldo"]);
@@ -15,7 +15,7 @@ if($_FILES["archivo"]["type"] == "image/jpeg" || $_FILES["archivo"]["type"] == "
     if($_FILES["archivo"]["size"] < 1000000)
     {   
     $extension = explode(".",$_FILES["archivo"]["name"]);
-    $destino = "fotos/".$_POST["dni"]."_".$_POST["apellido"].".".$extension[1];
+    $destino = "Archivos/".$_POST["dni"]."_".$_POST["apellido"].".".$extension[1];
     move_uploaded_file($_FILES["archivo"]["tmp_name"],$destino);
     $PathFoto = "./".$destino;
     Empleado::Archivar($employee);
