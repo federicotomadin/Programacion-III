@@ -12,8 +12,8 @@ class AccesoDatos
  
             $this->_objetoPDO->exec("SET CHARACTER SET utf8");
  
-        }
-  catch (PDOException $e) {
+        } catch (PDOException $e) {
+ 
             print "Error!!!<br/>" . $e->getMessage();
  
             die();
