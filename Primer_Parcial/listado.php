@@ -1,5 +1,5 @@
 <?php
-	require_once('usuario.php');
+	require_once('Clases\usuario.php');
 ?>
 <html>
 <head>
