@@ -101,9 +101,25 @@ class Producto
 	}
 	public static function Modificar($obj)
 	{
-		$resultado = TRUE;
+		$resultado = false;
 		
-		//OBTENGO TODOS LOS PRODUCTOS
+		$prod=Producto::TraerTodosLosProductos();
+		$archAux = fgets($archivo);
+		$productos = explode(" - ", $archAux);
+		foreach($archAux as $item)
+		{
+			if($item->GetPathFoto()===$obj->GetPathFoto())
+			{
+				$item->SetPathFoto($obj->GetPathFoto());
+				$resultado=true;
+			}
+		}
+		if($result)
+		{
+		$archivo=fopen("archivos/productos.txt", "a");
+		$cant = fwrite($archivo, $obj->ToString());
+		fclose($archivo);
+		}
 		//RECORRO Y BUSCO LA IMAGEN ANTERIOR. REEMPLAZO POR EL OBJ. MODIFICADO
 		//BORRO LA IMAGEN ANTERIOR
 		
@@ -117,6 +133,23 @@ class Producto
 	{
 		$resultado = TRUE;
 		
+		$prod=Producto::TraerTodosLosProductos();
+		$archAux = fgets($archivo);
+		$productos = explode(" - ", $archAux);
+		foreach($archAux as $item)
+		{
+			if($item->GetPathFoto()===$obj->GetPathFoto())
+			{
+				$item->SetPathFoto("");
+				$resultado=true;
+			}
+		}
+		if($result)
+		{
+		$archivo=fopen("archivos/productos.txt", "a");
+		$cant = fwrite($archivo, $obj->ToString());
+		fclose($archivo);
+		}
 		//OBTENGO TODOS LOS PRODUCTOS
 		//RECORRO Y BUSCO LA IMAGEN ANTERIOR. 
 		//BORRO LA IMAGEN ANTERIOR
