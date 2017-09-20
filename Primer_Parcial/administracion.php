@@ -56,6 +56,8 @@
 		$mensaje = "El archivo ya existe. Verifique!!!";
 		include("mensaje.php");
 	}
+
+
 	//VERIFICO EL TAMA�O MAXIMO QUE PERMITO SUBIR
 	if ($_FILES["archivo"]["size"] > 1000000) {
 		$uploadOk = FALSE;
@@ -63,10 +65,12 @@
 		include("mensaje.php");
 	}
 
+
 	//OBTIENE EL TAMA�O DE UNA IMAGEN, SI EL ARCHIVO NO ES UNA
 	//IMAGEN, RETORNA FALSE
 	$esImagen = getimagesize($_FILES["archivo"]["tmp_name"]);
-
+  
+	
 	if($esImagen === FALSE) {//NO ES UNA IMAGEN
 		$uploadOk = FALSE;
 		$mensaje = "S&oacute;lo son permitidas IMAGENES.";
@@ -83,6 +87,7 @@
 		}
 	}
 
+	
 	//VERIFICO SI HUBO ALGUN ERROR, CHEQUEANDO $uploadOk
 	if ($uploadOk === FALSE) 
 	{
