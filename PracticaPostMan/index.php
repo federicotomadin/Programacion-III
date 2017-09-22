@@ -1,10 +1,11 @@
 <?php
 
 include "IngresoDeDatos.php";
+die();
 
 $variable=$_POST['nombre'];
 
-var_dump($variable);
+var_dump($_POST);
 
 
 ?>
