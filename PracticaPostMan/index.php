@@ -1,11 +1,17 @@
 <?php
 
-include "IngresoDeDatos.php";
-die();
+//include_once "IngresoDeDatos.php";
 
-$variable=$_POST['nombre'];
 
-var_dump($_POST);
+$alta = isset($_POST["guardar"]) ? TRUE : FALSE;
+if($alta)
+{
+ 
+$variable= $_POST["nombre"];
+
+var_dump($variable);
+}
+
 
 
 ?>
