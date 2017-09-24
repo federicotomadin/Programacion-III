@@ -38,12 +38,13 @@ class Producto  implements iVendible
         return $this->_nombre;
     }
 
-    public static function BuscaProducto($nombre)
+    public static function BuscarProducto($nombre)
     {
-        $archivo = fopen('Archivos/Productos.txt',"a");
+        $archivo = fopen('Archivos/Productos.txt',"r");
         $bandera=false;
         while(!feof($archivo))
         {
+           
             $aux = fgets($archivo);
             $cadena = explode(" - ",$aux);
             if($cadena[0] == $nombre)
@@ -51,6 +52,7 @@ class Producto  implements iVendible
                 $bandera= true;
             }
         }
+        
         fclose($archivo);
         return $bandera;
          
@@ -67,7 +69,7 @@ class Producto  implements iVendible
             $cadena = explode(" - ",$aux);
             if($cadena[0] != $nombre)
             {
-                array_push($nuevo,$aux);
+                array_push($nuevo,$cadena[0]);
             }
         }
         fclose($archivo);
