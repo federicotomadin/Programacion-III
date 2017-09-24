@@ -3,13 +3,18 @@
 //include_once "IngresoDeDatos.php";
 
 
-$alta = isset($_POST["guardar"]) ? TRUE : FALSE;
-if($alta)
+if(isset($_POST["guardar"])) 
+
 {
  
 $variable= $_POST["nombre"];
 
 var_dump($variable);
+}
+
+else {
+    $variable= $_POST["apellido"];
+    var_dump($variable);
 }
 
 
