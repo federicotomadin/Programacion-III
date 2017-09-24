@@ -63,7 +63,7 @@ class Cliente
                
         $archivo = fopen('Clientes/ClientesActuales.txt',"w");        
         
-        fwrite($archivo,$cliente->ToString()); 
+        fwrite($archivo,$cliente->ToString()."\r\n"); 
         fwrite($archivo,$hora);      
         fclose($archivo);
     }

@@ -44,7 +44,7 @@
       if($insertarConteiner)
 {
           //INDICO CUAL SERA EL DESTINO DEL ARCHIVO SUBIDO
-	$destino = "archivos/" . $_FILES["archivo"]["name"];
+	$destino = "archivos/".$_FILES["archivo"]["name"];
 
 	$uploadOk = TRUE;
 
