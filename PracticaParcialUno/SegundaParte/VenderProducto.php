@@ -10,7 +10,7 @@ recibe por get nombre de producto y cantidad hace llamada a mètodos y retorna e
 
 */
 
-$producto1=new Producto($_GET['nombre'],$_GET['precio']);
+$producto1=new Producto($_POST['nombre'],$_GET['precio']);
 $producto2=new Producto($_GET['nombre'],$_GET['precio']);
 
 $producto1->Cargar($producto1);

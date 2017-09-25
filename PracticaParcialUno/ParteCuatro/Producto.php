@@ -10,9 +10,10 @@ class Producto  implements iVendible
 {
     private $_nombre;
 
-    private $_precio;
+    public $_precio;
 
-    private $_pathPhoto;
+
+    public static $_lista=array();
 
     public function __construct($nombre,$precio)
     {
@@ -38,47 +39,78 @@ class Producto  implements iVendible
         return $this->_nombre;
     }
 
-    public static function BuscarProducto($nombre)
+    public static function LeerArchivo()
     {
         $archivo = fopen('Archivos/Productos.txt',"r");
         $bandera=false;
+        $numeroDeLinead;
         while(!feof($archivo))
         {
            
             $aux = fgets($archivo);
+            if($aux == "") continue; 
             $cadena = explode(" - ",$aux);
-            if($cadena[0] == $nombre)
-            {
-                $bandera= true;
-            }
-        }
-        
-        fclose($archivo);
-        return $bandera;
-         
+           
+           
+            array_push(Producto::$_lista,new Producto($cadena[0],$cadena[1]));
+            //var_dump(Producto::$_lista);
+
     }
+    fclose($archivo);
+    
+}
+
+    public function GuardarArchivo()
+    {
+
+    }
+
+    public static function BuscarProducto($nombre)
+    {
+       
+  
+        $numeroDeLinead;
+      for($i=0;$i<count(Producto::$_lista);$i++)
+      {
+          if(Producto::$_lista[$i]->getNombre()==$nombre)
+          {
+            return $i;
+          }
+
+        }
+        return -1;
+      }//cierra la funcion
+          
+
+    
 
     public static function BorrarProducto($nombre)
     {
-        $archivo = fopen('Archivos/Productos.txt',"a");
-        $nuevo=array();
-
-        while(!feof($archivo))
+     
+        if(Producto::BuscarProducto($nombre)==-1)
         {
-            $aux = fgets($archivo);
-            $cadena = explode(" - ",$aux);
-            if($cadena[0] != $nombre)
-            {
-                array_push($nuevo,$cadena[0]);
-            }
+            return false;
         }
-        fclose($archivo);
+       unset(Producto::$_lista[Producto::BuscarProducto($nombre)]);//paso el array con el indice.
+       return true;
+    
+    }
 
-        foreach($nuevo as $item)
+    
+
+
+
+    public static function ArchivarLista($array)
+    {
+        $archivo = fopen('Archivos/Productos.txt',"w");
+        $str="";
+        foreach(Producto::$_lista as $item)
         {
-            Producto::Archivar($item);
+            
+            $str.=$item->RetornarDetalles(); 
         }
-       
+        fwrite($archivo,$str);         
+        fclose($archivo);  
     }
 
    public static function Archivar($producto)
@@ -90,7 +122,7 @@ class Producto  implements iVendible
 
     public function RetornarDetalles()
     {
-        return $this->getNombre().' - '.$this->getPathPhoto();
+        return $this->getNombre().' - '.$this->_precio;
     }
 
     public function CreateHTML()

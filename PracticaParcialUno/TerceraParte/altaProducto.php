@@ -60,8 +60,8 @@ if($insertarProducto)
 	 else 
 {
         $producto = new Producto($_POST['nombre'],$_POST['precio']);
-      
-        $destino = "Nueva/".$_POST['nombre'].".".$tipoArchivo; 
+     //var_dump($_SERVER);
+        $destino = "./Nueva/".$_POST['nombre'].".".$tipoArchivo; 
         if(!file_exists($destino))
         {
             move_uploaded_file($_FILES['archivo']['tmp_name'], $destino);
