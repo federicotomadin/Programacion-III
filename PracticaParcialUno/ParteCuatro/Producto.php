@@ -24,10 +24,18 @@ class Producto  implements iVendible
 
     #para foto
 
+    public function setNombre($nombre)
+    {
+        $this->_nombre  = $nombre;
+    }
+
+
     public function setPathToPhoto($path)
     {
         $this->_pathPhoto = $path;
     }
+
+
 
     public function getPathPhoto()
     {
@@ -68,8 +76,8 @@ class Producto  implements iVendible
     public static function BuscarProducto($nombre)
     {
        
-  
-        $numeroDeLinead;
+    $numeroDeLinead;
+      
       for($i=0;$i<count(Producto::$_lista);$i++)
       {
           if(Producto::$_lista[$i]->getNombre()==$nombre)
@@ -91,16 +99,30 @@ class Producto  implements iVendible
         {
             return false;
         }
+        
        unset(Producto::$_lista[Producto::BuscarProducto($nombre)]);//paso el array con el indice.
        return true;
     
     }
 
-    
+    public static function ModificarProducto($nombreViejo,$nombreNuevo)
+    {  $bandera=false;   
+        for($i=0;$i<count(Producto::$_lista);$i++)
+        {
+            if(Producto::$_lista[$i]->getNombre()==$nombreViejo)
+            {
+                Producto::$_lista[$i]->setNombre($nombreNuevo);
+                $bandera=true;
+            }
+  
+          }
+          Producto::ArchivarLista();
+          return $bandera;
+    }
 
 
 
-    public static function ArchivarLista($array)
+    public static function ArchivarLista()
     {
         $archivo = fopen('Archivos/Productos.txt',"w");
         $str="";
