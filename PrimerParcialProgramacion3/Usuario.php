@@ -113,8 +113,7 @@ public static function VerificarUsuario($correo,$clave)
              
             }
         }
-
-            
+         
     if($acumuladorCorreo==1 && $acumuladorClave==1)
     {
         echo "BIENVENIDO";
@@ -188,11 +187,9 @@ else {
    public static function AltaComentarioConFoto($mail,$titulo,$comentario,$foto)
    {
     
-    $destino = "imagenesDeComentario/$titulo";
-    $extension=pathinfo($destino, PATHINFO_EXTENSION);
-    
-
-    $destino = "imagenesDeComentario/$titulo".$extension;
+    $cadena=$titulo.".".pathinfo($_FILES["archivo"]["name"], PATHINFO_EXTENSION);
+    $destino = "imagenesDeComentario/$cadena";
+  
 
     move_uploaded_file($_FILES["archivo"]["tmp_name"], $destino);
      
