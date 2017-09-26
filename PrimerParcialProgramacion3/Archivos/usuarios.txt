@@ -1,2 +1,2 @@
-octa - octa@gmail.com - 31 - admin - 666
-octa - mario@gmail.com - 31 - admin - 123
+octa-octa@gmail.com-31-666-admin
+octa-mario@gmail.com-31-666-admin

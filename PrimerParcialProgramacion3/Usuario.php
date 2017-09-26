@@ -63,7 +63,7 @@ public function SetClave($clave)
 
 public function ToString()
 {
-    return $this->GetNombre()." - ".$this->GetMail()." - ".$this->GetEdad()." - ".$this->GetPerfil()." - ".$this->GetClave()."\r\n";
+    return $this->GetNombre()."-".$this->GetMail()."-".$this->GetEdad()."-".$this->GetPerfil()."-".$this->GetClave()."\r\n";
 }
 
 
@@ -87,34 +87,48 @@ public function ToString()
 		return $resultado;
     }
     
-public static function VerificarUsuario($correo, $clave)
+public static function VerificarUsuario($correo,$clave)
 {
+        $acumuladorCorreo=0;
+        $acumuladorClave=0;
         $archivo=fopen("Archivos/usuarios.txt", "r");
 		$retorno = FALSE;
         $miarray = array();
-        $acumulador = 0;
 		while(!feof($archivo))
 		{
             if(($lector = fgets($archivo)) != false)
              {
-            $miarray = explode(" - ",$lector);
+            $miarray = explode("-",$lector);
             for($i=0;$i<count($miarray);$i++)
             {
-              if(($miarray[$i] == $correo) || ($miarray[$i] == $correo))
+              
+              if($miarray[$i] == $correo)
               {
-               $acumulador++;
+              $acumuladorCorreo+=1;
               }
+              if($miarray[$i] == $clave)
+              {             
+              $acumuladorClave+=1;
+              }          
+             
             }
-			
-		   }
         }
-		fclose($archivo);
-       if($acumulador == 2)
-        {
-            $retorno = TRUE;
-        }
-        
-        return $retorno;
+
+            
+    if($acumuladorCorreo==1 && $acumuladorClave==1)
+    {
+        echo "BIENVENIDO";
+    }
+    if($acumuladorCorreo==1 && $acumuladorClave==0)
+    {
+        echo "Esta ingresando mal la clave";
+    }
+    if($acumuladorCorreo==0 && $acumuladorClave==1)
+    {
+        echo "Esta ingresando mal el email";
+    }
+}
+    fclose($archivo);   
 
 }
 
