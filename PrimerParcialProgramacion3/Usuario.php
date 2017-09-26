@@ -6,6 +6,10 @@ private $_mail;
 private $_edad;
 private $_clave;
 private $_perfil;
+private $_comentario;
+private $_titulo;
+public $_listaUsuarios=array();
+public $_listaComentarios=array();
 
 function __construct($nombre,$mail,$edad,$perfil,$clave)
 {
@@ -37,6 +41,16 @@ public function GetClave()
 public function GetPerfil()
 {
     return $this->_perfil;
+}
+
+public function GetComentario()
+{
+    return $this->_comentario;
+}
+
+public function GetTitulo()
+{
+    return $this->_titulo;
 }
 
 
@@ -193,9 +207,109 @@ else {
 
     move_uploaded_file($_FILES["archivo"]["tmp_name"], $destino);
      
-    
+   }
+
+
+   public static function LeerArchivoUsuarios()
+   {
+       $archivo = fopen('Archivos/usuarios.txt',"r");
+       $bandera=false;
+       $numeroDeLinead;
+       while(!feof($archivo))
+       {
+          
+           $aux = fgets($archivo);
+           if($aux == "") continue; 
+           $cadena = explode("-",$aux);
+          
+          
+           array_push(Producto::$_listaUsuarios,new Producto($cadena[0],$cadena[1],$cadena[2],$cadena[3],$cadena[4]));
+           //var_dump(Producto::$_lista);
 
    }
+   fclose($archivo);
+   
+}
+
+
+public static function LeerArchivoComentarios()
+{
+    $archivo = fopen('Archivos/comentarios.txt',"r");
+    $bandera=false;
+    $numeroDeLinead;
+    while(!feof($archivo))
+    {
+       
+        $aux = fgets($archivo);
+        if($aux == "") continue; 
+        $cadena = explode("-",$aux);
+       
+       
+        array_push(Producto::$_listaComentarios,new Producto($cadena[0],$cadena[1],$cadena[2]));
+        //var_dump(Producto::$_lista);
+
+}
+fclose($archivo);
+
+}
+
+   public static function BuscarUsuario($usuario)
+    {
+        Usuario::LeerArchivoComentarios();
+        Usuario::LeerArchivoUsuarios();
+        
+       for($i=0;$i<count(Usuario::$_listaUsuarios);$i++)
+       {
+           if(Producto::$_listaUsuarios[$i]->GetNombre()==$usuario)
+           {
+             return $i;
+           }
+ 
+         }
+         return -1;
+    }//cierra la funcion
+
+    public static function BuscarTitulo($titulo)
+    {
+        for($i=0;$i<count(Usuario::$_listaComentarios);$i++)
+        {
+            if(Producto::$_listaComentarios[$i]->GetTitulo()==$titulo)
+            {
+              return $i;
+            }
+  
+          }
+          return -1;
+    }//cierra la funcion
+        
+ public static function DevolverUsuario($usuario)
+ {
+     $itemUsuario=Usuario::BuscarUsuario($usuario);
+     $itemComentario=Usuario::BuscarTitulo($usuario->GetTitulo());
+     if($itemUsuario<>-1 && $itemComentario<>-1)
+     {
+        echo "<table class='table'>
+		<thead>
+			<tr>
+				<th>  IMAGEN DEL COMENTARIO </th>
+				<th>  TITULO    </th>
+				<th>  USUARIO       </th>
+                <th>  EDAD      </th>
+			</tr> 
+		</thead>";   	
+
+         echo " 	<tr>
+         <td>".$_listaUsuarios->GetNombre()."</td>
+         <td>".$_listaUsuarios->GetEdad()."</td>
+         <td>".$_listaComentarios->GetComentario()."</td>
+         <td>".$_listaComentarios->GetFoto()."</td>
+     </tr>";
+         echo "</table>";		
+     }
+
+ }
+
+
 
 
 
