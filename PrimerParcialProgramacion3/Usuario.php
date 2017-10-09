@@ -8,8 +8,9 @@ private $_clave;
 private $_perfil;
 private $_comentario;
 private $_titulo;
-public $_listaUsuarios=array();
-public $_listaComentarios=array();
+private $_pathFoto;
+public static $_listaUsuarios=array();
+public static $_listaComentarios=array();
 
 function __construct($nombre,$mail,$edad,$perfil,$clave)
 {
@@ -53,6 +54,11 @@ public function GetTitulo()
     return $this->_titulo;
 }
 
+public function GetPathFoto()
+{
+    return $this->_pathFoto;
+}
+
 
 public function SetPerfil()
 {
@@ -62,17 +68,17 @@ public function SetNombre($nombre)
 {
     $this->_nombre = $nombre;
 }
-public function SetEmail($email)
+public function SetMail($mail)
 {
-    $this->correo = $email;
+    $this->_mail = $mail;
 }
 public function SetEdad($edad)
 {
-    $this->edad = $edad;
+    $this->_edad = $edad;
 }
 public function SetClave($clave)
 {
-    $this->clave = $clave;
+    $this->_clave = $clave;
 }
 
 public function ToString()
@@ -127,6 +133,7 @@ public static function VerificarUsuario($correo,$clave)
              
             }
         }
+    }
          
     if($acumuladorCorreo==1 && $acumuladorClave==1)
     {
@@ -140,7 +147,12 @@ public static function VerificarUsuario($correo,$clave)
     {
         echo "Esta ingresando mal el email";
     }
-}
+
+    if($acumuladorCorreo==0 && $acumuladorClave==0)
+    {
+        echo "Ingreso mal el mail y la clave";
+    }
+
     fclose($archivo);   
 
 }
@@ -156,7 +168,7 @@ public static function VerificarMail($correo)
 		{
             if(($lector = fgets($archivo)) != false)
              {
-            $miarray = explode(" - ",$lector);
+            $miarray = explode("-",$lector);
             for($i=0;$i<count($miarray);$i++)
             {
               if($miarray[$i] == $correo)
@@ -182,10 +194,10 @@ public static function AltaComent($mail,$titulo,$comentario)
 {
    if(Usuario::VerificarMail($mail))
    {
-    $ar = fopen("Archivos/comentarios.txt", "a");
+    $ar = fopen("Archivos/comentarios.txt", "w");
     
     //ESCRIBO EN EL ARCHIVO
-    fwrite($ar,$mail." - ".$titulo." - ".$comentario);
+    fwrite($ar,$mail."-".$titulo."-".$comentario);
 
     //CIERRO EL ARCHIVO
     fclose($ar);
@@ -214,7 +226,7 @@ else {
    {
        $archivo = fopen('Archivos/usuarios.txt',"r");
        $bandera=false;
-       $numeroDeLinead;
+     
        while(!feof($archivo))
        {
           
@@ -223,7 +235,7 @@ else {
            $cadena = explode("-",$aux);
           
           
-           array_push(Producto::$_listaUsuarios,new Producto($cadena[0],$cadena[1],$cadena[2],$cadena[3],$cadena[4]));
+           array_push(Usuario::$_listaUsuarios,new Usuario($cadena[0],$cadena[1],$cadena[2],$cadena[3],$cadena[4]));
            //var_dump(Producto::$_lista);
 
    }
@@ -245,7 +257,9 @@ public static function LeerArchivoComentarios()
         $cadena = explode("-",$aux);
        
        
-        array_push(Producto::$_listaComentarios,new Producto($cadena[0],$cadena[1],$cadena[2]));
+        array_push(Usuario::$_listaComentarios,$cadena[0]);
+        array_push(Usuario::$_listaComentarios,$cadena[1]);
+        array_push(Usuario::$_listaComentarios,$cadena[2]);
         //var_dump(Producto::$_lista);
 
 }
@@ -255,60 +269,89 @@ fclose($archivo);
 
    public static function BuscarUsuario($usuario)
     {
-        Usuario::LeerArchivoComentarios();
-        Usuario::LeerArchivoUsuarios();
         
+    Usuario::LeerArchivoUsuarios(); 
        for($i=0;$i<count(Usuario::$_listaUsuarios);$i++)
        {
-           if(Producto::$_listaUsuarios[$i]->GetNombre()==$usuario)
+           if(Usuario::$_listaUsuarios[$i]->GetNombre()==$usuario)
            {
              return $i;
-           }
- 
+           }       
          }
+  
          return -1;
     }//cierra la funcion
 
     public static function BuscarTitulo($titulo)
     {
+        Usuario::LeerArchivoComentarios();
+
         for($i=0;$i<count(Usuario::$_listaComentarios);$i++)
         {
-            if(Producto::$_listaComentarios[$i]->GetTitulo()==$titulo)
+            if(Usuario::$_listaComentarios[$i]==$titulo)
             {
               return $i;
             }
+           
   
           }
           return -1;
     }//cierra la funcion
         
- public static function DevolverUsuario($usuario)
- {
-     $itemUsuario=Usuario::BuscarUsuario($usuario);
-     $itemComentario=Usuario::BuscarTitulo($usuario->GetTitulo());
-     if($itemUsuario<>-1 && $itemComentario<>-1)
-     {
-        echo "<table class='table'>
-		<thead>
-			<tr>
-				<th>  IMAGEN DEL COMENTARIO </th>
-				<th>  TITULO    </th>
-				<th>  USUARIO       </th>
-                <th>  EDAD      </th>
-			</tr> 
-		</thead>";   	
 
-         echo " 	<tr>
-         <td>".$_listaUsuarios->GetNombre()."</td>
-         <td>".$_listaUsuarios->GetEdad()."</td>
-         <td>".$_listaComentarios->GetComentario()."</td>
-         <td>".$_listaComentarios->GetFoto()."</td>
-     </tr>";
-         echo "</table>";		
-     }
+    public static function BorrarUsuario($nombre)
+    {
+     
+        if(Producto::BuscarUsuario($nombre)==-1)
+        {
+         
+           return false;
+        }
+       unset(Usuario::$_lista[Usuario::BuscarUsuario($nombre)]);//paso el array con el indice.
+       return true;
+    
+    }
 
- }
+    public static function ModificarUsuario($nombre,$mail,$edad,$perfil,$clave)
+    {
+        $indice=Usuario::BuscarUsuario($nombre);
 
+    
+
+        if($indice<>-1)
+        {
+        Usuario::$_listaUsuarios[$indice]->SetNombre($nombre);
+        Usuario::$_listaUsuarios[$indice]->SetMail($mail);
+        Usuario::$_listaUsuarios[$indice]->SetEdad($edad); 
+        Usuario::$_listaUsuarios[$indice]->SetPerfil($perfil);
+        Usuario::$_listaUsuarios[$indice]->SetClave($clave);
+    
+    
+        Usuario::ArchivarLista();
+
+
+    }
+
+    else 
+    {
+        echo "El usuario ya esta cargado";
+    }
+}
+
+    public static function ArchivarLista()
+    {
+      
+        $archivo = fopen('Archivos/usuarios.txt',"w");
+        $str="";
+        foreach(Usuario::$_listaUsuarios as $item)
+        {
+            
+            $str.=$item->ToString(); 
+        }
+        fwrite($archivo,$str);         
+        fclose($archivo);  
+    
+    }
 
 
 

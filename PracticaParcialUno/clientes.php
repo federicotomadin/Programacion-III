@@ -71,7 +71,7 @@ class Cliente
 
     public function ToString()
     {
-        return $this->_nombre." - ".$this->_mail." - ".$this->_clave." - ".$this->_sexo;    
+        return $this->_nombre."-".$this->_mail."-".$this->_clave."-".$this->_sexo;    
     }
 
         
@@ -79,7 +79,7 @@ class Cliente
     {
 
         $archivo=fopen("clientes/ClientesActuales.txt", "r");
-	     $bandera=false;
+	    $bandera=false;
         $miarray = array();
         $acumulador = 0;
 
@@ -88,7 +88,7 @@ class Cliente
             if(($lector = fgets($archivo)) != false)
              {
                
-            $miarray = explode(" - ",$lector);
+            $miarray = explode("-",$lector);
           
        
         
