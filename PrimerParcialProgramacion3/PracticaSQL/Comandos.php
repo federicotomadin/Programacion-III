@@ -42,7 +42,7 @@ INSERT INTO `envios`(`Numero`, `pNumero`, `Cantidad`) VALUES (102,3,300);
 
 5 - SELECT * FROM `envios` LIMIT 0,3;
 
-6 - SELECT P.pNombre,PP.Nombre FROM `productos` as P , `proveedores` as PP WHERE 
+6 - SELECT P.pNombre,PP.Nombre FROM `productos` as P , `proveedores` as PP WHERE PP.Numero=Numero and P.pNumero=pNumero
 
 7 - SELECT P.Precio * E.Cantidad as Resultado FROM `productos` as P , `envios` as E;
 
