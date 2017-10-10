@@ -235,7 +235,7 @@ else {
            $cadena = explode("-",$aux);
           
           
-           array_push(Usuario::$_listaUsuarios,new Usuario($cadena[0],$cadena[1],$cadena[2],$cadena[3],$cadena[4]));
+ array_push(Usuario::$_listaUsuarios,new Usuario($cadena[0],$cadena[1],$cadena[2],$cadena[3],$cadena[4]));
            //var_dump(Producto::$_lista);
 
    }
@@ -346,7 +346,7 @@ fclose($archivo);
         foreach(Usuario::$_listaUsuarios as $item)
         {
             
-            $str.=$item->ToString(); 
+            $str= $str.$item->ToString(); 
         }
         fwrite($archivo,$str);         
         fclose($archivo);  

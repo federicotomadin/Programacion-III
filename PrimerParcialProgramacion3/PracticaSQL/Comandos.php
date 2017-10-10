@@ -44,7 +44,7 @@ INSERT INTO `envios`(`Numero`, `pNumero`, `Cantidad`) VALUES (102,3,300);
 
 6 - SELECT P.pNombre,PP.Nombre FROM `productos` as P , `proveedores` as PP WHERE PP.Numero=Numero and P.pNumero=pNumero
 
-7 - SELECT P.Precio * E.Cantidad as Resultado FROM `productos` as P , `envios` as E;
+7 - SELECT P.Precio * E.Cantidad as Resultado INNER JOIN `envios` as E on P.pNumero=E.numero;
 
 8 - SELECT SUM(Cantidad) as Suma FROM `envios` WHERE pNumero="1";
 
