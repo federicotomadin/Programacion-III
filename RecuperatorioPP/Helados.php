@@ -19,7 +19,7 @@ public function __Helado($sabor,$tipo,$precio,$cantidad)
 
 public static function AltaHelado($helado)
 {
-    $heladoJson= json_decode($helado);
+    $heladoJson= json_encode($helado);
     $pFile= fopen("./Archivos/helados.txt","r");
     fwrite($pFile,$heladoJson);
     fclose($pFile);
@@ -32,6 +32,7 @@ public static function TraerHelados()
   $pFile = fopen("./Archivos/helados.txt","r");
 
   var_dump($pFile);
+  die();
 
 
 
