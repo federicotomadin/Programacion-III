@@ -1,2 +1,4 @@
-{"sabor":"adsfasdf","tipo":"crema","precio":"50","cantidad":"1"}
-{"sabor":"frutilla","tipo":"crema","precio":"50","cantidad":"1"}
+{"sabor":"frutilla","tipo":"crema","precio":"50","cantidad":"5"}
+{"sabor":"frutilla","tipo":"crema","precio":"50","cantidad":"5"}
+{"sabor":"frutilla","tipo":"crema","precio":"50","cantidad":4}
+{"sabor":"frutilla","tipo":"crema","precio":"50","cantidad":4}
