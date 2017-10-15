@@ -40,36 +40,42 @@ public static function TraerHelados()
 
 }
 
-public static function EliminarDelArchivo($helado)
+public static function GuardarEnArchivo($array)
 {
-   $helados=Helado::TraerHelados();
-   foreach($helados as $item)
-   {
-       if($item==$helado)
+    Helado::LimpiarArchivo();
+  foreach($array as $item)
+  {
+      if($item->sabor<>null)
+      {
+      Helado::AltaHelado($item);
+      }
+  }
+}
+
+public static function QuitarHelado($sabor,$tipo,$cantidad)
+{
+  
+ $helados=Helado::TraerHelados();
+ $aux=array();
+     
+       foreach($helados as $item)
        {
-           unset($item);
-           return true;
+           if($item->sabor<>$sabor || $item->tipo<>$tipo || $item->cantidad<>$cantidad)
+           {
+              array_push($aux,new Helado($item->sabor,$item->tipo,$item->precio,$item->cantidad));
+           }
+           
        }
-   }
-   return false;
+   return $aux;    
+
 }
 
 public static function LimpiarArchivo()
 {
     $pFile= fopen("Archivos/helados.txt","w");
-    fwrite($pFile,""."\n");
+    fwrite($pFile,''."\n");
     fclose($pFile);
 
-}
-
-public static function GuardarArray($helados)
-{
-   foreach($helados as $item)
-   {
-       Helado::AltaHelado($item);
-       return true;
-   }
-   return false;
 }
 
 
@@ -128,20 +134,19 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
             $pFile=fopen("Archivos/Venta.txt","a");
             fwrite($pFile,json_encode($resultado)."\n");
             fclose($pFile);
-            $item->cantidad=$item->cantidad - $cantidad;
-           
-            $resultado2=array("sabor"=>$item->sabor,"tipo"=>$item->tipo,"precio"=>$item->precio,"cantidad"=>$item->cantidad);
-            
+            $item->cantidad=$item->cantidad - $cantidad;          
+            $resultado2=array("sabor"=>$item->sabor,"tipo"=>$item->tipo,"precio"=>$item->precio,"cantidad"=>$item->cantidad); 
+            Helado::AltaHelado($item);                
+            Helado::GuardarEnArchivo(Helado::QuitarHelado($sabor,$tipo,$item->cantidad + $cantidad));
             
             $todoOK=true;
-           unset($item);
+          
         }
     }
 
     if($todoOK)
     {
-         echo "Se realizo la venta con exito";
-         Helado::GuardarArray($helados);
+        echo "Se realizo la venta con exito";
         return true;
        
     }
@@ -151,6 +156,142 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
         }
 
     }
+
+
+    public static function AltaConImagen($email,$sabor,$tipo,$cantidad)
+    {
+     
+          if(Helado::AltaVenta($email,$sabor,$tipo,$cantidad))
+          {
+              $extension=pathinfo($_FILES['archivo']['name'],PATHINFO_EXTENSION);
+              $ahora=date("Ymd");
+              $destino=("ImagenesDeLaVenta/".$sabor.$ahora.".".$extension);
+              move_uploaded_file($_FILES['archivo']['tmp_name'],$destino);
+          }
+
+    }
+
+    public static function ArmarGrilla($email=NULL,$sabor=NULL)
+    {
+        $resultados=Helado::Resultados($email,$sabor);
+        $grilla.="<table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Sabor</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>";
+
+        if(count($resultados>0))
+        {
+            foreach($resultados as $item)
+            {
+                $grilla.="<tbody>
+                <td>".$item['email']."</td>
+                <td>".$item['sabor']."</td>
+                <td>".$item['tipo']."</td>
+                <td>".$item['precio']."</td>
+                <td>".$item['cantidad']."</td>
+                <td><img src='ImagenesDeLaVenta/".$item['sabor']."20171014.jpg' width='100px' height='100px'></td>
+                </tbody>";
+            }
+        }
+        else 
+        {
+            $grilla.="<h1> No se encontraron resultados</h1>";
+        }
+        $grilla.="<table>";
+        echo $grilla;
+    }
+
+
+    public static function TraerVentas()
+    {
+        $ventas=array();
+        $pFile=fopen("Archivos/ventas.txt",r);
+        while(!feof($pFile))
+        {
+            $aux=json_encode(fgets($pFile),true);
+            foreach($aux as $item)
+            {
+                array_push($ventas,$item['email'],$item['sabor'],$item['tipo'],$item['precio'],$item['cantidad']);
+
+            }
+           
+
+        }
+
+
+    }
+
+   public static function Resultados($email=NULL,$sabor=NULL)
+   {
+      if($email<>NULL && $sabor<>NULL)
+      {
+      
+      $ventas=Helado::TraerVentas();
+      $resultados=array();
+      foreach($ventas as $item)
+      {
+          if($item['email']==$email && $item['sabor']==$sabor)
+          {
+              array_push($resultados,$item);
+          }
+      }
+
+      if(count($resultado)<>0)
+      {
+          return $resultados;
+      }
+      else 
+      {
+          echo "No se encontraron resultados";
+      }
+      }
+
+      if($email<>NULL && $sabor==NULL)
+      {
+        $resultados = array();
+        $ventas = Helado::TraerVentas();
+        foreach ($ventas as $item) {
+            if ($item['email'] == $email) {
+                
+                array_push($resultados,$item);
+            }
+        }
+        if(count($resultados) != 0)
+        {
+            return $resultados;
+        }
+        else{
+            echo "No se encontraron resultados";
+        }
+      }
+
+      if($email==NULL && $sabor<>NULL)
+      {
+        $resultados = array();
+        $ventas = Helado::TraerVentas();
+        foreach ($ventas as $item) {
+            if ($item['sabor'] == $email) {
+                
+                array_push($resultados,$item);
+            }
+        }
+        if(count($resultados) != 0)
+        {
+            return $resultados;
+        }
+        else{
+            echo "No se encontraron resultados";
+        }
+      }
+      
+   }
 
 
 
