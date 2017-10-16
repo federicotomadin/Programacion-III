@@ -1,9 +1,14 @@
+
 <?php
 
 include "Helados.php";
+include "Usuario.php";
 
 
-Helado::ArmarGrilla($_POST['email'],$_POST['sabor']);
+
+
+
+Helado::ArmarGrilla("fede@gmail.com","vainilla");
 
 
 

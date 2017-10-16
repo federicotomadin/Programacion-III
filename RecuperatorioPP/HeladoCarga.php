@@ -1,6 +1,6 @@
 <?php
 
-include "Helados.php";
+include "Clases/Helados.php";
 
 
 $sabor=$_GET['sabor'];

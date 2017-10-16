@@ -171,10 +171,81 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
 
     }
 
+    public static function BorrarHelado($helado)
+    {
+             //busco la linea y si esta la modifico
+             $helados=Helado::TraerHelados();
+           
+
+             $pFile=fopen("Archivos/helados.txt","w");
+             
+                 foreach($helados as $item)
+                 {
+                   if($item->sabor<>$helado->sabor || $item->tipo<>$helado->tipo)
+                   {   
+                    if($item->sabor<>null)
+                    { 
+                    fwrite($pFile,json_encode($item)."\n");
+                    }
+                   }
+                 
+                 }
+                 fclose($pFile);
+                 echo "El Helado se borró con exito";
+                 $ahora=date("Ymd");             
+                 copy("ImagenesDeLaVenta/".$helado->sabor.$ahora."."."jpg","backUpFotos/".$ahora."."."jpg");
+                 unlink("ImagenesDeLaVenta/".$helado->sabor.$ahora."."."jpg");
+            
+     }
+            
+
+    public static function ModificarHelado($helado)
+    {
+        //busco la linea y si esta la modifico
+        $aux=array();
+        $bandera=false;
+        $helados=Helado::TraerHelados();
+        foreach($helados as $item)
+        {
+            if($helado->tipo==$item->tipo && $helado->sabor==$item->sabor)
+            {
+            $item->sabor=$helado->sabor;
+            $item->tipo=$helado->tipo;
+            $item->precio=$helado->precio;
+            $item->cantidad=$helado->cantidad;   
+            $bandera=true; 
+           
+            }
+           
+        }
+
+
+      //grabo en el archivo la linea modificada
+      if($bandera)
+      { 
+      $pFile=fopen("Archivos/helados.txt","w");
+  
+      foreach($helados as $item)
+      {
+        if($item->sabor<>null)
+        {    
+        fwrite($pFile,json_encode($item)."\n");
+        }
+      }
+      fclose($pFile);
+      echo "El Helado se modifico con exito";
+    }
+    else 
+    {
+        echo "No se pudo modificar el archivo";
+    }
+
+    }
+
     public static function ArmarGrilla($email=NULL,$sabor=NULL)
     {
         $resultados=Helado::Resultados($email,$sabor);
-        $grilla.="<table>
+        $grilla="<table>
         <thead>
             <tr>
                 <th>Email</th>
@@ -212,20 +283,16 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
     public static function TraerVentas()
     {
         $ventas=array();
-        $pFile=fopen("Archivos/ventas.txt",r);
+        $pFile=fopen("Archivos/Venta.txt","r");
         while(!feof($pFile))
         {
-            $aux=json_encode(fgets($pFile),true);
-            foreach($aux as $item)
-            {
-                array_push($ventas,$item['email'],$item['sabor'],$item['tipo'],$item['precio'],$item['cantidad']);
-
-            }
-           
-
+            $aux=json_decode(fgets($pFile),true);        
+                array_push($ventas,array("email"=>$aux['email'], "sabor"=>$aux['sabor'], "tipo"=>$aux['tipo'],"precio"=>$aux['precio'],"cantidad"=>$aux['cantidad']));
+      
         }
+        fclose($pFile);
 
-
+        return $ventas;
     }
 
    public static function Resultados($email=NULL,$sabor=NULL)
@@ -243,7 +310,7 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
           }
       }
 
-      if(count($resultado)<>0)
+      if(count($resultados)<>0)
       {
           return $resultados;
       }
