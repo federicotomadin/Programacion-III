@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lista de Empleados</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../estilos/estilos.css">
+	<script src="../bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
+    <script type="text/javascript" src="../js/funcionesEmpleado.js"></script>
+</head>
+<body>
+	<a class="btn btn-info" href="estacionamiento.html">
+	<span class="glyphicon glyphicon-home"></span>
+	Volver al Menú Principal</a>
+
+	<div class="container">
+		<div class="page-header">
+			<h1>Empleados del Estacionamiento</h1>      
+		</div>
+		<div class="CajaInicio animated bounceInRight">
+			<h1>Listado de EMPLEADOS</h1>
+
+     <div class="table-responsive">
+            <table class='table table-bordered table-hover' >
+		<thead id="tablaEncabezado">
+			<tr>
+				<th>  LEGAJO </th>
+				<th>  NOMBRE     </th>
+				<th>  MAIL       </th>
+				<th>  CLAVE     </th>
+				<th> TURNO </th>
+				<th> HABILITADO </th>
+				<th> FOTO DE PERFIL </th>
+				<th> VER OPERACIONES </th>
+				<th> VER FECHAS DE LOGUEOS </th>
+				<th>  BORRAR  </th>
+                <th>  MODIFICAR </th>
+			</tr> 
+		</thead>
+        <thead id="empleados">
+
+        </thead>
+
+            </table>
+		</div>
+		<form action="descargarListaEmpleadosExcel.php">
+			<div class="form-group">
+            <div class="col-lg-1 col-lg-offset-3">
+			<button type="submit" name="descargarExcel" id="descargarExcel" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-download-alt"></span> Descargar Excel</button>
+            </div>
+			</div>
+		</form>
+		<div class="col-lg-4 col-lg-offset-2">
+			<a href="Archivos/descargarListaEmpleadosPDF.php" class="btn btn-lg btn-danger" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Descargar PDF</a>
+		</div>
+		</div>
+	</div>
+</body>
+</html>
