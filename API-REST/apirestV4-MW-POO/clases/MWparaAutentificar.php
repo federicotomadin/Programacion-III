@@ -1,5 +1,6 @@
 <?php
 
+include "usuarioApi.php";
 
 class MWparaAutentificar
 {
@@ -18,7 +19,8 @@ class MWparaAutentificar
    *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
    */
 	public function VerificarUsuario($request, $response, $next) {
-         
+				$perfil="";
+				 
 		  if($request->isGet())
 		  {
 		     $response->getBody()->write('<p>NO necesita credenciales para los get </p>');
@@ -29,8 +31,18 @@ class MWparaAutentificar
 		    $response->getBody()->write('<p>verifico credenciales</p>');
 		    $ArrayDeParametros = $request->getParsedBody();
 		    $nombre=$ArrayDeParametros['nombre'];
-		    $tipo=$ArrayDeParametros['tipo'];
-		    if($tipo=="administrador")
+		    $clave=$ArrayDeParametros['clave'];
+				
+				if(usuarioApi::Validar($nombre,$clave))
+				{
+            $perfil='administrador';
+				}
+				else 
+				{
+					$perfil='usuario';
+				}
+				
+				if($perfil=="administrador")
 		    {
 		      $response->getBody()->write("<h3>Bienvenido $nombre </h3>");
 		      $response = $next($request, $response);

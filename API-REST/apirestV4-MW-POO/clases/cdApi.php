@@ -17,7 +17,7 @@ class cdApi extends cd implements IApiUsable
     }
       public function CargarUno($request, $response, $args) {
      	 $ArrayDeParametros = $request->getParsedBody();
-        //var_dump($ArrayDeParametros);
+        var_dump($ArrayDeParametros);
         $titulo= $ArrayDeParametros['titulo'];
         $cantante= $ArrayDeParametros['cantante'];
         $año= $ArrayDeParametros['anio'];
