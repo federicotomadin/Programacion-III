@@ -22,28 +22,26 @@ class HeladoApi extends Helado
 
 public function CargarUno($request, $response, $args) {
     $ArrayDeParametros = $request->getParsedBody();
- // var_dump($ArrayDeParametros);
+    $archivos = $request->getUploadedFiles();
+    $destino="./fotos/";
+    $nombreAnterior=$archivos['foto']->getClientFilename();
+    $extension= explode(".", $nombreAnterior)  ;
+    $extension=array_reverse($extension);
+
   $sabor= $ArrayDeParametros['sabor'];
   $tipo= $ArrayDeParametros['tipo'];
   $precio= $ArrayDeParametros['precio'];
   $cantidad= $ArrayDeParametros['cantidad'];
+
   
   $miHelado = new Helado();
   $miHelado->sabor=$sabor;
   $miHelado->tipo=$tipo;
   $miHelado->precio=$precio;
   $miHelado->cantidad=$cantidad;
+  $miHelado->pathFoto=$sabor.".".$extension[0];
   $id=$miHelado->InsertarElHeladoParametros();
 
-  $archivos = $request->getUploadedFiles();
-  $destino="./fotos/";
-  //var_dump($archivos);
-  //var_dump($archivos['foto']);
-
-  $nombreAnterior=$archivos['foto']->getClientFilename();
-  $extension= explode(".", $nombreAnterior)  ;
-  //var_dump($nombreAnterior);
-  $extension=array_reverse($extension);
 
   $archivos['foto']->moveTo($destino.$id.$sabor.".".$extension[0]);
   $response->getBody()->write("se guardo el helado");
@@ -56,9 +54,14 @@ public function BorrarUno($request, $response, $args) {
     $ArrayDeParametros = $request->getParsedBody();
     $id=$ArrayDeParametros['id'];
     $helado= new Helado();
-    $helado->id=$id;
-    var_dump($helado->sabor);
-    die();
+    $objeto=Helado::TraerUnHelado($id);
+    $destino="./backup/";
+ 
+
+    if(copy("./fotos/".$id.$objeto->sabor.".".$objeto->pathFoto,"./backup/".$id.$objeto->sabor.".".$objeto->pathFoto))
+    {
+      unlink("./fotos/".$id.$objeto->sabor.".".$objeto->pathFoto);
+    }
     $cantidadDeBorrados=$helado->BorrarHelado();
 
     $objDelaRespuesta= new stdclass();

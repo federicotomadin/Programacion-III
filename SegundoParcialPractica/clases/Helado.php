@@ -8,6 +8,7 @@ public $sabor;
 public $tipo;
 public $precio;
 public $cantidad;
+public $pathFoto;
 
 
 public function __construct()
@@ -80,7 +81,7 @@ public function ModificarHelado()
 public function InsertarElHelado()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-         $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into helado (sabro,tipo,precio,cantidad)values('$this->sabor','$this->tipo','$this->precio','$this->cantidad)");
+         $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into helado (sabor,tipo,precio,cantidad,pathFoto)values('$this->sabor','$this->tipo','$this->precio','$this->cantidad','$this->pathFoto)");
          $consulta->execute();
          return $objetoAccesoDato->RetornarUltimoIdInsertado();
                        
@@ -109,7 +110,7 @@ public function ModificarHeladoParametros()
 public function InsertarElHeladoParametros()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into helado (sabor,tipo,precio,cantidad)values(:sabor,:tipo,:precio,:cantidad)");
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into helado (sabor,tipo,precio,cantidad,pathFoto)values('$this->sabor','$this->tipo','$this->precio','$this->cantidad','$this->pathFoto')");
         $consulta->bindValue(':sabor',$this->sabor, PDO::PARAM_STR);
         $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
