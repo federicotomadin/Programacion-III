@@ -60,7 +60,7 @@ public function construct__()
 public static function InsertarElAuto($auto)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO auto (patente, color, marca)"."VALUES('$auto->patente', '$auto->color','$auto->marca')");		
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO auto (patente, color, marca)VALUES('$auto->patente', '$auto->color','$auto->marca')");		
 return $consulta->execute();
 }
 

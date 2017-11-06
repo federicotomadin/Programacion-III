@@ -13,11 +13,7 @@ class AutentificadorJWT
     {
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         $ahora = time();
-        /*
-         parametros del payload
-         https://tools.ietf.org/html/rfc7519#section-4.1
-         + los que quieras ej="'app'=> "API REST CD 2017" 
-        */
+
         $payload = array(
         	'iat'=> $ahora,
             'exp' => $ahora + (60*240), //TOKEN VENCE A LAS 4 horas
