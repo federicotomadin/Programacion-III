@@ -56,20 +56,23 @@ public function BorrarUno($request, $response, $args) {
     $helado= new Helado();
     $objeto=Helado::TraerUnHelado($id);
     $destino="./backup/";
- 
 
-    if(copy("./fotos/".$id.$objeto->sabor.".".$objeto->pathFoto,"./backup/".$id.$objeto->sabor.".".$objeto->pathFoto))
+
+
+    if(copy("./fotos/".$id.$objeto->pathFoto,"./backup/".$id.$objeto->pathFoto))
     {
-      unlink("./fotos/".$id.$objeto->sabor.".".$objeto->pathFoto);
+      unlink("./fotos/".$id.$objeto->pathFoto);
     }
-    $cantidadDeBorrados=$helado->BorrarHelado();
+
+   
+    $cantidadDeBorrados=$objeto->BorrarHelado();
 
     $objDelaRespuesta= new stdclass();
    $objDelaRespuesta->cantidad=$cantidadDeBorrados;
+
    if($cantidadDeBorrados>0)
        {
             $objDelaRespuesta->resultado="algo borro!!!";
-
        }
        else
        {

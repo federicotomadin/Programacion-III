@@ -18,7 +18,7 @@ public function __construct()
 
 public static function TraerUnHelado($id) 
 {
-        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();       
         $consulta =$objetoAccesoDato->RetornarConsulta("SELECT * FROM helado where id = '$id'");
         $consulta->execute();
         $heladoBuscado= $consulta->fetchObject('Helado');
@@ -38,11 +38,8 @@ public static function TraerTodosLosHelados()
 public function BorrarHelado()
 {
                 $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-               $consulta =$objetoAccesoDato->RetornarConsulta("
-                       delete 
-                       from helado				
-                       WHERE id=:id");	
-                       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);		
+               $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from helado WHERE id=:id");	
+                       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
                        $consulta->execute();
                        return $consulta->rowCount();
 }
