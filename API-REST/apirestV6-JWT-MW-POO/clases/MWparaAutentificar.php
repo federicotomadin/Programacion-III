@@ -40,49 +40,47 @@ class MWparaAutentificar
 			//perfil=Administrador(todos)
 		//	$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
 			
-		$ArrayDeParametros = $request->getParsedBody();
-		$email=$ArrayDeParametros['email'];
-		$clave=$ArrayDeParametros['clave'];
+	//	$ArrayDeParametros = $request->getParsedBody();
+	//	$email=$ArrayDeParametros['email'];
+	//	$clave=$ArrayDeParametros['clave'];
 
 		 
-		if(usuarioApi::Validar($email,$clave))
-		 {
-			  $datos=array('email'=>$email,'clave'=>$clave);
-			  $token= AutentificadorJWT::CrearToken($datos);
-			  
-			  $response = $next($request, $response);
-
-			  
-		 }
-
-		 else 
-		 {
-			$nueva=$response->withJson("esta mal el token", 401);  
-			return $nueva;
+	//	if(usuarioApi::Validar($email,$clave))
+	//	 {
+	//		  $datos=array('email'=>$email,'clave'=>$clave);
+	//		  $token= AutentificadorJWT::CrearToken($datos);
 			
-		 }
+	//		  $response = $next($request, $response);
 
+		// }
+
+		// else 
+		// {
+		//	$nueva=$response->withJson("esta mal el token", 401);  
+	//		return $nueva;
 			
-
-
+	//	 }
 
 			//token vencido
-			//$token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
+		//	$token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
 			//token error
 			//$token="octavioAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
 	
 			//tomo el token del header
-			/*
+			
 				$arrayConToken = $request->getHeader('token');
-				$token=$arrayConToken[0];			
-			*/
-			//var_dump($token);
+			    $token=$arrayConToken[0];			
+			
+			//var_dump($arrayConToken);
+			//die();
 			$objDelaRespuesta->esValido=true; 
 			try 
 			{
 				//$token="";
 				AutentificadorJWT::verificarToken($token);
 				$objDelaRespuesta->esValido=true;    
+				var_dump("tengo que entrar por aca derecho");
+				die();
 			
 			}
 			catch (Exception $e) {      
