@@ -1,6 +1,8 @@
 <?php
 
 require_once "AutentificadorJWT.php";
+require_once "usuarioApi.php";
+
 class MWparaAutentificar
 {
  /**
@@ -17,8 +19,10 @@ class MWparaAutentificar
    * @apiExample Como usarlo:
    *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
    */
+
+
 	public function VerificarUsuario($request, $response, $next) {
-         
+			
 		$objDelaRespuesta= new stdclass();
 		$objDelaRespuesta->respuesta="";
 	   
@@ -30,18 +34,40 @@ class MWparaAutentificar
 		else
 		{
 			//$response->getBody()->write('<p>verifico credenciales</p>');
-
 			//perfil=Profesor (GET, POST)
 			//$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
 			
 			//perfil=Administrador(todos)
-			$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
+		//	$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
 			
-			$token= AutentificadorJWT::CrearToken($datos);
+		$ArrayDeParametros = $request->getParsedBody();
+		$email=$ArrayDeParametros['email'];
+		$clave=$ArrayDeParametros['clave'];
+
+		 
+		if(usuarioApi::Validar($email,$clave))
+		 {
+			  $datos=array('email'=>$email,'clave'=>$clave);
+			  $token= AutentificadorJWT::CrearToken($datos);
+			  
+			  $response = $next($request, $response);
+
+			  
+		 }
+
+		 else 
+		 {
+			$nueva=$response->withJson("esta mal el token", 401);  
+			return $nueva;
+			
+		 }
+
+			
+
+
 
 			//token vencido
 			//$token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
-
 			//token error
 			//$token="octavioAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
 	
@@ -56,14 +82,14 @@ class MWparaAutentificar
 			{
 				//$token="";
 				AutentificadorJWT::verificarToken($token);
-				$objDelaRespuesta->esValido=true;      
+				$objDelaRespuesta->esValido=true;    
+			
 			}
 			catch (Exception $e) {      
 				//guardar en un log
 				$objDelaRespuesta->excepcion=$e->getMessage();
 				$objDelaRespuesta->esValido=false;     
 			}
-
 			if($objDelaRespuesta->esValido)
 			{						
 				if($request->isPost())
@@ -91,7 +117,6 @@ class MWparaAutentificar
 				//   $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
 				$objDelaRespuesta->respuesta="Solo usuarios registrados";
 				$objDelaRespuesta->elToken=$token;
-
 			}  
 		}		  
 		if($objDelaRespuesta->respuesta!="")
