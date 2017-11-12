@@ -30,7 +30,7 @@ $app->group('/Helado', function () {
  
   $this->get('/', \HeladoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-  $this->get('/{id}', \HeladoApi::class . ':traerUno');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/{id}', \HeladoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
   $this->post('/', \HeladoApi::class . ':CargarUno');
 

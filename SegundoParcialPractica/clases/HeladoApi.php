@@ -16,7 +16,7 @@ class HeladoApi extends Helado
    public function traerTodos($request, $response, $args) {
     $todosLosHelados=Helado::TraerTodosLosHelados();
    $newResponse = $response->withJson($todosLosHelados, 200);  
-  return $newResponse;
+   return $newResponse;
 }
 
 
