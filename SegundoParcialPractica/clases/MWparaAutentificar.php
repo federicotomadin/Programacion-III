@@ -35,22 +35,6 @@ class MWparaAutentificar
 		 }
 		  else
 		  {
-				   
-		    //$ArrayDeParametros = $request->getParsedBody();
-		  //  $email=$ArrayDeParametros['email'];
-			//	$clave=$ArrayDeParametros['clave'];
-			//	$perfil=$ArrayDeParametros['perfil'];
-			//	$datos=array('email'=> $email,'clave'=> $clave,'perfil'=>$perfil);
-					
-				//if(usuarioApi::Validar($email,$clave))
-				//{								
-				
-				// 	 $token= AutentificadorJWT::CrearToken($datos);
-					
-				//}
-
-		
-
 			
 		 //tomo el token del header
 			
@@ -97,6 +81,7 @@ class MWparaAutentificar
 
 			elseif($payload->perfil=='administrador')
 			{
+
 				//var_dump($payload);
 					// DELETE,PUT y DELETE sirve para todos los logeados y admin
 			return	$response=$next($request,$response);

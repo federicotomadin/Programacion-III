@@ -58,17 +58,15 @@ public function BorrarUno($request, $response, $args) {
     $destino="./backup/";
 
 
-
     if(copy("./fotos/".$id.$objeto->pathFoto,"./backup/".$id.$objeto->pathFoto))
     {
       unlink("./fotos/".$id.$objeto->pathFoto);
     }
 
-   
-    $cantidadDeBorrados=$objeto->BorrarHelado();
+    $cantidadDeBorrados=$helado->BorrarHelado();
 
     $objDelaRespuesta= new stdclass();
-   $objDelaRespuesta->cantidad=$cantidadDeBorrados;
+    $objDelaRespuesta->cantidad=$cantidadDeBorrados;
 
    if($cantidadDeBorrados>0)
        {
