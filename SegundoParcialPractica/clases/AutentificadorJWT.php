@@ -18,7 +18,7 @@ class AutentificadorJWT
         */
         $payload = array(
         	'iat'=>$ahora,
-            'exp' => $ahora + (60*60),
+            'exp' => $ahora +(60*60),
             'aud' => self::Aud(),
             'data' => $datos,
             'app'=> "API REST CD 2017"
@@ -32,6 +32,7 @@ class AutentificadorJWT
        
         if(empty($token)|| $token=="")
         {
+           
             throw new Exception("El token esta vacio.");
         } 
         // las siguientes lineas lanzan una excepcion, de no ser correcto o de haberse terminado el tiempo       
@@ -43,6 +44,7 @@ class AutentificadorJWT
             );
         } catch (ExpiredException $e) {
             //var_dump($e);
+          
            throw new Exception("Clave fuera de tiempo");
         }
         

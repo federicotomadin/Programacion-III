@@ -11,7 +11,7 @@ class usuarioApi extends Usuario
      $newResponse = $response->withJson($elCd, 200);  
     return $newResponse;*/
 
-    public function Validar($email,$clave) {
+    public function Validar($email,$clave,$perfil) {
     
         $response="";
         $retorno=false;
@@ -23,26 +23,50 @@ class usuarioApi extends Usuario
     foreach($usuario as $item)
         {
 
-        if($item->GetEmail()==$email && $item->GetClave()==$clave)
+        if($item->GetEmail()==$email && $item->GetClave()==$clave && $item->GetPerfil()==$perfil)
           {
 
                $response= "Bienvenido";
                return $response;
           }
-          if($item->GetEmail()==$email && $item->GetClave()!=$clave)
+          if($item->GetEmail()==$email && $item->GetClave()!=$clave && $item->GetPerfil()==$perfil)
           {
               $response=  "Es mal la clave";
             
           }
 
-          if($item->GetEmail()!=$email && $item->GetClave()==$clave)
+          if($item->GetEmail()!=$email && $item->GetClave()==$clave && $item->GetPerfil()==$perfil)
           {
               $response="Esta mal ingresado el mail";
            
           }
-          if($item->GetEmail()!=$email && $item->GetClave()!=$clave)
+          if($item->GetEmail()!=$email && $item->GetClave()!=$clave && $item->GetPerfil()==$perfil)
           {
               $response="Esta mal ingresado el mail y la clave";
+           
+          }
+
+          if($item->GetEmail()==$email && $item->GetClave()==$clave && $item->GetPerfil()!=$perfil)
+          {
+              $response="Esta mal ingresado el perfil";
+           
+          }
+
+          if($item->GetEmail()==$email && $item->GetClave()!=$clave && $item->GetPerfil()!=$perfil)
+          {
+              $response="Esta mal ingresado el perfil y la clave";
+           
+          }
+
+          if($item->GetEmail()!=$email && $item->GetClave()==$clave && $item->GetPerfil()!=$perfil)
+          {
+              $response="Esta mal ingresado el mail y el perfil";
+           
+          }
+
+          if($item->GetEmail()!=$email && $item->GetClave()!=$clave && $item->GetPerfil()!=$perfil)
+          {
+              $response="Esta mal ingresado el mail, el perfil y la clave";
            
           }
         }

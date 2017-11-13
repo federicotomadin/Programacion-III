@@ -27,7 +27,6 @@ $app = new \Slim\App(["settings" => $config]);
 
 
 $app->get('/crearToken/', function (Request $request, Response $response) {
- //$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
 $token="";
 $ArrayDeParametros = $request->getParams('email','clave','perfil');
  $email=$ArrayDeParametros['email'];
@@ -35,7 +34,7 @@ $ArrayDeParametros = $request->getParams('email','clave','perfil');
  	$perfil=$ArrayDeParametros['perfil'];
    $datos=array('email'=> $email,'clave'=> $clave,'perfil'=>$perfil);
    
-    if(usuarioApi::Validar($email,$clave)=="Bienvenido")
+    if(usuarioApi::Validar($email,$clave,$perfil)=="Bienvenido")
 				{			
         				
 				

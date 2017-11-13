@@ -37,23 +37,28 @@ class MWparaAutentificar
 		  {
 			
 		 //tomo el token del header
-			
+		
 				$arrayConToken = $request->getHeader('token');
-				$token=$arrayConToken[0];			
-			
-			//	var_dump($token);
-			//	die();
+				$token=$arrayConToken[0];	
+       
+				$payload=AutentificadorJWT::ObtenerData($token);
+
+
+				var_dump($payload);
+				die();
 		//	$objDelaRespuesta->esValido=true; 
 
 			try 
 			{
 				//$token="";
+
 				AutentificadorJWT::verificarToken($token);
 				$objDelaRespuesta->esValido=true;   
 			 
 			}
 			catch (Exception $e) {      
 				//guardar en un log
+		
 				$objDelaRespuesta->excepcion=$e->getMessage();
 				$objDelaRespuesta->esValido=false;     
 			}

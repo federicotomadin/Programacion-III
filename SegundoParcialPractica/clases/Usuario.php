@@ -4,6 +4,7 @@ class Usuario
 	private $id;
  	private $email;
     private $clave;
+    private $perfil;
       
     public function GetId()
     {
@@ -34,6 +35,16 @@ class Usuario
     public function SetClave($valor)
     {
         $this->clave = $valor;
+    }
+
+    public function GetPerfil()
+    {
+        return $this->perfil;
+    }
+    
+    public function SetPerfil($valor)
+    {
+        $this->clave = $perfil;
     }
 
 
