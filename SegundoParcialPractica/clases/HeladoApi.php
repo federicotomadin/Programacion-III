@@ -90,7 +90,7 @@ public function ModificarUno($request, $response, $args) {
    $miHelado->tipo=$ArrayDeParametros['tipo'];
    $miHelado->precio=$ArrayDeParametros['precio'];
    $miHelado->cantidad=$ArrayDeParametros['cantidad'];
-
+   
       $resultado =$miHelado->ModificarHeladoParametros();
       $objDelaRespuesta= new stdclass();
    //var_dump($resultado);

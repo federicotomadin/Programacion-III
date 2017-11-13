@@ -60,20 +60,7 @@ public static function BorrarHeladoPorTipo($tipo)
 }
 
 
-public function ModificarHelado()
-{
 
-               $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-               $consulta =$objetoAccesoDato->RetornarConsulta("
-                       update helado
-                       set sabor='$this->sabor',
-                       tipo='$this->tipo',
-                       precio='$this->precio'
-                       cantidad='$this->cantidad'
-                       WHERE id='$this->id'");
-               return $consulta->execute();
-
-}
 
 public function InsertarElHelado()
 {
@@ -117,18 +104,6 @@ public function InsertarElHeladoParametros()
 }
 
 
-public function GuardarHELADO()
-{
-
-        if($this->id>0)
-                {
-                        $this->ModificarHeladoParametros();
-                }else {
-                        $this->InsertarElHeladoParametros();
-                }
-
-}
-
 
 public static function TraerUnHeladoTipo($id,$tipo) 
 {
@@ -155,17 +130,7 @@ public static function TraerUnHeladoAnioParamTipo($id,$tipo)
                 
 }
 
-public static function TraerUnHeladoTipoParamNombreArray($id,$tipo) 
-{
-                $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-                $consulta =$objetoAccesoDato->RetornarConsulta("SELECT * from helado  WHERE id=:id AND tipo=:tipo");
-                $consulta->execute(array(':id'=> $id,':tipo'=> $tipo));
-                $consulta->execute();
-                $heladoBuscado= $consulta->fetchObject('Helado');
-              return $heladoBuscado;				
 
-                
-}
 
 
 
