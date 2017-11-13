@@ -12,19 +12,45 @@ class usuarioApi extends Usuario
     return $newResponse;*/
 
     public function Validar($email,$clave) {
+    
+        $response="";
         $retorno=false;
         $miArray=array();
-        $usuario=Usuario::TraerUsuario();
+        $usuario=Usuario::TraerUsuarios();
         if(isset($usuario))
+        {  
+   
+    foreach($usuario as $item)
         {
-        if($usuario->email==$email && $usuario->clave==$clave)
+
+        if($item->GetEmail()==$email && $item->GetClave()==$clave)
           {
-                $retorno = true;
-            }
+
+               $response= "Bienvenido";
+               return $response;
+          }
+          if($item->GetEmail()==$email && $item->GetClave()!=$clave)
+          {
+              $response=  "Es mal la clave";
+            
+          }
+
+          if($item->GetEmail()!=$email && $item->GetClave()==$clave)
+          {
+              $response="Esta mal ingresado el mail";
+           
+          }
+          if($item->GetEmail()!=$email && $item->GetClave()!=$clave)
+          {
+              $response="Esta mal ingresado el mail y la clave";
+           
+          }
         }
     
+     }
+     return $response;
 
-        return $retorno;
+       
 
    }
 

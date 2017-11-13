@@ -24,51 +24,49 @@ class MWparaAutentificar
 
 				$objDelaRespuesta= new stdclass();
 				$objDelaRespuesta->respuesta="";
-				 $token="";
+				
 
 		if($request->isGet())
 		  {
+		
 				$response->getBody()->write('<p>NO necesita credenciales para los get </p>');
-				 $response = $next($request, $response);
+		    return 	$response = $next($request, $response);
 		
 		 }
 		  else
 		  {
+				   
+		    //$ArrayDeParametros = $request->getParsedBody();
+		  //  $email=$ArrayDeParametros['email'];
+			//	$clave=$ArrayDeParametros['clave'];
+			//	$perfil=$ArrayDeParametros['perfil'];
+			//	$datos=array('email'=> $email,'clave'=> $clave,'perfil'=>$perfil);
+					
+				//if(usuarioApi::Validar($email,$clave))
+				//{								
+				
+				// 	 $token= AutentificadorJWT::CrearToken($datos);
+					
+				//}
 
-		    $response->getBody()->write('<p>verifico credenciales</p>');
-		    $ArrayDeParametros = $request->getParsedBody();
-		    $email=$ArrayDeParametros['email'];
-				$clave=$ArrayDeParametros['clave'];
-				$perfil=$ArrayDeParametros['perfil'];
-				$datos=array('email'=> $email,'clave'=> $clave,'perfil'=>$perfil);
-					
 		
-				if(usuarioApi::Validar($email,$clave))
-				{
-					
-				 	  $token= AutentificadorJWT::CrearToken($datos);
-						$objDelaRespuesta->esValido=true;
-				}
+
 			
-			 var_dump($token);
-			 die();
-		
-
 		 //tomo el token del header
 			
 				$arrayConToken = $request->getHeader('token');
 				$token=$arrayConToken[0];			
 			
-			//var_dump($token);
+			//	var_dump($token);
+			//	die();
 		//	$objDelaRespuesta->esValido=true; 
-
-
 
 			try 
 			{
 				//$token="";
 				AutentificadorJWT::verificarToken($token);
-				$objDelaRespuesta->esValido=true;      
+				$objDelaRespuesta->esValido=true;   
+			 
 			}
 			catch (Exception $e) {      
 				//guardar en un log
@@ -81,13 +79,19 @@ class MWparaAutentificar
 			{		
 				$payload=AutentificadorJWT::ObtenerData($token);
 
+			
 				if($payload->perfil=='usuario')
 				{				
 				
-					if($request->isPost() || $request->isGet()) 
+					if($request->isPost()) 
 				{		
-					// el post sirve para todos los logeados			    
-					$response = $next($request, $response);
+						    
+				   return 	$response = $next($request, $response);
+				}
+				else 
+				{
+					$response->getBody()->write('<h1>no tenes permiso para ejecutar esta opcion</h1>');
+					return $response;   
 				}
 			}
 
@@ -95,18 +99,15 @@ class MWparaAutentificar
 			{
 				//var_dump($payload);
 					// DELETE,PUT y DELETE sirve para todos los logeados y admin
-				$response=$next($request,$response);
+			return	$response=$next($request,$response);
 			}
-			else 
-			{
-				$objDelaRespuesta->respuesta="Solo administradores";
-			}
+		
 		}
 		else
 		{
-			//   $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
-			$objDelaRespuesta->respuesta="Solo usuarios registrados";
-			$objDelaRespuesta->elToken=$token;
+			 $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+			return $response;
+		
 
 		}  
 		  
@@ -114,6 +115,6 @@ class MWparaAutentificar
 		  return $response;   
 	}
 }
+
 }
 
-?>

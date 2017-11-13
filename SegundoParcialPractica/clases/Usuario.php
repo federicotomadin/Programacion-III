@@ -1,9 +1,9 @@
 <?php
 class Usuario
 {
-	public $id;
- 	public $email;
-    public $clave;
+	private $id;
+ 	private $email;
+    private $clave;
       
     public function GetId()
     {
@@ -38,13 +38,14 @@ class Usuario
 
 
 
-  	public static function TraerUsuario()
+  	public static function TraerUsuarios()
       {
     	$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta =$objetoAccesoDato->RetornarConsulta("SELECT * FROM usuario");
         $consulta->execute();
-        $usuarioBuscado= $consulta->fetchObject('Usuario');
-        return $usuarioBuscado;				
+       // $usuarioBuscado= $consulta->fetchObject('Usuario');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, "Usuario");	
+       // return $usuarioBuscado;	
 
       }
     } 

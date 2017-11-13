@@ -25,7 +25,7 @@ public function CargarUno($request, $response, $args) {
     $archivos = $request->getUploadedFiles();
     $destino="./fotos/";
     $nombreAnterior=$archivos['foto']->getClientFilename();
-    $extension= explode(".", $nombreAnterior)  ;
+    $extension= explode(".", $nombreAnterior);
     $extension=array_reverse($extension);
 
   $sabor= $ArrayDeParametros['sabor'];

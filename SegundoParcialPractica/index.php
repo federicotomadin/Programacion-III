@@ -25,6 +25,34 @@ desarrollo para obtener información sobre los errores
 
 $app = new \Slim\App(["settings" => $config]);
 
+
+$app->get('/crearToken/', function (Request $request, Response $response) {
+ //$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
+$token="";
+$ArrayDeParametros = $request->getParams('email','clave','perfil');
+ $email=$ArrayDeParametros['email'];
+ 	$clave=$ArrayDeParametros['clave'];
+ 	$perfil=$ArrayDeParametros['perfil'];
+   $datos=array('email'=> $email,'clave'=> $clave,'perfil'=>$perfil);
+   
+    if(usuarioApi::Validar($email,$clave)=="Bienvenido")
+				{			
+        				
+				
+				 	 $token= AutentificadorJWT::CrearToken($datos);
+            $newResponse = $response->withJson($token, 200); 
+        }
+        
+        else
+        {
+          $respuesta=(usuarioApi::Validar($email,$clave));
+          $newResponse = $response->withJson($respuesta, 200); 
+        }
+ 
+  return $newResponse;
+});
+
+
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 $app->group('/Helado', function () {
  
