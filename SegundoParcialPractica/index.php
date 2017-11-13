@@ -44,7 +44,7 @@ $ArrayDeParametros = $request->getParams('email','clave','perfil');
         
         else
         {
-          $respuesta=(usuarioApi::Validar($email,$clave));
+          $respuesta=(usuarioApi::Validar($email,$clave,$perfil));
           $newResponse = $response->withJson($respuesta, 200); 
         }
  
