@@ -4,7 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'composer/vendor/autoload.php';
 require 'clases/AccesoDatos.php';
-require 'clases/EmpleadoApi.php';
+require 'clases/EmpleaApi.php';
 require 'clases/ProductoApi.php';
 require 'clases/MWparaCORS.php';
 require 'clases/MWparaAutentificar.php';
@@ -54,16 +54,16 @@ $ArrayDeParametros = $request->getParams('email','clave');
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 $app->group('/Empleado', function () {
+
+  $this->get('/', \EmpleaApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-  $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
- 
-  $this->get('/{id}', \EmpleadoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/{id}', \EmpleaApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
-  $this->post('/', \EmpleadoApi::class . ':CargarUno');
+  $this->post('/', \EmpleaApi::class . ':CargarUno');
 
-  $this->delete('/', \EmpleadoApi::class . ':BorrarUno');
+  $this->delete('/', \EmpleaApi::class . ':BorrarUno');
 
-  $this->put('/', \EmpleadoApi::class . ':ModificarUno');
+  $this->put('/', \EmpleaApi::class . ':ModificarUno');
      
 })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
@@ -72,15 +72,15 @@ $app->run();
 
 $app->group('/Producto', function () {
   
-   $this->get('/', \Producto::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/', \ProductoApì::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   
-   $this->get('/{id}', \Producto::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/{id}', \ProductoApì::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-   $this->post('/', \Producto::class . ':CargarUno');
+   $this->post('/', \ProductoApì::class . ':CargarUno');
  
-   $this->delete('/', \Producto::class . ':BorrarUno');
+   $this->delete('/', \ProductoApì::class . ':BorrarUno');
  
-   $this->put('/', \Producto::class . ':ModificarUno');
+   $this->put('/', \ProductoApì::class . ':ModificarUno');
       
  })->add(\MWparaAutentificar::class . ':VerificaEmpleado')->add(\MWparaCORS::class . ':HabilitarCORS8080');
  

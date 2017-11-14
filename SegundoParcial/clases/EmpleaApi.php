@@ -3,7 +3,7 @@
 require_once 'Empleado.php';
 
 
-class EmpleadoApi extends Empleado
+class EmpleaApi extends Empleado
 {
 
     public function traerUno($request, $response, $args) {

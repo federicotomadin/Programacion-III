@@ -1,6 +1,6 @@
 <?php
 
-include "EmpleadoApi.php";
+include "EmpleaApi.php";
 include "AutentificadorJWT.php";
 
 class MWparaAutentificar
@@ -21,9 +21,6 @@ class MWparaAutentificar
    */
 	public function Verificar($request, $response, $next) {
 			
-		var_dump("caca");
-		die();
-
 				$objDelaRespuesta= new stdclass();
 				$objDelaRespuesta->respuesta="";
 				$token="";
@@ -42,7 +39,7 @@ class MWparaAutentificar
 			$datos=array('email'=> $email,'clave'=> $clave);
 					
 			
-			if(EmpleadoApi::VerificaEmpleado($email,$clave)=="Bienvenido")
+			if((EmpleaApi::VerificaEmpleado($email,$clave))=="Bienvenido")
 			{			
 					
 			
