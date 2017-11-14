@@ -112,8 +112,8 @@ public function VerificaEmpleado($email,$clave) {
         $response="";
         $retorno=false;
         $miArray=array();
-        $usuario=Usuario::TraerUsuarios();
-        if(isset($usuario))
+        $empleado=Empleado::TraerTodosLosEmpleados();
+        if(isset($empleado))
         {  
    
     foreach($empleado as $item)
@@ -144,3 +144,5 @@ return $response;
 }
 
 }
+
+?>

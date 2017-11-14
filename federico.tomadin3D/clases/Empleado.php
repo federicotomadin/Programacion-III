@@ -7,10 +7,10 @@ public $id;
 public $nombre;
 public $apellido;
 public $email;
-public $foto;
 public $legajo;
 public $clave;
 public $perfil;
+public $foto;
 
 
 public function __construct()
@@ -18,6 +18,7 @@ public function __construct()
    
 }
 
+/*
 public static function TraerUnEmpleado($id) 
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();       
@@ -81,11 +82,11 @@ public function ModificarEmpleadoParametros()
                $consulta->bindValue(':perfil', $this->cantidad, PDO::PARAM_STR);
                return $consulta->execute();
 }
-
+*/
 public function InsertarElEmpleadoParametros()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,foto,legajo,email,clave,perfil)values('$this->nombre','$this->apellido','$this->foto','$this->legajo','$this->email','$this->clave','$this->perfil')");      
+        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,legajo,email,clave,perfil,foto)values('$this->nombre','$this->apellido','$this->legajo','$this->email','$this->clave','$this->perfil','$this->foto')");      
         $consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_STR);
         $consulta->bindValue(':apellido', $this->apellido, PDO::PARAM_STR);
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);

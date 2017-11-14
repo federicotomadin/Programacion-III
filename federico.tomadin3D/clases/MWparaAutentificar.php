@@ -1,6 +1,6 @@
 <?php
 
-include "usuarioApi.php";
+include "EmpleadoApi.php";
 include "AutentificadorJWT.php";
 
 class MWparaAutentificar
@@ -19,12 +19,12 @@ class MWparaAutentificar
    * @apiExample Como usarlo:
    *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
    */
-	public function VerificarUsuario($request, $response, $next) {
+	public function Verificar($request, $response, $next) {
 			
 
 				$objDelaRespuesta= new stdclass();
 				$objDelaRespuesta->respuesta="";
-				
+				$token="";
 
 		if($request->isGet())
 		  {
@@ -35,17 +35,26 @@ class MWparaAutentificar
 		 }
 		  else
 		  {
+			$email=$ArrayDeParametros['email'];
+			$clave=$ArrayDeParametros['clave'];
+			$datos=array('email'=> $email,'clave'=> $clave);
+			
+			if(EmpleadoApi::VerificaEmpleado($email,$clave)=="Bienvenido")
+			{			
+					
+			
+				  $token= AutentificadorJWT::CrearToken($datos);
+				  $objDelaRespuesta->esValido=true; 
+			}
+			
+			var_dump($token);
+			die();
 			
 		 //tomo el token del header
 		
-				$arrayConToken = $request->getHeader('token');
-				$token=$arrayConToken[0];	
+			//	$arrayConToken = $request->getHeader('token');
+			//	$token=$arrayConToken[0];	
        
-				$payload=AutentificadorJWT::ObtenerData($token);
-
-
-				var_dump($payload);
-				die();
 		//	$objDelaRespuesta->esValido=true; 
 
 			try 

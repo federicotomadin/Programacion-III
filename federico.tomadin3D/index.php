@@ -55,9 +55,9 @@ $ArrayDeParametros = $request->getParams('email','clave');
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 $app->group('/Empleado', function () {
  
-  $this->get('/', \EmpleadoApi::class . ':traerTodos');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-  $this->get('/{id}', \EmpleadoApi::class . ':traerUno');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/{id}', \EmpleadoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
   $this->post('/', \EmpleadoApi::class . ':CargarUno');
 
@@ -65,16 +65,16 @@ $app->group('/Empleado', function () {
 
   $this->put('/', \EmpleadoApi::class . ':ModificarUno');
      
-});//->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+})->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->run();
 
 
 $app->group('/Producto', function () {
   
-   $this->get('/', \Producto::class . ':traerTodos');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/', \Producto::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   
-   $this->get('/{id}', \Producto::class . ':traerUno');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/{id}', \Producto::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
    $this->post('/', \Producto::class . ':CargarUno');
  
@@ -82,6 +82,6 @@ $app->group('/Producto', function () {
  
    $this->put('/', \Producto::class . ':ModificarUno');
       
- });//->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+ })->add(\MWparaAutentificar::class . ':VerificaEmpleado')->add(\MWparaCORS::class . ':HabilitarCORS8080');
  
  $app->run();
