@@ -27,7 +27,7 @@ desarrollo para obtener información sobre los errores
 $app = new \Slim\App(["settings" => $config]);
 
 
-$app->get('/crearToken/', function (Request $request, Response $response) {
+/*$app->get('/crearToken/', function (Request $request, Response $response) {
 $token="";
 $ArrayDeParametros = $request->getParams('email','clave');
  $email=$ArrayDeParametros['email'];

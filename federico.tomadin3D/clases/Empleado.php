@@ -18,7 +18,7 @@ public function __construct()
    
 }
 
-/*
+
 public static function TraerUnEmpleado($id) 
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();       
@@ -82,7 +82,7 @@ public function ModificarEmpleadoParametros()
                $consulta->bindValue(':perfil', $this->cantidad, PDO::PARAM_STR);
                return $consulta->execute();
 }
-*/
+
 public function InsertarElEmpleadoParametros()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 

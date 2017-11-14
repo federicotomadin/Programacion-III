@@ -107,7 +107,7 @@ public function ModificarUno($request, $response, $args) {
 }
 
 
-public function VerificaEmpleado($email,$clave) {
+public static function VerificaEmpleado($email,$clave) {
     
         $response="";
         $retorno=false;
@@ -145,4 +145,3 @@ return $response;
 
 }
 
-?>

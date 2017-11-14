@@ -21,6 +21,8 @@ class MWparaAutentificar
    */
 	public function Verificar($request, $response, $next) {
 			
+		var_dump("caca");
+		die();
 
 				$objDelaRespuesta= new stdclass();
 				$objDelaRespuesta->respuesta="";
@@ -38,6 +40,7 @@ class MWparaAutentificar
 			$email=$ArrayDeParametros['email'];
 			$clave=$ArrayDeParametros['clave'];
 			$datos=array('email'=> $email,'clave'=> $clave);
+					
 			
 			if(EmpleadoApi::VerificaEmpleado($email,$clave)=="Bienvenido")
 			{			
