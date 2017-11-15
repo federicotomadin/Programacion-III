@@ -4,7 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'composer/vendor/autoload.php';
 require 'clases/AccesoDatos.php';
-require 'clases/EmpleaApi.php';
+//require 'clases/EmpleadoApi.php';
 require 'clases/ProductoApi.php';
 require 'clases/MWparaCORS.php';
 require 'clases/MWparaAutentificar.php';
@@ -56,13 +56,13 @@ $app->group('/Empleado', function () {
 
   $this->get('/', \EmpleaApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-  $this->get('/{id}', \EmpleaApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  /*$this->get('/{id}', \EmpleaApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
   $this->post('/', \EmpleaApi::class . ':CargarUno');
 
   $this->delete('/', \EmpleaApi::class . ':BorrarUno');
 
-  $this->put('/', \EmpleaApi::class . ':ModificarUno');
+  $this->put('/', \EmpleaApi::class . ':ModificarUno');*/
      
 })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
