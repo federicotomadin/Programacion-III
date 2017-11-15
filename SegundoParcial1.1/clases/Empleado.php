@@ -31,31 +31,11 @@ public static function TraerUnEmpleado($id)
 
 public static function TraerTodosLosEmpleados()
 {
+      
                 $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
                 $consulta =$objetoAccesoDato->RetornarConsulta("SELECT * from empleado");
                 $consulta->execute();			
                 return $consulta->fetchAll(PDO::FETCH_CLASS, "Empleado");		
-}
-
-
-public function BorrarEmpleado()
-{
-                $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-               $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from empleado WHERE id=:id");	
-                       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
-                       $consulta->execute();
-                       return $consulta->rowCount();
-}
-
-
-public function InsertarElEmpleado()
-{
-        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-         $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,foto,legajo,email,clave,perfil)values('$this->nombre','$this->apellido','$this->foto','$this->legajo','$this->email','$this->clave','$this->perfil)");
-         $consulta->execute();
-         return $objetoAccesoDato->RetornarUltimoIdInsertado();
-                       
-
 }
 
 public function ModificarEmpleadoParametros()
@@ -83,6 +63,30 @@ public function ModificarEmpleadoParametros()
                return $consulta->execute();
 }
 
+public function InsertarElEmpleado()
+{
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+         $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,legajo,email,clave,perfil,foto)values('$this->nombre','$this->apellido','$this->legajo','$this->email','$this->clave','$this->perfil','$this->foto')");
+         $consulta->execute();
+         return $objetoAccesoDato->RetornarUltimoIdInsertado();
+                       
+}
+
+/*
+public function BorrarEmpleado()
+{
+                $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+               $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from empleado WHERE id=:id");	
+                       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
+                       $consulta->execute();
+                       return $consulta->rowCount();
+}
+
+
+
+
+
+
 public function InsertarElEmpleadoParametros()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
@@ -96,9 +100,11 @@ public function InsertarElEmpleadoParametros()
         $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
         return $consulta->execute();
         return $objetoAccesoDato->RetornarUltimoIdInsertado();
-}
+}*/
 
 
 
 
 }
+
+

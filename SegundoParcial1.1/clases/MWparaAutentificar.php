@@ -1,7 +1,7 @@
 <?php
 
-include "EmpleaApi.php";
-include "AutentificadorJWT.php";
+include_once "EmpleadoApi.php";
+include_once "AutentificadorJWT.php";
 
 class MWparaAutentificar
 {
@@ -27,19 +27,38 @@ class MWparaAutentificar
 
 		if($request->isGet())
 		  {
-		
+			
 				$response->getBody()->write('<p>NO necesita credenciales para los get </p>');
-		    return 	$response = $next($request, $response);
+				return $response = $next($request, $response);
+			
+			
+		 }
+		 if($request->isPost())
+		 {
+			
+			
+			return  $response = $next($request, $response);
 		
+
+		 }
+
+		 if($request->isDelete())
+		 {
+			
+			
+			return  $response = $next($request, $response);
+		
+
 		 }
 		  else
-		  {
+		  { 
+			$ArrayDeParametros = $request->getParsedBody();
 			$email=$ArrayDeParametros['email'];
 			$clave=$ArrayDeParametros['clave'];
 			$datos=array('email'=> $email,'clave'=> $clave);
 					
 			
-			if((EmpleaApi::VerificaEmpleado($email,$clave))=="Bienvenido")
+			if((EmpleadoApi::VerificaEmpleado($email,$clave))=="Bienvenido")
 			{			
 					
 			

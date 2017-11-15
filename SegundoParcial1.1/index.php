@@ -4,8 +4,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'composer/vendor/autoload.php';
 require 'clases/AccesoDatos.php';
-//require 'clases/EmpleadoApi.php';
-require 'clases/ProductoApi.php';
+require 'clases/EmpleadoApi.php';
+//require 'clases/ProductoApi.php';
 require 'clases/MWparaCORS.php';
 require 'clases/MWparaAutentificar.php';
 
@@ -54,13 +54,13 @@ $ArrayDeParametros = $request->getParams('email','clave');
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 $app->group('/Empleado', function () {
 
-  $this->get('/', \EmpleaApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
  
-  /*$this->get('/{id}', \EmpleaApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/{id}', \EmpleadoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  
+  $this->post('/', \EmpleadoApi::class . ':CargarUno');
 
-  $this->post('/', \EmpleaApi::class . ':CargarUno');
-
-  $this->delete('/', \EmpleaApi::class . ':BorrarUno');
+  /*$this->delete('/', \EmpleaApi::class . ':BorrarUno');
 
   $this->put('/', \EmpleaApi::class . ':ModificarUno');*/
      
