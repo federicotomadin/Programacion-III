@@ -25,6 +25,8 @@ class MWparaAutentificar
 				$objDelaRespuesta->respuesta="";
 				$token="";
 
+				
+			
 		if($request->isGet())
 		  {
 			
@@ -39,17 +41,18 @@ class MWparaAutentificar
 			
 			return  $response = $next($request, $response);
 		
-
+		
+		
 		 }
 
-		 if($request->isDelete())
+		 if($request->isPut())
 		 {
-			
-			
+	
 			return  $response = $next($request, $response);
 		
-
 		 }
+
+
 		  else
 		  { 
 			$ArrayDeParametros = $request->getParsedBody();
@@ -65,10 +68,9 @@ class MWparaAutentificar
 				  $token= AutentificadorJWT::CrearToken($datos);
 				  $objDelaRespuesta->esValido=true; 
 			}
-			
-			var_dump($token);
-			die();
-			
+
+		
+		
 		 //tomo el token del header
 		
 			//	$arrayConToken = $request->getHeader('token');

@@ -38,30 +38,14 @@ public static function TraerTodosLosEmpleados()
                 return $consulta->fetchAll(PDO::FETCH_CLASS, "Empleado");		
 }
 
-public function ModificarEmpleadoParametros()
+public static function ModificarElEmpleado($empleado)
 {
-               $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-               $consulta =$objetoAccesoDato->RetornarConsulta("
-                       update empleado
-                       set 
-                       nombre=:nombre,
-                       apellido=:apellido,                                            
-                       legajo=:legajo,
-                       email=:email,
-                       clave=:clave,
-                       perfil=:perfil,
-                       foto=:foto,
-                       WHERE id=:id");
-               $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
-               $consulta->bindValue(':nombre',$this->sabor, PDO::PARAM_STR);
-               $consulta->bindValue(':apellido', $this->tipo, PDO::PARAM_STR);             
-               $consulta->bindValue(':legajo', $this->tipo, PDO::PARAM_INT);
-               $consulta->bindValue(':email', $this->tipo, PDO::PARAM_STR);
-               $consulta->bindValue(':clave', $this->precio, PDO::PARAM_STR);
-               $consulta->bindValue(':perfil', $this->cantidad, PDO::PARAM_STR);
-               $consulta->bindValue(':foto', $this->tipo, PDO::PARAM_STR);
-               return $consulta->execute();
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleado set  nombre = '$empleado->nombre' ,apellido = '$empleado->apellido' ,email = '$empleado->email' , legajo = '$empleado->legajo', clave = '$empleado->clave', perfil = '$empleado->perfil',foto ='$empleado->foto' where id = '$empleado->id'");
+    return $consulta->execute();
 }
+
+
 
 public function InsertarElEmpleado()
 {
@@ -72,35 +56,15 @@ public function InsertarElEmpleado()
                        
 }
 
-/*
-public function BorrarEmpleado()
+
+public function BorrarEmpleado($id)
 {
-                $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-               $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from empleado WHERE id=:id");	
-                       $consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
-                       $consulta->execute();
-                       return $consulta->rowCount();
+         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+         $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from empleado WHERE '$id'=id");	
+        $consulta->execute();
+        return $consulta->rowCount();
 }
 
-
-
-
-
-
-public function InsertarElEmpleadoParametros()
-{
-        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-        $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,legajo,email,clave,perfil,foto)values('$this->nombre','$this->apellido','$this->legajo','$this->email','$this->clave','$this->perfil','$this->foto')");      
-        $consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':apellido', $this->apellido, PDO::PARAM_STR);
-        $consulta->bindValue(':legajo', $this->legajo, PDO::PARAM_INT);
-        $consulta->bindValue(':email', $this->email, PDO::PARAM_STR);
-        $consulta->bindValue(':clave', $this->clave, PDO::PARAM_STR);
-        $consulta->bindValue(':perfil', $this->perfil, PDO::PARAM_STR);
-        $consulta->bindValue(':foto', $this->foto, PDO::PARAM_STR);
-        return $consulta->execute();
-        return $objetoAccesoDato->RetornarUltimoIdInsertado();
-}*/
 
 
 

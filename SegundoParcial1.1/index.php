@@ -60,9 +60,9 @@ $app->group('/Empleado', function () {
   
   $this->post('/', \EmpleadoApi::class . ':CargarUno');
 
-  /*$this->delete('/', \EmpleaApi::class . ':BorrarUno');
+  $this->delete('/', \EmpleadoApi::class . ':BorrarUno');
 
-  $this->put('/', \EmpleaApi::class . ':ModificarUno');*/
+  $this->put('/', \EmpleadoApi::class . ':ModificarUno');
      
 })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 

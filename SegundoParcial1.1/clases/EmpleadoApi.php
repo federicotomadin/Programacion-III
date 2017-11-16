@@ -48,6 +48,60 @@ public function CargarUno($request, $response, $args) {
   return $response;
 }
 
+public function BorrarUno($request, $response, $args) {
+    $ArrayDeParametros = $request->getParsedBody();
+    $id=$ArrayDeParametros['id'];
+    $Empleado= new Empleado();
+    $objeto=Empleado::TraerUnEmpleado($id);
+    $destino="./backup/";
+
+
+    if(copy("./fotos/".$id.$objeto->foto,"./backup/".$id.$objeto->foto))
+    {
+      unlink("./fotos/".$id.$objeto->foto);
+    }
+
+    $cantidadDeBorrados=$Empleado->BorrarEmpleado($id);
+
+ 
+    $objDelaRespuesta= new stdclass();
+    $objDelaRespuesta->cantidad=$cantidadDeBorrados;
+
+   if($cantidadDeBorrados>0)
+       {
+            $objDelaRespuesta->resultado="algo borro!!!";
+       }
+       else
+       {
+           $objDelaRespuesta->resultado="no Borro nada!!!";
+       }
+   $newResponse = $response->withJson($objDelaRespuesta, 200);  
+     return $newResponse;
+}
+
+public function ModificarUno($request, $response, $args) {
+    //$response->getBody()->write("<h1>Modificar  uno</h1>");
+    $ArrayDeParametros = $request->getParsedBody();
+
+
+   $miEmpleado = new Empleado();
+   $miEmpleado->id=$ArrayDeParametros['id'];
+   $miEmpleado->nombre=$ArrayDeParametros['nombre'];
+   $miEmpleado->apellido=$ArrayDeParametros['apellido'];
+   $miEmpleado->email=$ArrayDeParametros['email'];
+   $miEmpleado->legajo=$ArrayDeParametros['legajo'];
+   $miEmpleado->clave=$ArrayDeParametros['clave'];
+   $miEmpleado->perfil=$ArrayDeParametros['perfil'];
+   $miEmpleado->foto=$ArrayDeParametros['foto'];
+
+   
+      $resultado =Empleado::ModificarElEmpleado($miEmpleado);
+      $objDelaRespuesta= new stdclass();
+   //var_dump($resultado);
+   //die();
+   $objDelaRespuesta->resultado=$resultado;
+   return $response->withJson($objDelaRespuesta, 200);		
+}
 
 public static function VerificaEmpleado($email,$clave) {
     
