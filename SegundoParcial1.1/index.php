@@ -52,6 +52,7 @@ $ArrayDeParametros = $request->getParams('email','clave');
 
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
+
 $app->group('/Empleado', function () {
 
   $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -68,3 +69,22 @@ $app->group('/Empleado', function () {
 
 $app->run();
 
+/*
+$app->group('/Producto', function () {
+  
+    $this->get('/', \ProductoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   
+    $this->get('/{id}', \ProductoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+    
+    $this->post('/', \ProductoApi::class . ':CargarUno');
+  
+    $this->delete('/', \ProductoApi::class . ':BorrarUno');
+  
+    $this->put('/', \ProductoApi::class . ':ModificarUno');
+       
+  })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+  
+  $app->run();
+  
+
+*/

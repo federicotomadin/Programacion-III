@@ -1,6 +1,7 @@
 <?php
 
 include_once "EmpleadoApi.php";
+include_once "ProductoApi.php";
 include_once "AutentificadorJWT.php";
 
 class MWparaAutentificar
@@ -38,10 +39,31 @@ class MWparaAutentificar
 		 if($request->isPost())
 		 {
 			
-			
+
+
 			return  $response = $next($request, $response);
+			/*$ArrayDeParametros = $request->getParsedBody();
+			$nombre=$ArrayDeParametros['nombre'];
+			$apellido=$ArrayDeParametros['apellido'];
+			$email=$ArrayDeParametros['email'];
+			$clave=$ArrayDeParametros['clave'];
+			$datos=array('email'=> $email,'clave'=> $clave);
+					
+			
+			if((EmpleadoApi::VerificaEmpleado($email,$clave))=="Bienvenido")
+			{	
+			 
+				$response->getBody()->write("<h3>Bienvenido $nombre $apellido  </h3>");
+				return $response = $next($request, $response);
+			}*/
 		
 		
+		 }
+
+		 if($request->isDelete())
+		 {
+	
+			return  $response = $next($request, $response);
 		
 		 }
 
@@ -63,11 +85,11 @@ class MWparaAutentificar
 			
 			if((EmpleadoApi::VerificaEmpleado($email,$clave))=="Bienvenido")
 			{			
-					
-			
-				  $token= AutentificadorJWT::CrearToken($datos);
-				  $objDelaRespuesta->esValido=true; 
+				
+				$response->getBody()->write($ArrayDeParametros['nombre'],$ArrayDeParametros['apellido'], $objDelaRespuesta->esValido=true);
+				return $response;
 			}
+		
 
 		
 		

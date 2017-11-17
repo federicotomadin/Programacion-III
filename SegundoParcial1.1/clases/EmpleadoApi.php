@@ -94,8 +94,11 @@ public function ModificarUno($request, $response, $args) {
    $miEmpleado->perfil=$ArrayDeParametros['perfil'];
    $miEmpleado->foto=$ArrayDeParametros['foto'];
 
-   
-      $resultado =Empleado::ModificarElEmpleado($miEmpleado);
+   var_dump($miEmpleado);
+   die();
+
+ 
+      $resultado =Empleado::ModificarEmpleadoParametros($miEmpleado);
       $objDelaRespuesta= new stdclass();
    //var_dump($resultado);
    //die();

@@ -46,8 +46,19 @@ public static function ModificarElEmpleado($empleado)
 }
 
 
+public static function ModificarEmpleadoParametros($empleado)
+{
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+               $consulta =$objetoAccesoDato->RetornarConsulta("UPDATE empleado SET 
+               nombre='$empleado->nombre',apellido='$empleado->apellido',
+               email='$empleado->email', legajo='$empleado->legajo',
+               clave='$empleado->clave',perfil='$empleado->perfil',
+               foto='$empleado->foto' where id='$empleado->id'");
+               return $consulta->execute();
+}
 
-public function InsertarElEmpleado()
+
+public  function InsertarElEmpleado()
 {
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
          $consulta =$objetoAccesoDato->RetornarConsulta("INSERT into empleado (nombre,apellido,legajo,email,clave,perfil,foto)values('$this->nombre','$this->apellido','$this->legajo','$this->email','$this->clave','$this->perfil','$this->foto')");
@@ -61,8 +72,8 @@ public function BorrarEmpleado($id)
 {
          $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
          $consulta =$objetoAccesoDato->RetornarConsulta("DELETE from empleado WHERE '$id'=id");	
-        $consulta->execute();
-        return $consulta->rowCount();
+         $consulta->execute();
+         return $consulta->rowCount();
 }
 
 
