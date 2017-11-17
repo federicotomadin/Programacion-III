@@ -26,14 +26,16 @@ desarrollo para obtener información sobre los errores
 
 $app = new \Slim\App(["settings" => $config]);
 
-/*$app->get('/crearToken/', function (Request $request, Response $response) {
+$app->post('/crearToken/', function (Request $request, Response $response) {
 $token="";
-$ArrayDeParametros = $request->getParams('email','clave');
+//$ArrayDeParametros = $request->getParams('email','clave');
+$ArrayDeParametros = $request->getParsedBody();
  $email=$ArrayDeParametros['email'];
- 	$clave=$ArrayDeParametros['clave'];
-   $datos=array('email'=> $email,'clave'=> $clave);
+   $clave=$ArrayDeParametros['clave'];
+   $perfil=$ArrayDeParametros['perfil'];
+   $datos=array('email'=> $email,'clave'=> $clave,'perfil'=> $perfil);
    
-    if(EmpleadoApi::VerificarUsuario($email,$clave)=="Bienvenido")
+    if(EmpleadoApi::VerificaEmpleado($email,$clave,$perfil)=="Bienvenido" )
 				{			
         				
 				
@@ -43,16 +45,15 @@ $ArrayDeParametros = $request->getParams('email','clave');
         
         else
         {
-          $respuesta=(EmpleadoApi::VerificarUsuario($email,$clave));
+          $respuesta=(EmpleadoApi::VerificaEmpleado($email,$clave));
           $newResponse = $response->withJson($respuesta, 200); 
         }
  
   return $newResponse;
-});
-
+}); 
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
-
+/*
 $app->group('/Empleado', function () {
 
   $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -67,11 +68,12 @@ $app->group('/Empleado', function () {
      
 })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
-$app->run();
+$app->run();*/
 
-/*
+$contador=0;
 $app->group('/Producto', function () {
   
+  $contador++;
     $this->get('/', \ProductoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    
     $this->get('/{id}', \ProductoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -87,4 +89,3 @@ $app->group('/Producto', function () {
   $app->run();
   
 
-*/

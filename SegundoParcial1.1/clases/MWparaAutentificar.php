@@ -24,58 +24,17 @@ class MWparaAutentificar
 			
 				$objDelaRespuesta= new stdclass();
 				$objDelaRespuesta->respuesta="";
-				$token="";
-
-				
+				$token="";				
 			
-		if($request->isGet())
+		/*if($request->isGet())
 		  {
 			
 				$response->getBody()->write('<p>NO necesita credenciales para los get </p>');
 				return $response = $next($request, $response);
 			
 			
-		 }
-		 if($request->isPost())
-		 {
-			
-
-
-			return  $response = $next($request, $response);
-			/*$ArrayDeParametros = $request->getParsedBody();
-			$nombre=$ArrayDeParametros['nombre'];
-			$apellido=$ArrayDeParametros['apellido'];
-			$email=$ArrayDeParametros['email'];
-			$clave=$ArrayDeParametros['clave'];
-			$datos=array('email'=> $email,'clave'=> $clave);
-					
-			
-			if((EmpleadoApi::VerificaEmpleado($email,$clave))=="Bienvenido")
-			{	
-			 
-				$response->getBody()->write("<h3>Bienvenido $nombre $apellido  </h3>");
-				return $response = $next($request, $response);
-			}*/
-		
-		
-		 }
-
-		 if($request->isDelete())
-		 {
-	
-			return  $response = $next($request, $response);
-		
-		 }
-
-		 if($request->isPut())
-		 {
-	
-			return  $response = $next($request, $response);
-		
-		 }
-
-
-		  else
+		 }*/
+		/*  else
 		  { 
 			$ArrayDeParametros = $request->getParsedBody();
 			$email=$ArrayDeParametros['email'];
@@ -88,21 +47,22 @@ class MWparaAutentificar
 				
 				$response->getBody()->write($ArrayDeParametros['nombre'],$ArrayDeParametros['apellido'], $objDelaRespuesta->esValido=true);
 				return $response;
-			}
+			}*/
 		
 
 		
 		
 		 //tomo el token del header
 		
-			//	$arrayConToken = $request->getHeader('token');
-			//	$token=$arrayConToken[0];	
-       
+				$arrayConToken = $request->getHeader('token');
+				$token=$arrayConToken[0];	
+			
 		//	$objDelaRespuesta->esValido=true; 
 
 			try 
 			{
 				//$token="";
+			
 
 				AutentificadorJWT::verificarToken($token);
 				$objDelaRespuesta->esValido=true;   
@@ -120,11 +80,11 @@ class MWparaAutentificar
 			{		
 				$payload=AutentificadorJWT::ObtenerData($token);
 
-			
+		
 				if($payload->perfil=='usuario')
 				{				
 				
-					if($request->isPost()) 
+					if($request->isGet()) 
 				{		
 						    
 				   return 	$response = $next($request, $response);
@@ -136,7 +96,7 @@ class MWparaAutentificar
 				}
 			}
 
-			elseif($payload->perfil=='administrador')
+			elseif($payload->perfil=='admin')
 			{
 
 				//var_dump($payload);
@@ -158,5 +118,5 @@ class MWparaAutentificar
 	}
 }
 
-}
+
 
