@@ -37,20 +37,22 @@ $ArrayDeParametros = $request->getParsedBody();
    
     if(EmpleadoApi::VerificaEmpleado($email,$clave,$perfil)=="Bienvenido" )
 				{			
-        				
+           
 				
-				 	 $token= AutentificadorJWT::CrearToken($datos);
-            $newResponse = $response->withJson($token, 200); 
+             $token= AutentificadorJWT::CrearToken($datos);
+             $response->getBody()->write($token);
+        
         }
         
         else
         {
-          $respuesta=(EmpleadoApi::VerificaEmpleado($email,$clave));
-          $newResponse = $response->withJson($respuesta, 200); 
+        
+          $response->getBody()->write("Los datos ingresados no son validos");
         }
+       
  
-  return $newResponse;
 }); 
+
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
 /*
@@ -70,10 +72,10 @@ $app->group('/Empleado', function () {
 
 $app->run();*/
 
-$contador=0;
+$app->add($contador);
 $app->group('/Producto', function () {
   
-  $contador++;
+
     $this->get('/', \ProductoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    
     $this->get('/{id}', \ProductoApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

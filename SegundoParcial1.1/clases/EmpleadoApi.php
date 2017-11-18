@@ -106,7 +106,7 @@ public function ModificarUno($request, $response, $args) {
    return $response->withJson($objDelaRespuesta, 200);		
 }
 
-public static function VerificaEmpleado($email,$clave) {
+public static function VerificaEmpleado($email,$clave,$perfil) {
     
         $response="";
         $retorno=false;
@@ -119,7 +119,7 @@ public static function VerificaEmpleado($email,$clave) {
     foreach($empleado as $item)
         {
           
-        if($item->email==$email && $item->clave==$clave)
+        if($item->email==$email && $item->clave==$clave && $item->perfil==$perfil)
           {
            
 

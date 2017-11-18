@@ -81,6 +81,17 @@ class MWparaAutentificar
 				$payload=AutentificadorJWT::ObtenerData($token);
 
 		
+
+				if(isset($payload))
+				{
+					$c=file_get_contents("login.txt");
+					$date=date('m/d/Y h:i:s a', time());
+					$src=$c.$date." - ".$payload->email." - ".$payload->perfil."\n";
+					file_put_contents("login.txt",$src);
+
+				}
+
+		
 				if($payload->perfil=='usuario')
 				{				
 				
@@ -117,6 +128,17 @@ class MWparaAutentificar
 		  return $response;   
 	}
 }
+
+
+$contador = function($request, $response, $next) {
+	$c=file_get_contents("contador.txt");
+	$c++;
+	 file_put_contents("contador.txt", $c);
+	  
+   $response = $next($request, $response);
+  
+	  return $response;
+}; //func checktokenadmin
 
 
 
