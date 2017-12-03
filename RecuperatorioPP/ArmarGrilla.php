@@ -1,8 +1,8 @@
 
 <?php
 
-include "Helados.php";
-include "Usuario.php";
+include "Clases/Helados.php";
+include "Clases/Usuario.php";
 
 
 

@@ -3,12 +3,8 @@
 include "Clases/Helados.php";
 
 
-$sabor=$_GET['sabor'];
-$tipo= $_GET['tipo'];
-$precio= $_GET['precio'];
-$cantidad= $_GET['cantidad'];
 
-$helado=new Helado($sabor,$tipo,$precio,$cantidad);
+$helado=new Helado($_GET["sabor"],$_GET["tipo"],$_GET["precio"],$_GET["cantidad"]);
 
 Helado::AltaHelado($helado);
 

@@ -1,9 +1,9 @@
 <?php
 
-include "Helados.php";
+include "Clases/Helados.php";
 
 
-Helado::BuscarHelado($_POST['sabor'],$_POST['tipo']);
+Helado::BuscarHelado($_POST["sabor"],$_POST['tipo']);
 
 
 
