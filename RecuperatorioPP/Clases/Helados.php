@@ -141,7 +141,7 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
      
         if($item->sabor==$sabor && $item->tipo==$tipo && $item->cantidad>=$cantidad)
         {
-            $resultado=array("email"=>$email,"sabor"=>$sabor,"tipo"=>$tipo,"precio"=>$item->precio,"cantidad"=>$cantidad,$item->fecha);
+            $resultado=array("email"=>$email,"sabor"=>$sabor,"tipo"=>$tipo,"precio"=>$item->precio,"cantidad"=>$cantidad,"fecha"=>$item->fecha);
             $pFile=fopen("Archivos/Venta.txt","a");
             fwrite($pFile,json_encode($resultado)."\n");
             fclose($pFile);
@@ -283,7 +283,8 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
                 <td>".$item['tipo']."</td>
                 <td>".$item['precio']."</td>
                 <td>".$item['cantidad']."</td>
-                <td><img src='ImagenesDeLaVenta/".$item['sabor']."20171014.jpg' width='100px' height='100px'></td>
+                <td>".$item['fecha']."</td>
+                <td><img src='ImagenesDeLaVenta/".$item['sabor'].$item['fecha'].".jpg' width='100px' height='100px'></td>
                 </tbody>";
             }
         }
@@ -300,13 +301,18 @@ public static function AltaVenta($email,$sabor,$tipo,$cantidad)
     {
         $ventas=array();
         $pFile=fopen("Archivos/Venta.txt","r");
+
+       
         while(!feof($pFile))
         {
             $aux=json_decode(fgets($pFile),true);        
-                array_push($ventas,array("email"=>$aux['email'], "sabor"=>$aux['sabor'], "tipo"=>$aux['tipo'],"precio"=>$aux['precio'],"cantidad"=>$aux['cantidad']));
+                array_push($ventas,array("email"=>$aux['email'], "sabor"=>$aux['sabor'], "tipo"=>$aux['tipo'],"precio"=>$aux['precio'],"cantidad"=>$aux['cantidad'],"fecha"=>$aux['fecha']));
       
         }
         fclose($pFile);
+
+        var_dump($ventas);
+        die();
 
         return $ventas;
     }
