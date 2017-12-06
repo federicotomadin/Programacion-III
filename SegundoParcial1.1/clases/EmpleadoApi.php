@@ -80,11 +80,13 @@ public function BorrarUno($request, $response, $args) {
 }
 
 public function ModificarUno($request, $response, $args) {
-    //$response->getBody()->write("<h1>Modificar  uno</h1>");
+    $response->getBody()->write("<h1>Modificar  uno</h1>");
     $ArrayDeParametros = $request->getParsedBody();
 
 
    $miEmpleado = new Empleado();
+
+  
    $miEmpleado->id=$ArrayDeParametros['id'];
    $miEmpleado->nombre=$ArrayDeParametros['nombre'];
    $miEmpleado->apellido=$ArrayDeParametros['apellido'];
@@ -94,11 +96,10 @@ public function ModificarUno($request, $response, $args) {
    $miEmpleado->perfil=$ArrayDeParametros['perfil'];
    $miEmpleado->foto=$ArrayDeParametros['foto'];
 
-   var_dump($miEmpleado);
-   die();
 
- 
-      $resultado =Empleado::ModificarEmpleadoParametros($miEmpleado);
+ $resultado =Empleado::ModificarEmpleadoParametros($miEmpleado);
+
+    
       $objDelaRespuesta= new stdclass();
    //var_dump($resultado);
    //die();

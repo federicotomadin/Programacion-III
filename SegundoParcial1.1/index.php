@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require 'composer/vendor/autoload.php';
 require 'clases/AccesoDatos.php';
 require 'clases/EmpleadoApi.php';
-//require 'clases/ProductoApi.php';
+require 'clases/ProductoApi.php';
 require 'clases/MWparaCORS.php';
 require 'clases/MWparaAutentificar.php';
 
@@ -55,7 +55,7 @@ $ArrayDeParametros = $request->getParsedBody();
 
 
 /*LLAMADA A METODOS DE INSTANCIA DE UNA CLASE*/
-/*
+
 $app->group('/Empleado', function () {
 
   $this->get('/', \EmpleadoApi::class . ':traerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -70,7 +70,7 @@ $app->group('/Empleado', function () {
      
 })->add(\MWparaAutentificar::class . ':Verificar')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
-$app->run();*/
+//$app->run();
 
 $app->add($contador);
 $app->group('/Producto', function () {

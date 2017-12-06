@@ -76,10 +76,6 @@ public function BorrarEmpleado($id)
          return $consulta->rowCount();
 }
 
-
-
-
-
 }
 
 
