@@ -23,7 +23,7 @@ class Usuario
 	 return $consulta->fetchAll(PDO::FETCH_CLASS,'Usuario');
 	}
 
-public static function InsertarElUsuarioParametros($user)
+/*public static function InsertarElUsuarioParametros($user)
 	{
 $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 
@@ -31,33 +31,33 @@ $consulta =$objetoAccesoDato->RetornarConsulta("INSERT INTO usuarios (id, mail,n
 $consulta->execute();		
 //return $objetoAccesoDato->RetornarUltimoIdInsertado();
 return $consulta;
-	}
+	}*/
 
-public static function BorrarElUsuario($id)
+/*public static function BorrarElUsuario($id)
 {
 	$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 	$consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM usuarios where id = '$id'");
 	$consulta->execute();
 	//return $consulta->rowCount();
    return $consulta;
-}
+}*/
 
-public static function TraerElUsuario($id)
+/*public static function TraerElUsuario($id)
 {
 	$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
 	$consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuarios where id = '$id'");
 	$consulta->execute();
 	$usuarioRetorno = $consulta->fetchObject('Usuario');
 	return $usuarioRetorno;
-}
+}*/
 
-public static function ModificarElUsuario($user)
+/*public static function ModificarElUsuario($user)
 {
 	       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 		
 		   $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE usuario SET mail = '$user->mail', nombre = '$user->nombre', clave = '$user->clave'
 		   WHERE id = '$user->id'");
 		   return $consulta->execute();
-}
+}*/
 
 public static function VerificarElUsuario($mail,$nombre,$clave)
 {
