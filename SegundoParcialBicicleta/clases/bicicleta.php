@@ -78,13 +78,13 @@ class Bicicleta
     
 
 
-    public static function VerificarId($foto)
+    public static function VerificarId($id)
     {
     $retorno = false;
 	$arrayBicicletas = Bicicleta::TraerTodasLasBicicletas();
 	foreach($arrayBicicletas as $item)
 	{
-		if($item->foto== $foto)
+		if($item->id== $id)
         {
             $retorno = true;
         }

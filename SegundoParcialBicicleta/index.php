@@ -16,17 +16,25 @@ $app = new \Slim\App;
 //     return $response;
 // });
 
-$app->post('/VerificarUsuario/', function (Request $request, Response $response) {
+$app->post('/VerificarId/', function (Request $request, Response $response) {
    $resp["respuesta"] = "ESTA INGRESANDO MAL EL USUARIO";
    $data = $request->getParsedBody();
-   $usuario = Usuario::TraerElUsuarioPorNombre($data["nombre"]);
-   if(Usuario::VerificarElUsuario($data["mail"],$data["nombre"],$data["clave"]))
+   $id= $data["id"];
+   if(Bicicleta::VerificarId($id))
    {
-       $resp["respuesta"] = "OK";
-       $resp["perfil"] = $usuario->perfil;
-       $resp = $usuario;
-   }
-   return $response->withJson($resp);
+  
+    $info= Bicicleta::TraerLaBicicleta($id);
+    $token= AutentificadorJWT::CrearToken($datos);
+    $response->getBody()->write($token);
+
+  }
+
+else
+{
+
+ $response->getBody()->write("Los datos ingresados no son validos");
+}
+
 });
 
 
@@ -37,7 +45,7 @@ $app->group('/Bicicleta', function () {
      
       $this->get('/{id}', \BicicletaApi::class . ':traerUno');//->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
-    //  $this->get('/{color}', \BicicletaApi::class . ':traerTodosPorColor');
+      $this->get('BuscarPorColor/{color}', \BicicletaApi::class . ':traerTodosPorColor');
       
       $this->post('/', \BicicletaApi::class . ':CargarUno');
 
