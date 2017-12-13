@@ -92,9 +92,6 @@ public function ModificarUno($request, $response, $args) {
     //$response->getBody()->write("<h1>Modificar  uno</h1>");
     $ArrayDeParametros = $request->getParsedBody();
 
-  
-
-
    $miBicicleta = new Bicicleta();
    $miBicicleta->id=$ArrayDeParametros['id'];
    $miBicicleta->color=$ArrayDeParametros['color'];
@@ -110,7 +107,6 @@ public function ModificarUno($request, $response, $args) {
   
    }
 
- 
       $resultado =Bicicleta::ModificarBicicletaParametros($miBicicleta);
       $objDelaRespuesta= new stdclass();
    //var_dump($resultado);
@@ -118,11 +114,6 @@ public function ModificarUno($request, $response, $args) {
    $objDelaRespuesta->resultado=$resultado;
    return $response->withJson($objDelaRespuesta, 200);		
 }
-
-
-
-
-
 
 
 }

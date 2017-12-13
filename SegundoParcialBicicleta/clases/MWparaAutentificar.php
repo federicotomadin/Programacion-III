@@ -1,8 +1,8 @@
 <?php
 
-include_once "EmpleadoApi.php";
-include_once "ProductoApi.php";
-include_once "AutentificadorJWT.php";
+require_once "BicicletaApi.php";
+require_once "UsuarioApi.php";
+require_once "AutentificadorJWT.php";
 
 class MWparaAutentificar
 {
@@ -56,7 +56,7 @@ class MWparaAutentificar
 		
 				$arrayConToken = $request->getHeader('token');
 				$token=$arrayConToken[0];	
-			
+
 		//	$objDelaRespuesta->esValido=true; 
 
 			try 
@@ -79,66 +79,34 @@ class MWparaAutentificar
 			if($objDelaRespuesta->esValido)
 			{		
 				$payload=AutentificadorJWT::ObtenerData($token);
-
-		
+		       
 
 				if(isset($payload))
 				{
-					$c=file_get_contents("login.txt");
-					$date=date('m/d/Y h:i:s a', time());
-					$src=$c.$date." - ".$payload->email." - ".$payload->perfil."\n";
-					file_put_contents("login.txt",$src);
-
+				   
+					$response->getBody()->write("color - ".$payload->color."<br>");
+					$response->getBody()->write("rodado - ".$payload->rodado."<br>");
+					 $response->getBody()->write("marca - ".$payload->marca);
+					
+					
 				}
 
-		
-				if($payload->perfil=='usuario')
-				{				
+			}
 				
-					if($request->isGet()) 
-				{		
-						    
-				   return 	$response = $next($request, $response);
-				}
-				else 
-				{
-					$response->getBody()->write('<h1>no tenes permiso para ejecutar esta opcion</h1>');
-					return $response;   
-				}
-			}
-
-			elseif($payload->perfil=='admin')
-			{
-
-				//var_dump($payload);
-					// DELETE,PUT y DELETE sirve para todos los logeados y admin
-			return	$response=$next($request,$response);
-			}
-		
-		}
-		else
-		{
-			 $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+		   else 
+		   {
+			$response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
 			return $response;
-		
+		   }
 
-		}  
-		  
-		  $response->getBody()->write('<p>vuelvo del verificador de credenciales</p>');
-		  return $response;   
+		   return $response;
+	
+		
 	}
 }
 
 
-$contador = function($request, $response, $next) {
-	$c=file_get_contents("contador.txt");
-	$c++;
-	 file_put_contents("contador.txt", $c);
-	  
-   $response = $next($request, $response);
-  
-	  return $response;
-}; //func checktokenadmin
+
 
 
 
