@@ -51,7 +51,7 @@ class MWparaAutentificar
 				$arrayConToken = $request->getHeader('token');
 				$token=$arrayConToken[0];
 			//var_dump($token);
-			$objDelaRespuesta->esValido=true; 
+			//$objDelaRespuesta->esValido=true; 
 			try 
 			{
 				//$token="";
@@ -68,7 +68,7 @@ class MWparaAutentificar
 			{						
 				if($request->isPost())
 				{		
-					// el post sirve para todos los logeados			    
+					// el post sirve para todos los logueados			    
 					$response = $next($request, $response);
 				}
 				else
@@ -96,8 +96,7 @@ class MWparaAutentificar
 		}		  
 		if($objDelaRespuesta->respuesta!="")
 		{
-			$nueva=$response->withJson($objDelaRespuesta, 401);  
-			return $nueva;
+			return $response->withJson($objDelaRespuesta, 401);  			
 		}
 		  
 		 //$response->getBody()->write('<p>vuelvo del verificador de credenciales</p>');
