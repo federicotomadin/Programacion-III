@@ -3,11 +3,11 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'autoload.php';
-include_once('../clases/operacion_entradaApi.php');
-include_once('../clases/empleadoApi.php');
-include_once('../clases/cocheraApi.php');
-include_once('../clases/autoApi.php');
-include_once('../clases/loginApi.php');
+//include_once('../clases/operacion_entradaApi.php');
+include_once('../clases/EmpleadoApi.php');
+//include_once('../clases/cocheraApi.php');
+//include_once('../clases/autoApi.php');
+include_once('../clases/Login.php');
 include_once('../clases/operacion_salidaApi.php');
 include_once('../clases/AutentificadorJWT.php');
 include_once('../clases/MWparaCORS.php');
@@ -75,16 +75,16 @@ $app->group('/Operacion_Salida', function(){
 //API DE EMPLEADOS - ABM DE EMPLEADOS
 
 $app->group('/Empleado', function(){
-   $this->post('/IngresarEmpleado', \empleadoApi::class .':IngresarEmpleado');
-   $this->get('/TraerTodosLosEmpleados',\empleadoApi::class .':TraerEmpleados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->get('/TraerElEmpleado/{id}',\empleadoApi::class .':TraerElEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->delete('/BorrarElEmpleado/{id}',\empleadoApi::class .':BorrarEmpleado');
-   $this->put('/ModificarElEmpleado/{id}',\empleadoApi::class .':ModificarEmpleado');
-   $this->put('/SuspenderElEmpleado/{id}',\empleadoApi::class .':SuspenderEmpleado');
-   $this->put('/HabilitarElEmpleado/{id}',\empleadoApi::class .':HabilitarEmpleado');
-   $this->post('/PonerMarcaDeAguaElEmpleado/{id}',\empleadoApi::class .':PonerMarcaDeAgua');
-   $this->get('/VerSesionesDelEmpleado/{id}',\empleadoApi::class .':VerSesionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->get('/VerOperacionesDelEmpleado/{id}',\empleadoApi::class .':VerCantidadOperacionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->post('/IngresarEmpleado', \EmpleadoApi::class .':IngresarEmpleado');
+   $this->get('/TraerTodosLosEmpleados',\EmpleadoApi::class .':TraerEmpleados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/TraerElEmpleado/{id}',\EmpleadoApi::class .':TraerElEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->delete('/BorrarElEmpleado/{id}',\EmpleadoApi::class .':BorrarEmpleado');
+   $this->put('/ModificarElEmpleado/{id}',\EmpleadoApi::class .':ModificarEmpleado');
+   $this->put('/SuspenderElEmpleado/{id}',\EmpleadoApi::class .':SuspenderEmpleado');
+   $this->put('/HabilitarElEmpleado/{id}',\EmpleadoApi::class .':HabilitarEmpleado');
+   $this->post('/PonerMarcaDeAguaElEmpleado/{id}',\EmpleadoApi::class .':PonerMarcaDeAgua');
+   $this->get('/VerSesionesDelEmpleado/{id}',\EmpleadoApi::class .':VerSesionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/VerOperacionesDelEmpleado/{id}',\EmpleadoApi::class .':VerCantidadOperacionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    //ARCHIVOS IMAGENES
    $this->get('/MostrarFotosMarcadas',\empleadoApi::class .':MostrarFotosMarcadas')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/CambiarTamanio/{id}',\empleadoApi::class .':CambiarTamanio')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

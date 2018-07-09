@@ -58,7 +58,7 @@ class Sesion
     public static function TraerTodasLasSesiones()
     {
         $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id as id, idEmpleado as idEmpleado, fecha_ingreso as fecha_ingreso, fecha_salida from sesion");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion");
         $consulta->execute();
         return $consulta->fetchAll(PDO::FETCH_CLASS,'sesion');
     }
@@ -98,7 +98,7 @@ class Sesion
     public static function TraerSesionPorId($id)
     {
         $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where id = '$id'");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where IdSesion = '$id'");
         $consulta->execute();
         return $consulta->fetchObject('sesion');
     }

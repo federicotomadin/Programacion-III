@@ -3,8 +3,12 @@ include_once("auto.php");
 include_once("../bd/AccesoDatos.php");
 include_once("../phpExcel/Classes/PHPExcel.php");
 include_once('../fpdf/fpdf.php');
+
+
 class autoApi
 {
+
+  
 public function TraerTodos($request,$response,$args)
 {
   $arrayAutos = Auto::TraerTodosLosAutos();

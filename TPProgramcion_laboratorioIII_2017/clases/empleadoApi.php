@@ -101,13 +101,12 @@ $id = intval($id);
 $resp["status"] = 200;
 $data = $request->getParsedBody();
 $empleado = Empleado::TraerElEmpleado($id);
-$empleado->SetLegajo($data["legajo"]);
-$empleado->SetNombre($data["nombre"]);
-$empleado->SetApellido($data["apellido"]);
-$empleado->SetMail($data["mail"]);
-$empleado->SetClave($data["clave"]);
-$empleado->SetTurno($data["turno"]);
-$empleado->SetCargo(2);
+$empleado->SetNombre($data["Nombre"]);
+$empleado->SetApellido($data["Apellido"]);
+$empleado->SetUsuario($data["Usuario"]);
+$empleado->SetClave($data["Clave"]);
+$empleado->SetId_rol($data["Id_rol"]);
+$empleado->SetSueldo($data["Sueldo"]);
 $empleado->SetHabilitado("si");
 $fotosEmpleados = '../fotosEmpleados/';
 $fotosBackup = '../fotosEmpleados/Backup/';
@@ -123,9 +122,9 @@ if(file_exists($fotosEmpleados.$empleado->GetFoto()))
    $archivo = pathinfo($arrayFotosBackup[$i]);     
    if("Backup/".$archivo["basename"] == $empleado->foto)
       {
-        if(rename("../fotosEmpleados/Backup/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["nombre"].$data["apellido"].".".$archivo["extension"]));
+        if(rename("../fotosEmpleados/Backup/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]));
             {
-                $empleado->SetFoto("Backup/".$id.$data["nombre"].$data["apellido"].".".$archivo["extension"]);
+                $empleado->SetFoto("Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]);
             }
       }
    }
@@ -137,9 +136,9 @@ else
    $archivo = pathinfo($arrayFotosEmpleado[$i]);     
    if($archivo["basename"] == $empleado->foto)
       {
-        if(rename("../fotosEmpleados/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["nombre"].$data["apellido"].".".$archivo["extension"]));
+        if(rename("../fotosEmpleados/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]));
             {
-                $empleado->SetFoto("Backup/".$id.$data["nombre"].$data["apellido"].".".$archivo["extension"]);
+                $empleado->SetFoto("Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]);
             }
       }
     }
@@ -276,25 +275,15 @@ else
     $password = str_repeat("*", strlen($empleado->clave));
     $empleado->clave = $password;
     $operacionesEntrada = Empleado::TraerOperacionesEntradaPorIdEmpleado($empleado->id);
-    $operacionesSalida = Empleado::TraerOperacionesSalidaPorIdEmpleado($empleado->id);
     $cantidadOperacionesEntrada = count($operacionesEntrada);
-    $cantidadOperacionesSalida = count($operacionesSalida);
     $resp["empleado"] = $empleado;
     if($cantidadOperacionesEntrada == 0)
     {
         $operacionesEntrada = "EL EMPLEADO NO TIENE OPERACIONES DE ENTRADA";
     }
-    else if($cantidadOperacionesSalida == 0)
-    {
-        $operacionesSalida = "EL EMPLEADO NO TIENE OPERACIONES DE SALIDA";
-    }
     $resp["empleado"] = $empleado;
     $resp["operacionesEntrada"] = $operacionesEntrada;
-    $resp["operacionesSalida"] = $operacionesSalida;
     $resp["cantidadOperacionesEntrada"] = $cantidadOperacionesEntrada;
-    $resp["cantidadOperacionesSalida"] = $cantidadOperacionesSalida;
-    $resp["cantidadDeOperacionesTotales"] = $cantidadOperacionesEntrada + $cantidadOperacionesSalida;
-
 }
 return $response->withJson($resp);
 }
@@ -352,19 +341,18 @@ return $response->withJson($resp);
 public function DescargarListaEmpleadosExcel($request, $response, $args)
 {
     $arrayEmpleados = Empleado::TraerTodosLosEmpleados();
-    $arrayCargos = Cargo_Empleado::TraerTodosLosCargos();
     if (count($arrayEmpleados) > 0) {
    $objPHPExcel = new PHPExcel();
    
    //Informacion del excel
    $objPHPExcel->
     getProperties()
-        ->setCreator("Ignacio")
-        ->setLastModifiedBy("Ignacio")
+        ->setCreator("Federico")
+        ->setLastModifiedBy("Federico")
         ->setTitle("ListaEmpleados")
         ->setSubject("Ejemplo 1")
         ->setDescription("Documento generado con PHPExcel")
-        ->setKeywords("Ignacio hizo un Excel")
+        ->setKeywords("Federico hizo un Excel")
         ->setCategory("Empleados");
 
 //ESTILOS 
@@ -421,12 +409,6 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth("15");
 
 //APLICACION DE LOS ESTILOS A LAS CELDAS CABECERAS
 
-$objPHPExcel->getActiveSheet()->getCell('A1')->setValue('LEGAJO');
-$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleArray);
-$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleColor);
-$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($styleTextCenter);
-$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($bordes);
-
 $objPHPExcel->getActiveSheet()->getCell('B1')->setValue('NOMBRE');
 $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($styleColor);
@@ -439,7 +421,7 @@ $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('D1')->setValue('MAIL');
+$objPHPExcel->getActiveSheet()->getCell('D1')->setValue('USUARIO');
 $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleTextCenter);
@@ -451,13 +433,13 @@ $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('F1')->setValue('TURNO');
+$objPHPExcel->getActiveSheet()->getCell('F1')->setValue('ID_ROL');
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('CARGO');
+$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('SUELDO');
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleTextCenter);
@@ -507,22 +489,17 @@ $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($bordes);
 
 
       
-      $password = str_repeat("*", strlen($arrayEmpleados[$i]->clave)); 
+      $password = str_repeat("*", strlen($arrayEmpleados[$i]->Clave)); 
       $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A'.($i+2), $arrayEmpleados[$i]->legajo)
-            ->setCellValue('B'.($i+2), $arrayEmpleados[$i]->nombre)
-            ->setCellValue('C'.($i+2),$arrayEmpleados[$i]->apellido)
-            ->setCellValue('D'.($i+2),$arrayEmpleados[$i]->mail)
+            ->setCellValue('B'.($i+2), $arrayEmpleados[$i]->Nombre)
+            ->setCellValue('C'.($i+2),$arrayEmpleados[$i]->Apellido)
+            ->setCellValue('D'.($i+2),$arrayEmpleados[$i]->Usuario)
             ->setCellValue('E'.($i+2),$password)
-            ->setCellValue('F'.($i+2),$arrayEmpleados[$i]->turno);
-    for($y = 0; $y < count($arrayCargos); $y++)
-    {
-        if($arrayCargos[$y]->id == $arrayEmpleados[$i]->cargo)
-        {
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.($i+2),$arrayCargos[$y]->cargo);
-        }
-    }
+            ->setCellValue('F'.($i+2),$arrayEmpleados[$i]->Id_rol);
+            ->setCellValue('G'.($i+2),$arrayEmpleados[$i]->Sueldo);
+
 }
+
 $styleArrayFecha = array(
     'font'  => array(
         'bold'  => true,
