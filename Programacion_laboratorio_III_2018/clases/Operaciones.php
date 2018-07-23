@@ -84,7 +84,7 @@ public static function TraerOperacionesPorSector($IdRol)
 public static function TraerOperacionesPorEmpleado($IdEmpleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT COUNT(*) from operaciones WHERE Id_empleado = '$IdEmpleado'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT COUNT(*) as CantidadOperaciones from operaciones WHERE Id_empleado = '$IdEmpleado'");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }

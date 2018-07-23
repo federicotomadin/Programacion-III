@@ -8,12 +8,12 @@ public $Id_estadoPedido;
 public $Descripcion;
 
 
-public static function TraerEstadoPedidos()
+public static function TraerEstadoPedidos($Id_estadoPedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from estadopedidos");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Descripcion from estadopedidos where Id_estadoPedido='$Id_estadoPedido'");
     $consulta->execute();
-    return $consulta->etchAll(PDO::FETCH_CLASS,"estadopedidos");
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
 }

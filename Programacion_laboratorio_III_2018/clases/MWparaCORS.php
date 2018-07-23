@@ -52,7 +52,7 @@ class MWparaCORS
 		 $response = $next($request, $response);
 		// $response->getBody()->write('<p>habilitado HabilitarCORS8080</p>');
    		 return $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://ignaciosanabriautn.esy.es')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 	}

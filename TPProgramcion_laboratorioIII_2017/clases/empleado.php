@@ -129,6 +129,8 @@ public function __construct()
 public static function TraerTodosLosEmpleados()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    var_dump($objetoAccesoDato);
+    die();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT id as id, legajo as legajo, nombre as nombre, apellido as apellido , mail as mail, clave as clave, turno as turno, cargo as cargo, habilitado as habilitado, foto as foto from empleado");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,'empleado');
@@ -178,10 +180,9 @@ public static function SuspenderEmpleado($empleado)
     return $consulta->execute();
 }
 
-
 public static function VerificarEmpleado($mail,$clave)
 {
-	$retorno = false;
+    $retorno = false;   
 	$ArrayEmpleados = Empleado::TraerTodosLosEmpleados();
 	foreach($ArrayEmpleados as $employee)
 	{

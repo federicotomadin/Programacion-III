@@ -494,9 +494,9 @@ $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($bordes);
             ->setCellValue('B'.($i+2), $arrayEmpleados[$i]->Nombre)
             ->setCellValue('C'.($i+2),$arrayEmpleados[$i]->Apellido)
             ->setCellValue('D'.($i+2),$arrayEmpleados[$i]->Usuario)
-            ->setCellValue('E'.($i+2),$password)
-            ->setCellValue('F'.($i+2),$arrayEmpleados[$i]->Id_rol);
-            ->setCellValue('G'.($i+2),$arrayEmpleados[$i]->Sueldo);
+            ->setCellValue('E'.($i+2),$password);
+            //->setCellValue('F'.($i+2),$arrayEmpleados[$i]->Id_rol);
+            //->setCellValue('G'.($i+2),$arrayEmpleados[$i]->Sueldo);
 
 }
 
@@ -520,7 +520,7 @@ header('Content-Disposition: attachment;filename="listadoEmpleados.xlsx"');
 header('Cache-Control: max-age=0');
 $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
 $objWriter->save('php://output');
-$content = $objWriter->toString();
+//$content = $objWriter->toString();
 $response->write($content);
 return $response;
 

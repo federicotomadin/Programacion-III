@@ -2,58 +2,56 @@
 include_once("../bd/AccesoDatos.php");
 class Sesion
 {
-    public $id;
-    public $idEmpleado;
-    public $fecha_ingreso;
-    public $fecha_salida;
+    public $IdSesion;
+    public $IdEmpleado;
+    public $FechaIngreso;
+    public $FechaSalida;
 
     public function GetId()
     {
-        return $this->id;
+        return $this->IdSesion;
     }
 
     public function SetId($valor)
     {
-        $this->id = $valor;
+        $this->IdSesion = $valor;
     }
 
      public function GetIdEmpleado()
     {
-        return $this->idEmpleado;
+        return $this->IdEmpleado;
     }
 
     public function SetIdEmpleado($valor)
     {
-        $this->idEmpleado = $valor;
+        $this->IdEmpleado = $valor;
     }
 
     public function GetFechaIngreso()
     {
-        return $this->fecha_ingreso;
+        return $this->FechaIngreso;
     }
 
     public function SetFechaIngreso($valor)
     {
-        $this->fecha_ingreso = $valor;
+        $this->FechaIngreso = $valor;
     }
     
 
       public function GetFechaSalida()
     {
-        return $this->fecha_salida;
+        return $this->FechaSalida;
     }
 
     public function SetFechaSalida($valor)
     {
-        $this->fecha_salida = $valor;
+        $this->FechaSalida = $valor;
     }
-    
- 
-   public function __construct()
-   {
 
-   } 
+    public function __construct()
+    {
 
+    }     
 
     public static function TraerTodasLasSesiones()
     {
@@ -66,14 +64,14 @@ class Sesion
     public static function InsertarSesionInicio($sesion)
     {
         $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO sesion (idEmpleado,fecha_ingreso,fecha_salida)"."VALUES('$sesion->idEmpleado','$sesion->fecha_ingreso',NULL)");
+        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO sesion(IdEmpleado,FechaIngreso,FechaSalida)"."VALUES('$sesion->IdEmpleado','$sesion->FechaIngreso',NULL)");
         $consulta->execute();   
     }
 
-    public static function TraerSesionSinSalida($idEmpleado)
+    public static function TraerSesionSinSalida($IdEmpleado)
     {
         $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where idEmpleado = '$idEmpleado' && fecha_salida IS NULL ");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where IdEmpleado = '$IdEmpleado' && fechaSalida IS NULL ");
         $consulta->execute();
         return $consulta->fetchObject('sesion');
     }
@@ -81,7 +79,7 @@ class Sesion
     public static function ModificarSesionSalida($sesion)
     {
        $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-       $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE sesion set fecha_ingreso = '$sesion->fecha_ingreso', idEmpleado = '$sesion->idEmpleado', fecha_salida = '$sesion->fecha_salida' where id = '$sesion->id'");
+       $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE sesion set fechaSalida = '$sesion->FechaSalida' where IdSesion = '$sesion->IdSesion'");
        $consulta->execute();   
     }
 
@@ -89,18 +87,18 @@ class Sesion
 	{
 	    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso(); 
 	    
-	    $consulta = $objetoAcceso->RetornarConsulta("SELECT id from sesion order by id DESC limit 1");
+	    $consulta = $objetoAcceso->RetornarConsulta("SELECT idSesion from sesion order by idSesion DESC limit 1");
 	    $consulta->execute();
 	    $idSesion = $consulta->fetchColumn(0);
 	    return $idSesion;
 	}
 
-    public static function TraerSesionPorId($id)
+    public static function TraerSesionPorId($IdSesion)
     {
         $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where IdSesion = '$id'");
+        $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from sesion where IdSesion = '$IdSesion'");
         $consulta->execute();
-        return $consulta->fetchObject('sesion');
+        return $consulta->fetchObject("sesion");
     }
 }
 ?>

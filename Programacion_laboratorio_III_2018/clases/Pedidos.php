@@ -117,7 +117,7 @@ public function GetId_estadoPedido()
 }
 
 
-public function construct__()
+public function __construct()
 {
 
 }
@@ -142,6 +142,14 @@ public static function TraerPedidos($IdPedido)
     return $consulta->fetchObject("pedidos");
 }
 
+public static function TraerTodosPedidos()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
 public static function BorrarElPedido($IdPedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -161,5 +169,6 @@ public static function ModificarPedido($pedido)
 }
 
 
+}
 
 ?>

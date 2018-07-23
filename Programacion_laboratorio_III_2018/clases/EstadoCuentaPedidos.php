@@ -9,12 +9,12 @@ public $Descripcion;
 
 
 
-public static function TraerCuentaPedidos()
+public static function TraerCuentaPedidos($Id_estadoCuenta)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from estado_cuenta_pedidos'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Descripcion from estado_cuenta_pedidos where Id_estadoCuenta='$Id_estadoCuenta'");
     $consulta->execute();
-    return $consulta->etchAll(PDO::FETCH_CLASS,"estado_cuenta_pedidos");
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
 

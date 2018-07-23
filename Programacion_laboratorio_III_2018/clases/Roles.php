@@ -5,7 +5,8 @@ include_once("../bd/AccesoDatos.php");
 class Roles
 {
 public $Id_rol;
-public $Descripcion;
+public $descripcion;
+
 
 
 public static function TraerRoles()
@@ -13,7 +14,7 @@ public static function TraerRoles()
    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from roles");
    $consulta->execute();
-   return $consulta->fetchAll(PDO::FETCH_CLASS,"roles");
+   return $consulta->fetchAll(PDO::FETCH_CLASS,'roles');
 }
 
 
@@ -24,9 +25,6 @@ public static function TraerIdRol($descripcion)
    $consulta->execute();
    return $consulta->fetchAll(PDO::FETCH_CLASS,"roles");
 }
-
-
-
-
+}
 
 ?>

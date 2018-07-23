@@ -1,12 +1,13 @@
 <?php
 include_once("../bd/AccesoDatos.php");
+include_once("Pedidos.php");
 
 
 class ListaPedidos
 {
 public $Id_pedido;
 public $Id_producto;
-public $Cantidad;
+public $Precio; 
 
 
 public function SetId_pedido($valor)
@@ -29,17 +30,18 @@ public function GetId_producto()
     return $this->$Id_producto;
 }
 
-public function SetCantidad($valor)
+
+public function SetPrecio($valor)
 {
-    $this->$Cantidad=$valor;
+    $this->Precio=$valor;
 }
 
-public function GetCantidad()
+public function GetPrecio()
 {
-    return $this->$Cantidad;
+    return $this->Precio;
 }
 
-public function contruct__()
+public function __contruct()
 {
 
 }
@@ -47,8 +49,8 @@ public function contruct__()
 public static function InsertarListaPedido($pedido)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_producto,Cantidad)
-VALUES('$pedido->Id_pedido', '$pedido->Id_producto','$pedido->Cantidad)");		
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_producto,Precio)
+VALUES('$pedido->Id_pedido', '$pedido->Id_producto','$pedido->Precio')");		
 return $consulta->execute();
 
 }
@@ -73,11 +75,21 @@ public static function ModificarPedido($pedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos set Id_pedido = '$pedido->Id_pedido',Id_producto = '$pedido->Id_producto', 
-    Cantidad = '$pedido->Cantidad' where Id_pedido = '$pedido->Id_pedido' ");
+    Precio = '$pedido->Precio' where Id_pedido = '$pedido->Id_pedido' ");
     return $consulta->execute();
 }
 
 
+public static function TraerImporte($Id_pedido)
+{
+$objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+$consulta = $objetoAccesoDato->RetornarConsulta("SELECT pedidos.Tiempo_ingreso as TiempoInicio, pedidos.Tiempo_llegadaMesa as TiempoFin,  SUM(Precio) as importe FROM lista_pedidos
+inner join pedidos  on pedidos.Id_pedido='$Id_pedido' where lista_pedidos.Id_pedido='$Id_pedido' order by pedidos.Id_pedido ");
+$consulta->execute();
+return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 }
+
+?>
