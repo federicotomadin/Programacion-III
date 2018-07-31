@@ -89,6 +89,24 @@ $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function TraerCantidadProducto($IdProducto)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT COUNT(*) from lista_pedidos WHERE Id_producto = '$IdProducto'");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public static function TraerElMaximoImporte()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT MAX() from lista_pedidos WHERE Id_producto = '$IdProducto'");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 
 }
 

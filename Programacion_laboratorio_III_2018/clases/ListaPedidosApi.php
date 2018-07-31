@@ -1,6 +1,7 @@
 <?php
 require_once("ListaPedidos.php");
 require_once("Pedidos.php");
+require_once("Productos.php");
 include_once("../bd/AccesoDatos.php");
 //include_once("../phpExcel/Classes/PHPExcel.php");
 //include_once('../fpdf/fpdf.php');
@@ -234,6 +235,51 @@ public function TraerDatosParaExportarPdf($request, $response, $args)
     $pdf->Output();
     return $pdf;
 }
+
+
+public function TraerProductoMasVendido($request, $response, $args)
+{
+
+    $productos=Productos::TraerTodosLosProductos();
+    $mayor=0;
+    for($i=0; $i<count($productos);$i++)
+    {
+      $cantidad= ListaPedidos::TraerCantidadProducto($productos[$i]["id_producto"]);
+      if($cantidad>$mayor)
+      {
+          $resp["Nombre_Producto_mas_vendido"]= $productos[$i]["Nombre"];
+          $mayor=$cantidad;
+      }    
+    }
+
+    return $response->withJson($resp);
+
+}
+
+public function TraerProductoMenosVendido($request, $response, $args)
+{
+
+    $productos=Productos::TraerTodosLosProductos();
+    $menor=ListaPedidos::TraerCantidadProducto($productos[0]["id_producto"]);
+
+    for($i=0; $i<count($productos);$i++)
+    {
+      $cantidad= ListaPedidos::TraerCantidadProducto($productos[$i]["id_producto"]);
+      if($cantidad<=$menor)
+      {
+          $resp["Nombre_Producto_Menos_Vendido"]= $productos[$i]["Nombre"];
+          $menor=$cantidad;
+      }    
+    }
+
+    return $response->withJson($resp);
+
+}
+
+
+
+
+
 
 }
 

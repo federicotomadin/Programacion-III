@@ -1,5 +1,8 @@
 <?php
+
 require_once("Pedidos.php");
+require_once("AutentificadorJWT.php");
+require_once("Mesas.php");
 require_once("EstadoCuentaPedidos.php");
 require_once("Empleado.php");
 require_once("EstadoPedidos.php");
@@ -15,11 +18,68 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PedidosApi
 {
 
+public function InsertarPedido($request,$response,$args)
+{
+$datos = $request->getParsedBody();
+$resp["status"] = 200;
+
+$pedido = new Pedidos();
+$pedido->SetTiempo_ingreso($datos['Tiempo_ingreso']);
+$pedido->SetTiempo_estimado($datos['Tiempo_estimado']);
+$pedido->SetTiempo_llegadaMesa($datos['Tiempo_llegadaMesa']);
+$pedido->SetId_mesa($datos['Id_mesa']);
+$pedido->SetId_estadoCuenta($datos['Id_estadoCuenta']);
+$pedido->SetId_empleado($datos['Id_empleado']);
+$pedido->SetCodigo($datos['Codigo']);
+$pedido->SetId_estadoPedido($datos['Id_estadoPedido']);
+$pedido->SetImporte($datos['Importe']);
+
+$idPedidoFoto = Pedidos::TraerElUltimoAgregado();
+$destino = "../fotosPedidos/";
+$files = $request->getUploadedFiles();
+$nombreAnterior = $files['foto']->getClientFilename();
+$extension= explode(".", $nombreAnterior) ;
+$extension=array_reverse($extension);
+$files['foto']->moveTo($destino.$idPedidoFoto.$datos["Codigo"].".".$extension[0]);
+$pedido->SetFoto($idPedidoFoto.$datos["Codigo"].".".$extension[0]);
+
+if(!Pedidos::InsertarElPedido($pedido))
+{
+    $resp["status"] = 400;
+}
+
+return $response->withJson($resp);
+
+}
+
+public function ModificarElPedido($request,$response,$args)
+{
+$idPedido = $args['id'];
+$resp["status"] = 200;
+$datos = $request->getParsedBody();
+$pedido = Pedidos::TraerElPedido($idPedido);
+$pedido->SetTiempo_ingreso($datos['Tiempo_ingreso']);
+$pedido->SetTiempo_estimado($datos['Tiempo_estimado']);
+$pedido->SetTiempo_llegadaMesa($datos['Tiempo_llegadaMesa']);
+$pedido->SetId_mesa($datos['Id_mesa']);
+$pedido->SetId_estadoCuenta($datos['Id_estadoCuenta']);
+$pedido->SetId_empleado($datos['Id_empleado']);
+$pedido->SetCodigo($datos['Codigo']);
+$pedido->SetId_estadoPedido($datos['Id_estadoPedido']);
+$pedido->SetImporte($datos['Importe']);
+
+if(!Pedidos::ModificarPedido($pedido))
+{
+    $resp["status"] = 400;
+}
+return $response->withJson($resp);
+
+}
+
+
 public function TraerTodosLosPedidos($request,$response,$args)
 {
 $pedidos = Pedidos::TraerTodosPedidos();
-var_dump($pedidos);
-die();
 
 $resp["pedidos"] = $pedidos;
 $response = $response->withJson($resp);
@@ -300,6 +360,265 @@ ob_end_clean();
 $pdf->Output();
 return $pdf;
 }
+
+
+public function PedidosQueSeEntregaronEnTiempo($request, $response, $args)
+{
+    $array= Pedidos::TraerTodosPedidos();
+ 
+    for($i=0; $i<count($array);$i++)
+    {
+        $tiempoInicio= strtotime($array[$i]["Tiempo_ingreso"]);
+        $tiempoEstimado= strtotime($array[$i]["Tiempo_estimado"]);
+        $tiempoLlegada= strtotime($array[$i]["Tiempo_llegadaMesa"]);
+
+        $tiempoFinal = $tiempoLlegada - $tiempoEstimado;
+
+        if($tiempoFinal < 0 )
+        {
+            $arrayFinal[$i] = $array[$i];
+        }
+    }
+
+    if($arrayFinal == null)
+    {
+        $resp["Pedidos"] = "No hay pedidos fuera de termino";
+        return $response->withJson($resp);
+    }
+    else
+    {
+        return $response->withJson($arrayFinal);
+    }
+
+}
+
+public function PedidosCancelados($request, $response, $args)
+{
+    $array= Pedidos::TraerTodosPedidos();
+
+    for($i=0; $i<count($array);$i++)
+    {
+        if($array[$i]["Id_estadoPedido"]==3)
+        {
+            $arrayFinal[$i]=$array[$i];
+        }
+    }
+    if($arrayFinal==null)
+    {
+        $resp["Estado"]= "No hay pedidos cancelados";
+        return $response->withJson($resp);
+
+    }
+    else
+    {
+        $arrayFinal["Canelados"] = "PEDIDOS CANCELADOS";
+        return $response->withJson($arrayFinal);
+    }
+}
+
+public function TraerMesaMasUsada($request, $response, $args)
+{
+   $arrayMesas= Mesas::TraerMesas();
+   $mayor=0;
+ 
+
+   for($i=0; $i<count($arrayMesas);$i++)
+   {
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["Id_mesa"]);
+       if($cantidad >= $mayor)
+       {         
+          
+          $IdMesa = $arrayMesas[$i]["Id_mesa"];   
+          $mayor=$cantidad;  
+       }   
+   
+   }
+  
+    $resp["IdMesa"] =  $IdMesa;
+    $resp["Cantidad"] = $mayor[0]["Cantidad"];
+
+    return $response->withJson($resp);
+}
+
+public function TraerMesaMenosUsada($request, $response, $args)
+{
+   $arrayMesas= Mesas::TraerMesas();
+   $menor=1;
+
+   for($i=0; $i<count($arrayMesas);$i++)
+   {
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["Id_mesa"]);
+       $variable=$cantidad[$i]["Cantidad"];
+   
+       if($variable < $menor)
+       {         
+          $IdMesa = $arrayMesas[$i]["Id_mesa"];  
+          $menor=$cantidad[$i]["Cantidad"];  
+       }   
+   
+   }
+  
+    $resp["IdMesa"] =  $IdMesa;
+    $resp["Cantidad"] = $menor;
+
+    return $response->withJson($resp);
+}
+
+
+public function TraerMesaQueMasFacturo($request, $response, $args)
+{
+    $arrayMesas= Mesas::TraerMesas();
+    $importeMayor=0;
+
+    for($i=0; $i<count($arrayMesas);$i++)
+    {
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["Id_mesa"]);
+        if($aux >= $importeMayor)
+       {
+        
+          $importeMayor = $aux;       
+          $IdMesa = $arrayMesas[$i]["Id_mesa"];  
+          $importeMayor=$aux;  
+       }   
+   
+    }
+
+    $resp["Mesa"] =  $importeMayor[0]["Mesa"];
+    $resp["Importe"] =  $importeMayor[0]["Importe"];
+
+    return $response->withJson($resp);
+   
+}
+
+
+public function TraerMesaQueMenosFacturo($request, $response, $args)
+{
+    $arrayMesas= Mesas::TraerMesas();
+    $importeMayor=500;
+
+    for($i=0; $i<count($arrayMesas);$i++)
+    {
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["Id_mesa"]);
+        if($aux[$i]["Importe"] <= $importeMayor)
+       { 
+          if($aux[$i]["Importe"] !=null)
+          {
+
+            $importeMayor=$aux;  
+            $IdMesa = $arrayMesas[$i]["Id_mesa"];  
+          }
+          
+       }   
+   
+    }  
+
+    $resp["Mesa"] =  $importeMayor[0]["Mesa"];
+    $resp["Importe"] =  $importeMayor[0]["Importe"];
+
+    return $response->withJson($resp);
+   
+}
+
+
+public function TraerFacturaMayorImporte($request, $response, $args)
+{
+    $pedidos=Pedidos::TraerTodosPedidos();
+    $arrayMesas= Mesas::TraerMesas();
+    $arrayPedidos = array();
+    $importeMayor=0;
+
+    
+    for($i=0; $i<count($pedidos);$i++)
+    {
+     if($pedidos[$i]["Importe"]>= $importeMayor)
+     {
+         $importeMayor=$pedidos[$i]["Importe"];
+         array_push($arrayPedidos,$pedidos[$i]["Id_mesa"]);
+     }
+    }
+
+    $resp["Mesas con mayor importe facturado"] =  $arrayPedidos;
+
+    return $response->withJson($resp);
+}
+
+
+public function TraerFacturaMenorImporte($request, $response, $args)
+{
+    $pedidos=Pedidos::TraerTodosPedidos();
+    $arrayMesas= Mesas::TraerMesas();
+    $arrayPedidos = array();
+    $importeMenor=50000;
+
+    
+    for($i=0; $i<count($pedidos);$i++)
+    {
+     if($pedidos[$i]["Importe"]<= $importeMenor)
+     {
+         $importeMenor=$pedidos[$i]["Importe"];
+         array_push($arrayPedidos,$pedidos[$i]["Id_mesa"]);
+
+     }
+    }
+
+    $resp["Mesas con mayor importe facturado"] =  $arrayPedidos;
+    return $response->withJson($resp);
+}
+
+
+public function TraerTiempoFaltante($request, $response, $args)
+{
+    $data = $request->getParsedBody();
+   
+    $arrayTiempo=Pedidos::TraerTiempoFaltante($data["Codigo"],$data["IdPedido"]);
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $fecha_ingreso = $dateTime->format("Y/m/d H:i:s");
+    $tiempoActual= strtotime($fecha_ingreso);
+    $tiempoEstimado=strtotime($arrayTiempo[0]["Tiempo_estimado"]);
+    $tiempoFaltante =  $tiempoEstimado - $tiempoActual;   
+
+    $time = date("i:s",$tiempoFaltante);
+    $resp["Tiempo Faltante"] =   $time;
+    
+    return $response->withJson($resp);
+}
+
+        
+public function CambiarEstadoMesa($request, $response, $args)
+{
+    $data = $request->getParsedBody();
+    $id_pedido=$data["id_pedido"];
+    $estado= $data["estado"];
+
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+
+    $resp["status"]=400;
+    if($estado==4)
+    {
+        if($payload->perfil=="Socio")
+        {
+        $resp["status"]=200;
+        $resp["Mesa"] = "Mesa cerrada satisfactoriamente";
+        Pedidos::CerrarMesa($id_pedido);
+        }
+        else 
+        {
+        $resp["Mesa"]="Esta operacion solo esta permitida para socios";
+        }
+    }
+    else
+    {
+        $resp["status"]=200;
+        $resp["Mesa"] = "Mesa cambiada de estado";
+        Pedidos::CambiarEstadoMesa($id_pedido,$estado);
+    }
+
+    return $response->withJson($resp);
+
+}
+
 
 
 }

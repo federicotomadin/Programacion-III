@@ -21,9 +21,10 @@ public static function TraerRoles()
 public static function TraerIdRol($descripcion)
 {
    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-   $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Id_rol from roles where descripcion=$descripcion");
+   $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Id_rol from roles where descripcion='$descripcion'");
    $consulta->execute();
-   return $consulta->fetchAll(PDO::FETCH_CLASS,"roles");
+   return $consulta->fetchAll(PDO::FETCH_ASSOC);
+
 }
 }
 

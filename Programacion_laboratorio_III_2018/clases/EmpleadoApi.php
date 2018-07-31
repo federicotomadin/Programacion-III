@@ -1,6 +1,7 @@
 <?php
 require_once("Empleado.php");
 require_once("Roles.php");
+require_once("Pedidos.php");
 include_once("../bd/AccesoDatos.php");
 require_once("Operaciones.php");
 include_once("../phpExcel/Classes/PHPExcel.php");
@@ -17,24 +18,23 @@ public function IngresarEmpleado($request,$response,$args)
 {
 $data = $request->getParsedBody();
 
-
-if(!VerificarEmpleado($data["Usuario"],$data["Clave"]))
+if(!Empleado::VerificarEmpleado($data["Usuario"],$data["Clave"]))
 {
  
-$resp["status"] = 200;
-$resp["nombre"] = $data["Nombre"];
-
 $empleado = new Empleado();
-
+$resp["status"] = 200;
 $empleado->SetNombre($data["Nombre"]);
 $empleado->SetApellido($data["Apellido"]);
-$empleado->SetUsuario($data["Nombre"] + $data["Apellido"]);
+$empleado->SetUsuario($data["Usuario"]);
 $empleado->SetClave($data["Clave"]);
 
-if(TraerIdRol($data["Rol"]))
+if(!Roles::TraerIdRol($data["Rol"]))
 {
- $empleado->SetId_rol($data["Rol"]);
+$resp["status"]=400;  
 }
+$rol=Roles::TraerIdRol($data["Rol"]);
+$empleado->SetId_rol($rol[0]["Id_rol"]);
+
 $empleado->SetSueldo($data["Sueldo"]);
 $empleado->SetHabilitado($data["Habilitado"]);
 
@@ -172,7 +172,7 @@ public function SuspenderEmpleado($request,$response,$args)
     }
     else
     {
-    $empleado->SetHabilitado("no");
+    $empleado->SetHabilitado("0");
     if(!Empleado::SuspenderEmpleado($empleado))
     {
         $resp["status"] = 400;
@@ -512,6 +512,43 @@ for($i = 0; $i < count($roles); $i++)
 }
 return $response->withJson($resp);
 }
+
+public function VerEstadoPedidos($request, $response, $args)
+{
+    $data = $request->getParsedBody();
+    $empleado=Empleado::TraerElEmpleadoPorUsuario($data["Usuario"]);
+    $pedidos = Pedidos::VerPedidosPendientes($empleado->id_empleado);
+    $files = $request->getUploadedFiles();
+
+    if(empty($files))
+    {
+        var_dump("estoy aca");
+        die();
+    }
+    else
+    {
+       
+    }
+
+
+    var_dump($pedidos[0]["Id_pedido"]);
+    die();
+    $idEmpleadoFoto = $idEmpleado+3;
+    $destino = "../fotosEmpleados/";
+    $files = $request->getUploadedFiles();
+    $nombreAnterior = $files['foto']->getClientFilename();
+    $extension= explode(".", $nombreAnterior) ;
+    $extension=array_reverse($extension);
+    $files['foto']->moveTo($destino.$idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
+    $empleado->SetFoto($idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
+
+    $resp["Pedidos Pendientes"]=$pedidos;
+
+}
+
+
+
+
 
 
 

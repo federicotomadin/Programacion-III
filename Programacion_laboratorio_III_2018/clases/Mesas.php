@@ -16,7 +16,7 @@ public static function TraerMesas()
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from mesas");
     $consulta->execute();
-    return $consulta->etchAll(PDO::FETCH_CLASS,"mesas");
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
 

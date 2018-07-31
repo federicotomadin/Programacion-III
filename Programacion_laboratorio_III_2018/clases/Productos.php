@@ -12,12 +12,13 @@ public $Id_rol;
 public $habilitado;
 
 
-public static function TraerProductoPorNombre($Nombre)
+public static function TraerTodosLosProductos()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from productos WHERE Nombre = '$Nombre'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from productos");
     $consulta->execute();
-    return $consulta->fetchObject("productos");
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 
 

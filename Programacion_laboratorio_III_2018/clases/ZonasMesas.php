@@ -15,7 +15,4 @@ public static function TraerZonaMesas()
    return $consulta->fetchAll(PDO::FETCH_CLASS,"zonas_mesas");
 }
 
-
-
-
 ?>

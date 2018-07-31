@@ -10,7 +10,6 @@ public $Clave;
 public $Id_rol;
 public $Sueldo;
 public $habilitado;
-public $foto;
 
 
 public function Getid_empleado()
@@ -70,7 +69,7 @@ public function GetId_rol()
 
 public function SetSueldo($valor)
 {
-    $this->$Sueldo=$valor;
+    $this->Sueldo=$valor;
 }
 
 public function GetSueldo()
@@ -109,7 +108,7 @@ public static function TraerTodosLosEmpleados()
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados");
     $consulta->execute();
-    return $consulta->fetchAll(PDO::FETCH_CLASS);
+    return $consulta->fetchAll(PDO::FETCH_CLASS,'empleado');
 }
 
 public static function TraerElEmpleadoPorUsuario($Usuario)
@@ -117,7 +116,7 @@ public static function TraerElEmpleadoPorUsuario($Usuario)
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados where Usuario = '$Usuario' ");
     $consulta->execute();
-    return $consulta->fetchObject("empleado");
+    return $consulta->fetchObject('empleado');
 }
 
 public static function TraerElEmpleado($Id_empleado)
@@ -132,7 +131,7 @@ public static function InsertarElEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado,foto)".
-    "VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado','$empleado->foto')");
+    "VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado')");
     return $consulta->execute();
 }
 
@@ -147,7 +146,7 @@ public static function ModificarElEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set Nombre = '$empleado->Nombre', Apellido = '$empleado->Apellido', Usuario = '$empleado->Usuario',
-    Clave = '$empleado->Clave', Sueldo =  '$empleado->Sueldo', habilitado = '$empleado->habilitado', foto = '$empleado->foto' where id_empleado = '$empleado->id_empleado'");
+    Clave = '$empleado->Clave', Sueldo =  '$empleado->Sueldo', habilitado = '$empleado->habilitado' where id_empleado = '$empleado->id_empleado'");
     return $consulta->execute();
 }
 
@@ -155,6 +154,13 @@ public static function SuspenderEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 0  where id_empleado = '$empleado->id_empleado'");
+    return $consulta->execute();
+}
+
+public static function HabilitarEmpleado($empleado)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 1  where id_empleado = '$empleado->id_empleado'");
     return $consulta->execute();
 }
 
@@ -203,7 +209,7 @@ return $consulta->fetchAll(PDO::FETCH_ASSOC);
 public static function TraerUltimoIdAgregado()
 {
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
-    $consulta = $objetoAcceso->RetornarConsulta("SELECT id_empleado from empleados order by id_empelado DESC limit 1");
+    $consulta = $objetoAcceso->RetornarConsulta("SELECT id_empleado from empleados order by id_empleado DESC limit 1");
     $consulta->execute();
     $idEmpleado = $consulta->fetchColumn(0);
     return $idEmpleado;
@@ -219,6 +225,8 @@ $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 
 }
+
+
 
 
 
