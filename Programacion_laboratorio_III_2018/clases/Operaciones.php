@@ -12,45 +12,45 @@ public $Id_empleado;
 
 public function SetIdOperacion($valor)
 {
-    $this->$IdOperacion=$valor;
+    $this->IdOperacion=$valor;
 }
 
 public function GetIdOperacion()
 {
-    return $this->$IdOperacion;
+    return $this->IdOperacion;
 }
 
 public function SetFechaOperacion($valor)
 {
-    $this->$FechaOperacion=$valor;
+    $this->FechaOperacion=$valor;
 }
 
 public function GetFechaOperacion()
 {
-    return $this->$FechaOperacion;
+    return $this->FechaOperacion;
 }
 
 public function SetId_rol($valor)
 {
-    $this->$Id_rol=$valor;
+    $this->Id_rol=$valor;
 }
 
 public function GetId_rol()
 {
-    return $this->$Id_rol;
+    return $this->Id_rol;
 }
 
 public function SetId_empleado($valor)
 {
-    $this->$Id_empleado=$valor;
+    $this->Id_empleado=$valor;
 }
 
 public function GetId_empleado()
 {
-    return $this->$Id_empleado;
+    return $this->Id_empleado;
 }
 
-public function construct__()
+public function __construct()
 {
 
 }

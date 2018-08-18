@@ -1,8 +1,11 @@
 <?php
 
 require_once("Pedidos.php");
+require_once("ListaPedidos.php");
 require_once("AutentificadorJWT.php");
 require_once("Mesas.php");
+require_once("Roles.php");
+require_once("Operaciones.php");
 require_once("EstadoCuentaPedidos.php");
 require_once("Empleado.php");
 require_once("EstadoPedidos.php");
@@ -18,39 +21,102 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PedidosApi
 {
 
-public function InsertarPedido($request,$response,$args)
+public function ConfirmarPedido($request,$response,$args)
 {
-$datos = $request->getParsedBody();
-$resp["status"] = 200;
+    $codigoMesa=$request->getParsedBody();
 
-$pedido = new Pedidos();
-$pedido->SetTiempo_ingreso($datos['Tiempo_ingreso']);
-$pedido->SetTiempo_estimado($datos['Tiempo_estimado']);
-$pedido->SetTiempo_llegadaMesa($datos['Tiempo_llegadaMesa']);
-$pedido->SetId_mesa($datos['Id_mesa']);
-$pedido->SetId_estadoCuenta($datos['Id_estadoCuenta']);
-$pedido->SetId_empleado($datos['Id_empleado']);
-$pedido->SetCodigo($datos['Codigo']);
-$pedido->SetId_estadoPedido($datos['Id_estadoPedido']);
-$pedido->SetImporte($datos['Importe']);
+    $pedido=new Pedidos();
+    $minutosAgregar=30;
 
-$idPedidoFoto = Pedidos::TraerElUltimoAgregado();
-$destino = "../fotosPedidos/";
-$files = $request->getUploadedFiles();
-$nombreAnterior = $files['foto']->getClientFilename();
-$extension= explode(".", $nombreAnterior) ;
-$extension=array_reverse($extension);
-$files['foto']->moveTo($destino.$idPedidoFoto.$datos["Codigo"].".".$extension[0]);
-$pedido->SetFoto($idPedidoFoto.$datos["Codigo"].".".$extension[0]);
 
-if(!Pedidos::InsertarElPedido($pedido))
-{
-    $resp["status"] = 400;
+    $resp["status"] = 200;
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+    $empleado=Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
+    
+    if($payload->perfil!="Mozo")
+    {
+        $resp["status"]="Operacion valida solo para Mozos";
+        return $response->withJson($resp);
+    }
+    $pedido->SetId_empleado($empleado->id_empleado);
+    $pedido->SetCodigoMesa($codigoMesa["CodigoMesa"]);
+    $pedido->SetId_estadoCuenta(1);
+    $pedido->SetImporte(Null);
+
+    if(ListaPedidos::BuscarPedidoCocina($codigoMesa["CodigoMesa"]))
+    {
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $pedido->SetTiempo_ingreso($dateTime->format("Y/m/d H:i:s"));
+    $dateTime->add(new DateInterval('PT' . $minutosAgregar . 'M'));
+    $fecha_estimada = $dateTime->format("Y/m/d H:i:s");
+    $pedido->SetTiempo_estimado($fecha_estimada);
+    }
+
+ 
+    $idPedidoFoto = Pedidos::TraerElUltimoAgregado();
+    $idPedidoFoto+=1;
+    $destino = "../fotosPedidos/";
+    $files = $request->getUploadedFiles();
+    $nombreAnterior = $files['foto']->getClientFilename();
+    $extension= explode(".", $nombreAnterior) ;
+    $extension=array_reverse($extension);
+    $files['foto']->moveTo($destino.$idPedidoFoto.$codigoMesa["CodigoMesa"].".".$extension[0]);
+    $pedido->SetFoto($idPedidoFoto.$codigoMesa["CodigoMesa"].".".$extension[0]);
+    
+    if(!Pedidos::InsertarElPedido($pedido))
+    {
+       $resp["status"] = 400;
+    }
+
+   
+    if($resp["status"]==200)
+    {
+        $IdPedido=Pedidos::TraerElUltimoAgregado();
+        ListaPedidos::IntertarIdPedido($codigoMesa["CodigoMesa"],$IdPedido);
+    }
+
+    return $response->withJson($resp);   
+    
 }
 
-return $response->withJson($resp);
 
+public function CerrarMesa($request,$response,$args)
+{
+    $codigoMesa=$request->getParsedBody();
+
+    $resp["status"] = 200;
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+    $empleado=Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
+    
+    if($payload->perfil!="Socio")
+    {
+        $resp["status"]="Operacion valida solo para Socios";
+        return $response->withJson($resp);
+    }
+
+    $resp["status"]=200;
+    $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa["CodigoMesa"]);
+   /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
+    {     
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
+    $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
+    Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$codigoMesa["CodigoMesa"]);
+    }*/
+    
+    $importe=ListaPedidos::TraerImportePedido($pedido->Id_pedido,$codigoMesa["CodigoMesa"]);
+
+    if(!Pedidos::CerrarMesa($codigoMesa["CodigoMesa"],$importe[0]["Importe"]))
+    {
+        $resp["status"]=400;
+    }
+
+    return $response->withJson($resp);   
 }
+
 
 public function ModificarElPedido($request,$response,$args)
 {
@@ -181,12 +247,6 @@ $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('D1')->setValue('MESA');
-$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleArray);
-$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleColor);
-$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleTextCenter);
-$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($bordes);
-
 $objPHPExcel->getActiveSheet()->getCell('E1')->setValue('ESTADO DE CUENTA');
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleColor);
@@ -199,13 +259,13 @@ $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('CODIGO');
+$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('CODIGOMESA');
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('H1')->setValue('ESTADO PEDIDO');
+$objPHPExcel->getActiveSheet()->getCell('H1')->setValue('IMPORTE');
 $objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleTextCenter);
@@ -272,11 +332,10 @@ for($i=0;$i<count($arrayPedidos);$i++)
             ->setCellValue('A'.($i+2), $arrayPedidos[$i]["Tiempo_ingreso"])
             ->setCellValue('B'.($i+2),$arrayPedidos[$i]["Tiempo_estimado"])
             ->setCellValue('C'.($i+2),$arrayPedidos[$i]["Tiempo_llegadaMesa"])
-            ->setCellValue('D'.($i+2),$arrayPedidos[$i]["Id_mesa"])
             ->setCellValue('E'.($i+2),$estadoCuenta[0]["Descripcion"])
             ->setCellValue('F'.($i+2),$empleado[0]["Usuario"])
-            ->setCellValue('G'.($i+2),$arrayPedidos[$i]["codigo"])
-            ->setCellValue('H'.($i+2),$estadoPedido[0]["Descripcion"]);                
+            ->setCellValue('G'.($i+2),$arrayPedidos[$i]["CodigoMesa"])
+            ->setCellValue('H'.($i+2),$arrayPedidos[$i]["Importe"]);                
          
 }
 
@@ -329,11 +388,10 @@ $pdf->setFillColor('BLACK');
 $pdf->Cell(40, 8,'Tiempo_ingreso',1,0,'C',true);
 $pdf->Cell(40, 8,'Tiempo_estimado', 1,0,'C',true);
 $pdf->Cell(40,8,'Tiempo_llegadaMesa',1,0,'C',true);
-$pdf->Cell(10, 8,'Id_mesa',1,0,'C',true);
-$pdf->Cell(25, 8,'EstadoCuenta', 1,0,'C',true);
-$pdf->Cell(20,8,'Usuario',1,0,'C',true);
-$pdf->Cell(13, 8,'Codigo', 1,0,'C',true);
-$pdf->Cell(25, 8,'EstadoPedido', 1,0,'C',true);
+$pdf->Cell(30, 8,'estadoCuenta',1,0,'C',true);
+$pdf->Cell(20, 8,'Id_empleado', 1,0,'C',true);
+$pdf->Cell(13,8,'CodigoMesa',1,0,'C',true);
+$pdf->Cell(25, 8,'Importe', 1,0,'C',true);
 $pdf->Ln(8);
 $pdf->SetFont('Arial', '', 10);
 $pdf->SetTextColor(0,0,0);
@@ -348,11 +406,10 @@ for($i=0;$i<count($arrayPedidos);$i++)
     $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_ingreso"],1,0,'C');
     $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_estimado"],1,0,'C');
     $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_llegadaMesa"],1,0,'C');
-    $pdf->Cell(10,8,$arrayPedidos[$i]["Id_mesa"],1,0,'C');
     $pdf->Cell(30,8,$estadoCuenta[0]["Descripcion"],1,0,'C');
     $pdf->Cell(20,8,$empleado[0]["Usuario"],1,0,'C');
-    $pdf->Cell(13,8,$arrayPedidos[$i]["codigo"],1,0,'C');
-    $pdf->Cell(25,8,$estadoPedido[0]["Descripcion"],1,0,'C');
+    $pdf->Cell(13,8,$arrayPedidos[$i]["CodigoMesa"],1,0,'C');
+    $pdf->Cell(25,8,$arrayPedidos[$i]["Importe"],1,0,'C');
     $pdf->Ln(8);
 }
 
@@ -394,8 +451,7 @@ public function PedidosQueSeEntregaronEnTiempo($request, $response, $args)
 
 public function PedidosCancelados($request, $response, $args)
 {
-    $array= Pedidos::TraerTodosPedidos();
-
+    $array= ListaPedidos::TraerTodosLosPedidos();
     for($i=0; $i<count($array);$i++)
     {
         if($array[$i]["Id_estadoPedido"]==3)
@@ -424,17 +480,17 @@ public function TraerMesaMasUsada($request, $response, $args)
 
    for($i=0; $i<count($arrayMesas);$i++)
    {
-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["Id_mesa"]);
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
        if($cantidad >= $mayor)
        {         
           
-          $IdMesa = $arrayMesas[$i]["Id_mesa"];   
+          $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   
           $mayor=$cantidad;  
        }   
    
    }
   
-    $resp["IdMesa"] =  $IdMesa;
+    $resp["IdMesa"] =  $CodigoMesa;
     $resp["Cantidad"] = $mayor[0]["Cantidad"];
 
     return $response->withJson($resp);
@@ -447,18 +503,18 @@ public function TraerMesaMenosUsada($request, $response, $args)
 
    for($i=0; $i<count($arrayMesas);$i++)
    {
-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["Id_mesa"]);
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
        $variable=$cantidad[$i]["Cantidad"];
    
        if($variable < $menor)
        {         
-          $IdMesa = $arrayMesas[$i]["Id_mesa"];  
+          $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
           $menor=$cantidad[$i]["Cantidad"];  
        }   
    
    }
   
-    $resp["IdMesa"] =  $IdMesa;
+    $resp["CodigoMesa"] =  $CodigoMesa;
     $resp["Cantidad"] = $menor;
 
     return $response->withJson($resp);
@@ -472,19 +528,18 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
 
     for($i=0; $i<count($arrayMesas);$i++)
     {
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["Id_mesa"]);
-        if($aux >= $importeMayor)
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
+
+        if($aux[0]["Importe"] >= $importeMayor)
        {
-        
-          $importeMayor = $aux;       
-          $IdMesa = $arrayMesas[$i]["Id_mesa"];  
-          $importeMayor=$aux;  
+          $importeMayor = $aux[0]["Importe"];       
+          $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   
        }   
    
     }
 
-    $resp["Mesa"] =  $importeMayor[0]["Mesa"];
-    $resp["Importe"] =  $importeMayor[0]["Importe"];
+    $resp["Mesa"] =  $importeMayor;
+    $resp["Importe"] =  $CodigoMesa;
 
     return $response->withJson($resp);
    
@@ -494,26 +549,26 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
 public function TraerMesaQueMenosFacturo($request, $response, $args)
 {
     $arrayMesas= Mesas::TraerMesas();
-    $importeMayor=500;
+    $importeMayor=50000;
 
     for($i=0; $i<count($arrayMesas);$i++)
     {
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["Id_mesa"]);
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
         if($aux[$i]["Importe"] <= $importeMayor)
        { 
           if($aux[$i]["Importe"] !=null)
           {
 
-            $importeMayor=$aux;  
-            $IdMesa = $arrayMesas[$i]["Id_mesa"];  
+            $importeMayor=$aux[$i]["Importe"];  
+            $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
           }
           
        }   
    
     }  
 
-    $resp["Mesa"] =  $importeMayor[0]["Mesa"];
-    $resp["Importe"] =  $importeMayor[0]["Importe"];
+    $resp["Mesa"] =  $importeMayor;
+    $resp["Importe"] =  $CodigoMesa;
 
     return $response->withJson($resp);
    
@@ -524,7 +579,7 @@ public function TraerFacturaMayorImporte($request, $response, $args)
 {
     $pedidos=Pedidos::TraerTodosPedidos();
     $arrayMesas= Mesas::TraerMesas();
-    $arrayPedidos = array();
+    $pedidoMayor=0;
     $importeMayor=0;
 
     
@@ -533,11 +588,12 @@ public function TraerFacturaMayorImporte($request, $response, $args)
      if($pedidos[$i]["Importe"]>= $importeMayor)
      {
          $importeMayor=$pedidos[$i]["Importe"];
-         array_push($arrayPedidos,$pedidos[$i]["Id_mesa"]);
+         $CodigoMesa=$pedidos[$i]["CodigoMesa"];
      }
     }
 
-    $resp["Mesas con mayor importe facturado"] =  $arrayPedidos;
+    $resp["Importe"] = $importeMayor;
+    $resp["Mesa"]= $CodigoMesa;
 
     return $response->withJson($resp);
 }
@@ -575,51 +631,15 @@ public function TraerTiempoFaltante($request, $response, $args)
     $fecha_ingreso = $dateTime->format("Y/m/d H:i:s");
     $tiempoActual= strtotime($fecha_ingreso);
     $tiempoEstimado=strtotime($arrayTiempo[0]["Tiempo_estimado"]);
-    $tiempoFaltante =  $tiempoEstimado - $tiempoActual;   
-
-    $time = date("i:s",$tiempoFaltante);
+    $tiempoFaltante =  $tiempoEstimado - $tiempoActual; 
+    
+    $time = date("H:i:s",$tiempoFaltante);
     $resp["Tiempo Faltante"] =   $time;
     
     return $response->withJson($resp);
 }
 
         
-public function CambiarEstadoMesa($request, $response, $args)
-{
-    $data = $request->getParsedBody();
-    $id_pedido=$data["id_pedido"];
-    $estado= $data["estado"];
-
-    $arrayConToken = $request->getHeader('token');
-    $token=$arrayConToken[0];
-    $payload=AutentificadorJWT::ObtenerData($token); 
-
-    $resp["status"]=400;
-    if($estado==4)
-    {
-        if($payload->perfil=="Socio")
-        {
-        $resp["status"]=200;
-        $resp["Mesa"] = "Mesa cerrada satisfactoriamente";
-        Pedidos::CerrarMesa($id_pedido);
-        }
-        else 
-        {
-        $resp["Mesa"]="Esta operacion solo esta permitida para socios";
-        }
-    }
-    else
-    {
-        $resp["status"]=200;
-        $resp["Mesa"] = "Mesa cambiada de estado";
-        Pedidos::CambiarEstadoMesa($id_pedido,$estado);
-    }
-
-    return $response->withJson($resp);
-
-}
-
-
 
 }
 

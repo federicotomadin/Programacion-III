@@ -2,6 +2,7 @@
 require_once("ListaPedidos.php");
 require_once("Pedidos.php");
 require_once("Productos.php");
+require_once("Roles.php");
 include_once("../bd/AccesoDatos.php");
 //include_once("../phpExcel/Classes/PHPExcel.php");
 //include_once('../fpdf/fpdf.php');
@@ -11,8 +12,107 @@ require 'autoload.php';
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;
 
+
 class ListaPedidosApi
 {
+
+public function InsertarPedido($request,$response,$args)
+{
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+
+    if($payload->perfil!="Mozo")
+    {
+       $resp["status"]="Operacion solo habilitada para mozos";
+       return $response->withJson($resp);
+    }
+  
+
+    $datos=$request->getParsedBody();
+    $resp["status"]=200;
+    $listaPedido= new ListaPedidos();
+    $precio= Productos::TraerPrecio($datos["IdProducto"]);
+    $idRol= Productos::TraerIdRol($datos["IdProducto"]);
+
+    $listaPedido->SetId_pedido(Null);
+    $listaPedido->SetId_producto($datos["IdProducto"]);
+   
+    $listaPedido->SetId_rol($idRol[0]["id_rol"]);
+    $listaPedido->SetId_estadoPedido(1);
+    $listaPedido->SetCodigoMesa($datos["CodigoMesa"]);
+    $listaPedido->SetPrecio($precio[0]["Precio"]);
+
+    if(!ListaPedidos::InsertarListaPedido($listaPedido))
+    {
+    $resp["status"]=400;
+    }
+
+    return $response->withJson($resp);
+}
+
+public function VerPedidos($request,$response,$args)
+{
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+    $IdRol=Roles::TraerIdRol($payload->perfil);
+    $arrayPedidos=ListaPedidos::VerPedidosPendientes($IdRol[0]["Id_rol"]);
+    $mesas=array();
+    $productos["productos"]=array();
+    $productos["mesas"]=array();
+    for($i=0;$i<count($arrayPedidos);$i++)
+    {
+     array_push($productos["productos"],Productos::TraerProducto($arrayPedidos[$i]["Id_producto"]));
+     array_push($productos["mesas"],$arrayPedidos[$i]["CodigoMesa"]);
+    }
+    $respuesta["Nombre"]=array();
+    $respuesta["Mesa"]=array();
+
+    if($productos["productos"][0][0]["Nombre"]=="")
+    {
+      array_push($respuesta,"No hay ningun pedido  pendiente");
+    }
+    else
+    {
+        for($i=0;$i<count($productos["productos"]);$i++)
+        {
+          array_push($respuesta["Nombre"],$productos["productos"][$i][0]["Nombre"]);
+          array_push($respuesta["Mesa"],$productos["mesas"][$i]);    
+        }     
+    }
+
+    return $response->withJson($respuesta);
+}
+
+public function CambiarEstadoPedido($request,$response,$args)
+{
+    $datos=$request->getParsedBody();
+    $arrayConToken = $request->getHeader('token');
+    $token=$arrayConToken[0];
+    $payload=AutentificadorJWT::ObtenerData($token); 
+    $IdRol=Roles::TraerIdRol($payload->perfil);
+    $pedido= Pedidos::TraerElPedidoPorCodigoMesa($datos["CodigoMesa"]);
+
+    if($IdRol[0]["Id_rol"]==3)
+    {
+     if($pedido->Tiempo_llegadaMesa=="0000-00-00 00:00:00")
+     {     
+        $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
+        $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s")); 
+        Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$datos["CodigoMesa"]);
+     }
+ 
+  
+    }    
+
+    $resp["status"]=200;
+    if(!ListaPedidos::CambiarEstadoPedido($datos["estadoPedido"],$IdRol[0]["Id_rol"],$datos["CodigoMesa"]))
+    {
+        $resp["status"]=400;
+    }
+    return $response->withJson($resp);
+}
 
 public function TraerImporte($request,$response,$args)
 {
@@ -53,6 +153,8 @@ else
 return $response->withJson($resp);
 
 }
+
+
 
 
 public function TraerDatosParaExportarExcel($request, $response, $args)

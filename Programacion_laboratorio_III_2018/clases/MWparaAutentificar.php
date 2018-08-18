@@ -29,10 +29,10 @@ class MWparaAutentificar
 		}
 		else
 		{
-	
-		$arrayConToken = $request->getHeader('token');
-		$token=$arrayConToken[0];
-			
+		          
+			$arrayConToken = $request->getHeader('token');
+			$token=$arrayConToken[0];
+		
 			try 
 			{
 				AutentificadorJWT::verificarToken($token);
@@ -51,17 +51,15 @@ class MWparaAutentificar
 				if($request->isPost())
 				{		
 					// el post sirve para todos los logueados		
-					$payload=AutentificadorJWT::ObtenerData($token);		    
+					$payload=AutentificadorJWT::ObtenerData($token);					    
 					$response = $next($request, $response);
 				}
-				else 
+				else
 				{
 					$payload=AutentificadorJWT::ObtenerData($token);
 					// DELETE,PUT y DELETE sirve para todos los logeados y admin
 					if($payload->perfil=="Socio")
-					{
-						//var_dump($payload);
-					 // die();
+					{				
 						$response = $next($request, $response);
 					}		           	
 					else

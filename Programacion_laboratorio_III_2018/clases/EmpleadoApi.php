@@ -20,7 +20,7 @@ $data = $request->getParsedBody();
 
 if(!Empleado::VerificarEmpleado($data["Usuario"],$data["Clave"]))
 {
- 
+
 $empleado = new Empleado();
 $resp["status"] = 200;
 $empleado->SetNombre($data["Nombre"]);
@@ -38,16 +38,6 @@ $empleado->SetId_rol($rol[0]["Id_rol"]);
 $empleado->SetSueldo($data["Sueldo"]);
 $empleado->SetHabilitado($data["Habilitado"]);
 
-$idEmpleado = Empleado::TraerUltimoIdAgregado();
-$idEmpleado = intval($idEmpleado);
-$idEmpleadoFoto = $idEmpleado+3;
-$destino = "../fotosEmpleados/";
-$files = $request->getUploadedFiles();
-$nombreAnterior = $files['foto']->getClientFilename();
-$extension= explode(".", $nombreAnterior) ;
-$extension=array_reverse($extension);
-$files['foto']->moveTo($destino.$idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
-$empleado->SetFoto($idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
 if(!Empleado::InsertarElEmpleado($empleado))
 {
     $resp["status"] = 400;
@@ -114,42 +104,7 @@ $empleado->SetClave($data["Clave"]);
 $empleado->SetId_rol($data["Id_rol"]);
 $empleado->SetSueldo($data["Sueldo"]);
 $empleado->SetHabilitado("si");
-$fotosEmpleados = '../fotosEmpleados/';
-$fotosBackup = '../fotosEmpleados/Backup/';
-$arrayFotosBackup = scandir($fotosBackup);
-$arrayFotosEmpleado = scandir($fotosEmpleados);
-$pathFoto = explode('/',$empleado->GetFoto());
-if(file_exists($fotosEmpleados.$empleado->GetFoto()))
-{
-    if($pathFoto[0] == "Backup")
-{
-     for($i = 0; $i < count($arrayFotosBackup); $i++)
-   {
-   $archivo = pathinfo($arrayFotosBackup[$i]);     
-   if("Backup/".$archivo["basename"] == $empleado->foto)
-      {
-        if(rename("../fotosEmpleados/Backup/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]));
-            {
-                $empleado->SetFoto("Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]);
-            }
-      }
-   }
-}
-else
-{
- for($i = 0; $i < count($arrayFotosEmpleado); $i++)
-{
-   $archivo = pathinfo($arrayFotosEmpleado[$i]);     
-   if($archivo["basename"] == $empleado->foto)
-      {
-        if(rename("../fotosEmpleados/".$archivo["basename"],"../fotosEmpleados/Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]));
-            {
-                $empleado->SetFoto("Backup/".$id.$data["Nombre"].$data["Apellido"].".".$archivo["extension"]);
-            }
-      }
-    }
-}
-}
+
 
 if(!Empleado::ModificarElEmpleado($empleado))
 {
@@ -260,6 +215,7 @@ public function TraerDatosParaExportarExcel($request, $response, $args)
 {
 
 $arrayEmpleados = Empleado::TraerDatosParaExportar();
+//$fechaSesion = TraerFechasDeSesionesPorIdEmpleado($IdEmpleado);
 
 if (count($arrayEmpleados) > 0) {
     $objPHPExcel = new PHPExcel();
@@ -372,6 +328,7 @@ for($i=0;$i<count($arrayEmpleados);$i++)
       ->applyFromArray($styleTextCenter);
      
     $cantOperaciones=Operaciones::TraerOperacionesPorEmpleado($arrayEmpleados[$i]["IdEmpleado"]);
+
 
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.($i+2), $arrayEmpleados[$i]["Usuario"])
@@ -518,31 +475,12 @@ public function VerEstadoPedidos($request, $response, $args)
     $data = $request->getParsedBody();
     $empleado=Empleado::TraerElEmpleadoPorUsuario($data["Usuario"]);
     $pedidos = Pedidos::VerPedidosPendientes($empleado->id_empleado);
-    $files = $request->getUploadedFiles();
+    
 
-    if(empty($files))
-    {
-        var_dump("estoy aca");
-        die();
-    }
-    else
-    {
-       
-    }
-
-
-    var_dump($pedidos[0]["Id_pedido"]);
-    die();
-    $idEmpleadoFoto = $idEmpleado+3;
-    $destino = "../fotosEmpleados/";
-    $files = $request->getUploadedFiles();
-    $nombreAnterior = $files['foto']->getClientFilename();
-    $extension= explode(".", $nombreAnterior) ;
-    $extension=array_reverse($extension);
-    $files['foto']->moveTo($destino.$idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
-    $empleado->SetFoto($idEmpleadoFoto.$data["Nombre"].$data["Apellido"].".".$extension[0]);
-
-    $resp["Pedidos Pendientes"]=$pedidos;
+   $resp["Pedidos Pendientes"]=$pedidos;
+    
+    
+    return $response->withJson($resp);
 
 }
 
