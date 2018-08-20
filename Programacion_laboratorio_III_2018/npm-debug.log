@@ -1,0 +1,80 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'Bower' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.3
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readGlobalPackageData
+7 silly fetchPackageMetaData Bower
+8 silly fetchNamedPackageData Bower
+9 silly mapToRegistry name Bower
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'Bower',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'Bower',
+12 silly mapToRegistry   name: 'Bower',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/Bower
+14 verbose request uri https://registry.npmjs.org/Bower
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 14:37:13
+17 verbose request id cb3c696e46e652f7
+18 verbose etag W/"7b4616c161f359885710856daedd7ad6"
+19 verbose lastModified Fri, 03 Aug 2018 00:37:14 GMT
+20 http request GET https://registry.npmjs.org/Bower
+21 http 200 https://registry.npmjs.org/Bower
+22 verbose headers { date: 'Mon, 20 Aug 2018 17:37:14 GMT',
+22 verbose headers   'content-type': 'application/json; charset=UTF-8',
+22 verbose headers   'transfer-encoding': 'chunked',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'set-cookie': [ '__cfduid=dda6cb02684506092bd2497a4e5a672401534786633; expires=Tue, 20-Aug-19 17:37:13 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+22 verbose headers   'cf-cache-status': 'MISS',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   'cf-ray': '44d6a0692ce567fd-EZE',
+22 verbose headers   etag: 'W/"a681939ad70f049a5e2fa1f5c6424ee0"',
+22 verbose headers   'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+22 verbose headers   'last-modified': 'Sat, 26 May 2018 15:56:46 GMT',
+22 verbose headers   vary: 'accept-encoding, accept',
+22 verbose headers   server: 'cloudflare',
+22 verbose headers   'content-encoding': 'gzip' }
+23 silly get cb [ 200,
+23 silly get   { date: 'Mon, 20 Aug 2018 17:37:14 GMT',
+23 silly get     'content-type': 'application/json; charset=UTF-8',
+23 silly get     'transfer-encoding': 'chunked',
+23 silly get     connection: 'keep-alive',
+23 silly get     'set-cookie': [ '__cfduid=dda6cb02684506092bd2497a4e5a672401534786633; expires=Tue, 20-Aug-19 17:37:13 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+23 silly get     'cf-cache-status': 'MISS',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     'cf-ray': '44d6a0692ce567fd-EZE',
+23 silly get     etag: 'W/"a681939ad70f049a5e2fa1f5c6424ee0"',
+23 silly get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+23 silly get     'last-modified': 'Sat, 26 May 2018 15:56:46 GMT',
+23 silly get     vary: 'accept-encoding, accept',
+23 silly get     server: 'cloudflare',
+23 silly get     'content-encoding': 'gzip' } ]
+24 verbose get saving Bower to C:\Users\sam\AppData\Roaming\npm-cache\registry.npmjs.org\Bower\.cache.json
+25 verbose correctMkdir C:\Users\sam\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+26 verbose stack TypeError: Cannot convert undefined or null to object
+26 verbose stack     at pickVersionFromRegistryDocument (C:\Program Files\nodejs\node_modules\npm\lib\fetch-package-metadata.js:125:29)
+26 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\iferr\index.js:13:50
+26 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\utils\pulse-till-done.js:20:8
+26 verbose stack     at saved (C:\Program Files\nodejs\node_modules\npm\lib\cache\caching-client.js:174:7)
+26 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:241:18
+26 verbose stack     at FSReqWrap.oncomplete (fs.js:123:15)
+27 verbose cwd C:\xampp\htdocs\htdocs\Programacion-III\Programacion_laboratorio_III_2018
+28 error Windows_NT 10.0.17134
+29 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "Bower"
+30 error node v6.11.3
+31 error npm  v3.10.10
+32 error Cannot convert undefined or null to object
+33 error If you need help, you may report this error at:
+33 error     <https://github.com/npm/npm/issues>
+34 verbose exit [ 1, true ]

@@ -1,0 +1,173 @@
+body {
+  margin: 0 auto;
+  color: blue;
+  background: url("restauranteFondo.jpg") no-repeat center center fixed;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+  font-family:'Open Sans',sans-serif;
+  font-size: 20px;
+}
+
+.CajaInicio {
+  width:750px;
+  margin:0 auto;
+  margin-top:8px;
+  margin-bottom:2%;
+  transition:opacity 5s;
+  -webkit-transition:opacity 1s;
+}
+
+
+
+.CajaInicio h1,h4{
+  background:rgb(14, 26, 112);
+  padding:20px 0;
+  font-size:140%;
+  font-weight:300;
+  text-align:center;
+  color:#fff;
+ -webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+
+.CajaInicio a {
+    color: white;
+    text-align: center;
+    font-family:'Open Sans',sans-serif;
+}
+
+.CajaInicio p{
+  color: blue;
+  text-align: center;
+  border: green 5px double;
+  font-size: 30px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight:bold;
+}
+
+.MiBotonUTN {
+  display:block;
+  text-transform: capitalize;
+  border:hidden;
+  width:100%;
+  background:#f50056;
+  margin:0 auto;
+  margin-top:1%;
+  padding:10px;
+  text-align:center;
+  text-decoration:none;
+  color:#fff;
+  cursor:pointer;
+  -moz-border-radius:7px;
+  -webkit-border-radius:7px;
+  border-radius:7px;
+  transition:background .3s;
+  -webkit-transition:background .3s;
+}
+
+input
+{
+  color: black
+}
+option{
+  color: black;
+}
+
+::-webkit-input-placeholder { /* Safari, Chrome and Opera */
+  color: black;
+}
+
+legend{
+  color: blue;
+  text-decoration: black;
+}
+
+p{
+  style: blue;
+
+}
+
+#imagenPrincipal{
+width: 85%;
+border: 3px solid black;
+}
+
+table{
+  background-color: black;
+  color: blue;
+}
+.navbar-default {
+    background-color: lightblue;
+    border-color: #030033;
+    border-width: 2px;
+    font-size : 18px;
+    font-family:Verdana,Helvetica;
+    font-weight:bold;
+}
+
+#BotonCerrarSesion{
+        font-size: 15px;
+        font-family:Verdana,Helvetica;
+        font-weight:bold;
+        color:red;
+        background:#638cb5;
+}
+
+form{
+  background: cadetblue;
+  font-size: 25px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight:bold;
+}
+
+#loginInicioForm{
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight:bold;
+        background: transparent;
+}
+
+#usuario{
+  font-size: 18px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight:bold;
+  color: black;
+}
+
+input[placeholder]{
+  color: black;
+}
+
+.page-header{
+  -webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+
+#RegistrarForm{
+  background: lightgrey;
+  color : black;
+}
+
+#tablaEncabezado{
+  color: chartreuse;
+}
+
+
+
+#BuscadorFechas{
+  background-color: transparent;
+}
+
+
+
+
+
+
+
+
