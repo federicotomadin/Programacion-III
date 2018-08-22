@@ -1,14 +1,13 @@
 
  function EnviarDatos()
 {
-
-  alert("esto aca");
-
-    var funcionAjax = $.ajax({
-    url : "../vendor/Login/ValidarUsuario",
-    method: "POST",
-    data: {mail: $("#Usuario").val(), clave: $("#Clave").val()}
+    var funcionAjax = $.ajax({   
+    url : '../vendor/Login/ValidarUsuario',
+    type: 'POST',
+    dataType: 'json',
+    data: {Usuario: $("#Usuario").val(), clave: $("#clave").val()}   
     });
+
     funcionAjax.then(function(dato){
         //PREGUNTAR A LOS PROFES POR QUE SE ENVIA DOS VECES EL RESPONSE
       if(dato.status == "200" && dato.tipo == "Socio")
@@ -106,6 +105,7 @@
      'warning');
   }
     },function(dato){
+      alert(console.log(dato));
      console.log("ERROR"+dato);
     });
 }
