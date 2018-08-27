@@ -20,8 +20,9 @@
           'success',
         {button: 'aceptar',}
         ).then(function(){
+          console.log(dato);
           localStorage.setItem("hora",dato.hora);
-          localStorage.setItem("idEmpleado",dato.id);
+          localStorage.setItem("rol",dato.tipo);
           localStorage.setItem("token",dato.token);
           window.location.replace("../enlaces/estacionamiento.html");
         },function(){
@@ -31,7 +32,7 @@
       else if(dato.status == "200" && dato.tipo == "Mozo")
      {
        localStorage.setItem("hora",dato.hora);
-       localStorage.setItem("idEmpleado",dato.id);
+       localStorage.setItem("rol",dato.tipo);
        localStorage.setItem("token",dato.token);
        swal(
          'USUARIO VÁLIDO!',
@@ -47,7 +48,7 @@
      else if(dato.status == "200" && dato.tipo == "Cocinero")
      {
        localStorage.setItem("hora",dato.hora);
-       localStorage.setItem("idEmpleado",dato.id);
+       localStorage.setItem("rol",dato.tipo);
        localStorage.setItem("token",dato.token);
        swal(
          'USUARIO VÁLIDO!',
@@ -62,7 +63,7 @@
      else if(dato.status == "200" && dato.tipo == "Bartender")
      {
        localStorage.setItem("hora",dato.hora);
-       localStorage.setItem("idEmpleado",dato.id);
+       localStorage.setItem("rol",dato.tipo);
        localStorage.setItem("token",dato.token);
        swal(
          'USUARIO VÁLIDO!',
@@ -77,7 +78,7 @@
      else if(dato.status == "200" && dato.tipo == "Cervecero")
      {
        localStorage.setItem("hora",dato.hora);
-       localStorage.setItem("idEmpleado",dato.id);
+       localStorage.setItem("rol",dato.tipo);
        localStorage.setItem("token",dato.token);
        swal(
          'USUARIO VÁLIDO!',
@@ -93,7 +94,7 @@
   else if(dato.status == "400")
   {
      swal('USUARIO INCORRECTO!',
-     'Revise su correo electrónico y/o su contraseña',
+     'Revise su usuario y/o su contraseña',
      'warning').then(function(){
       location.reload();
      });

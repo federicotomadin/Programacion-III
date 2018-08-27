@@ -25,8 +25,9 @@ $app->group('/Login', function(){
    $this->post('/CerrarSesion',\Login::class .':CerrarSesion');
 })->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
-$app->group('/Sesion',function(){
-  $this->get('/TraerTodasLasSesiones',\SesionApi::class .':TraerTodasLasSesiones')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+$app->group('/Login',function(){
+  $this->get('/CerrarSesion',\SesionApi::class .':CerrarSesion')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerSesiones',\SesionApi::class .':TraerSesiones')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 

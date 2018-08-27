@@ -30,6 +30,7 @@ public function ValidarUsuario($request, $response, $args) {
        $sesion->SetIdEmpleado($empleado->id_empleado);
        $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
        $fecha_ingreso = $dateTime->format("m/d/Y g:i A");
+       $resp["hora"]=$fecha_ingreso;
        $sesion->SetFechaIngreso($fecha_ingreso);
        Sesion::InsertarSesionInicio($sesion);
        $datosToken = array('Usuario' => $datos['Usuario'],'perfil' => $resp["tipo"]);
@@ -57,10 +58,8 @@ public function ValidarUsuario($request, $response, $args) {
        return $response->withJson($empleado,200);
    }
 
-
    public function CerrarSesion($request, $response, $args)
    {
-       $datos = $request->getParsedBody();
        $resp["status"] = 200;
        $id = Sesion::TraerUltimoIdAgregado();
        $sesion = Sesion::TraerSesionPorId($id);     

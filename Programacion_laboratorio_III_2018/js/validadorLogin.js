@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $("#loginInicioForm").bootstrapValidator({
+    $('#loginInicioForm').bootstrapValidator({
         message: 'Este valor no es valido',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -9,13 +9,13 @@ $(document).ready(function () {
         },
 
         fields: {
-            mail: {
+            Usuario: {
                 validators: {
                     notEmpty: {
-                        message: 'El mail del usuario es requerido'
+                        message: 'El usuario es requerido'
                     },
                    emailAddress: {
-                        message: 'El mail ingresado no es válido'
+                        message: 'El usuario ingresado no es válido'
                     }
                 }
             },
