@@ -24,7 +24,7 @@ public function InsertarPedido($request,$response,$args)
 
     if($payload->perfil!="Mozo")
     {
-       $resp["status"]="Operacion solo habilitada para mozos";
+       $resp["status"]="401";
        return $response->withJson($resp);
     }
   
