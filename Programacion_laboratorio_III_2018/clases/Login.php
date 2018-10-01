@@ -9,9 +9,11 @@ class Login
 public function ValidarUsuario($request, $response, $args) {
  
    $datos = $request->getParsedBody();
+   
 
-    if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['clave']))
+    if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['Clave']))
       {
+     
        $empleado = Empleado::TraerElEmpleadoPorUsuario($datos['Usuario']);
        if($empleado->habilitado == 1)
        {
@@ -33,6 +35,7 @@ public function ValidarUsuario($request, $response, $args) {
        $resp["hora"]=$fecha_ingreso;
        $sesion->SetFechaIngreso($fecha_ingreso);
        Sesion::InsertarSesionInicio($sesion);
+       $resp["Usuario"]=$datos['Usuario'];
        $datosToken = array('Usuario' => $datos['Usuario'],'perfil' => $resp["tipo"]);
        $token = AutentificadorJWT::CrearToken($datosToken);
        $resp["token"] = $token; 
@@ -43,7 +46,7 @@ public function ValidarUsuario($request, $response, $args) {
        }
     }
     else
-    {
+    {  
         $resp["status"] = 400;
     }
 

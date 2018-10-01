@@ -10,8 +10,7 @@ class AccesoDatos
         $servername= 'mysql.hostinger.com.ar';
         $database= 'u663828753_resta';
         $password= 'plSO5GEobXjF';
-        try {
-       
+        try {     
        
             $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 

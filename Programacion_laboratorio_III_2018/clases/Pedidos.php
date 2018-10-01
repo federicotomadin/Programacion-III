@@ -183,10 +183,10 @@ public static function TraerTotalFacturado($CodigoMesa)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function TraerTiempoFaltante($Codigo,$IdPedido)
+public static function TraerTiempoFaltante($CodigoMesa,$IdPedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso, Tiempo_estimado  from pedidos where Id_pedido='$IdPedido' and codigo='$Codigo'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso, Tiempo_estimado  from pedidos where Id_pedido='$IdPedido' and CodigoMesa='$CodigoMesa'");
     $consulta->execute();    
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -23,11 +23,9 @@ class PedidosApi
 
 public function ConfirmarPedido($request,$response,$args)
 {
-    $codigoMesa=$request->getParsedBody();
+    $datos=$request->getParsedBody();
 
     $pedido=new Pedidos();
-    $minutosAgregar=30;
-
 
     $resp["status"] = 200;
     $arrayConToken = $request->getHeader('token');
@@ -41,15 +39,15 @@ public function ConfirmarPedido($request,$response,$args)
         return $response->withJson($resp);
     }
     $pedido->SetId_empleado($empleado->id_empleado);
-    $pedido->SetCodigoMesa($codigoMesa["CodigoMesa"]);
+    $pedido->SetCodigoMesa($datos["CodigoMesa"]);
     $pedido->SetId_estadoCuenta(1);
     $pedido->SetImporte(Null);
 
-    if(ListaPedidos::BuscarPedidoCocina($codigoMesa["CodigoMesa"]))
+    if(ListaPedidos::BuscarPedidoCocina($datos["CodigoMesa"]))
     {
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $pedido->SetTiempo_ingreso($dateTime->format("Y/m/d H:i:s"));
-    $dateTime->add(new DateInterval('PT' . $minutosAgregar . 'M'));
+    $dateTime->add(new DateInterval('PT' . intval($datos["AgregarMinutos"]) . 'M'));
     $fecha_estimada = $dateTime->format("Y/m/d H:i:s");
     $pedido->SetTiempo_estimado($fecha_estimada);
     }
@@ -62,8 +60,8 @@ public function ConfirmarPedido($request,$response,$args)
     $nombreAnterior = $files['foto']->getClientFilename();
     $extension= explode(".", $nombreAnterior) ;
     $extension=array_reverse($extension);
-    $files['foto']->moveTo($destino.$idPedidoFoto.$codigoMesa["CodigoMesa"].".".$extension[0]);
-    $pedido->SetFoto($idPedidoFoto.$codigoMesa["CodigoMesa"].".".$extension[0]);
+    $files['foto']->moveTo($destino.$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
+    $pedido->SetFoto($idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
     
     if(!Pedidos::InsertarElPedido($pedido))
     {
@@ -74,10 +72,11 @@ public function ConfirmarPedido($request,$response,$args)
     if($resp["status"]==200)
     {
         $IdPedido=Pedidos::TraerElUltimoAgregado();
-        ListaPedidos::IntertarIdPedido($codigoMesa["CodigoMesa"],$IdPedido);
+        ListaPedidos::IntertarIdPedido($datos["CodigoMesa"],$IdPedido);
     }
 
-    return $response->withJson($resp);   
+
+    return $response->withJson($resp);  
     
 }
 
@@ -165,6 +164,7 @@ public function TraerDatosParaExportarExcel($request, $response, $args)
 
 $arrayPedidos = Pedidos::TraerTodosPedidos();
 
+
 if (count($arrayPedidos) > 0) {
     $objPHPExcel = new PHPExcel();
     
@@ -218,15 +218,13 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth("26");
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(false);
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth("32");   
 $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(false);
-$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth("18");
+$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth("26");
 $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(false);
-$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth("26");
+$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth("25");
 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(false);
-$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth("25");
+$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth("30");   
 $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(false);
-$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth("30");   
-$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(false);
-$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth("26");
+$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth("26");
 
 
 $objPHPExcel->getActiveSheet()->getCell('A1')->setValue('TIEMPO INGRESO');
@@ -247,29 +245,29 @@ $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('E1')->setValue('ESTADO DE CUENTA');
+$objPHPExcel->getActiveSheet()->getCell('D1')->setValue('ESTADO DE CUENTA');
+$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleArray);
+$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleColor);
+$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($styleTextCenter);
+$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($bordes);
+
+$objPHPExcel->getActiveSheet()->getCell('E1')->setValue('EMPLEADO');
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('F1')->setValue('EMPLEADO');
+$objPHPExcel->getActiveSheet()->getCell('F1')->setValue('CODIGOMESA');
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($bordes);
 
-$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('CODIGOMESA');
+$objPHPExcel->getActiveSheet()->getCell('G1')->setValue('IMPORTE');
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleArray);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleColor);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($styleTextCenter);
 $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($bordes);
-
-$objPHPExcel->getActiveSheet()->getCell('H1')->setValue('IMPORTE');
-$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleArray);
-$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleColor);
-$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($styleTextCenter);
-$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($bordes);
 
 
 for($i=0;$i<count($arrayPedidos);$i++)
@@ -295,9 +293,7 @@ for($i=0;$i<count($arrayPedidos);$i++)
        $objPHPExcel->setActiveSheetIndex(0)
       ->getStyle('G'.($i+2))
       ->applyFromArray($bordes);
-       $objPHPExcel->setActiveSheetIndex(0)
-      ->getStyle('H'.($i+2))
-      ->applyFromArray($bordes);
+
  
       $objPHPExcel->setActiveSheetIndex(0)
       ->getStyle('A'.($i+2))
@@ -309,7 +305,7 @@ for($i=0;$i<count($arrayPedidos);$i++)
       ->getStyle('C'.($i+2))
       ->applyFromArray($styleTextCenter);
       $objPHPExcel->setActiveSheetIndex(0)
-      ->getStyle('D'.($i+2))
+     ->getStyle('D'.($i+2))
       ->applyFromArray($styleTextCenter);
       $objPHPExcel->setActiveSheetIndex(0)
       ->getStyle('E'.($i+2))
@@ -320,22 +316,20 @@ for($i=0;$i<count($arrayPedidos);$i++)
       $objPHPExcel->setActiveSheetIndex(0)
       ->getStyle('G'.($i+2))
       ->applyFromArray($styleTextCenter);
-      $objPHPExcel->setActiveSheetIndex(0)
-      ->getStyle('H'.($i+2))
-      ->applyFromArray($styleTextCenter);
 
     $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i]["Id_empleado"]);    
     $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i]["Id_estadoCuenta"]);
-    $estadoPedido= EstadoPedidos::TraerEstadoPedidos($arrayPedidos[$i]["Id_estadoPedido"]);
+   // $estadoPedido= EstadoPedidos::TraerEstadoPedidos($arrayPedidos[$i]["Id_estadoPedido"]);
+
 
       $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A'.($i+2), $arrayPedidos[$i]["Tiempo_ingreso"])
+            ->setCellValue('A'.($i+2),$arrayPedidos[$i]["Tiempo_ingreso"])
             ->setCellValue('B'.($i+2),$arrayPedidos[$i]["Tiempo_estimado"])
             ->setCellValue('C'.($i+2),$arrayPedidos[$i]["Tiempo_llegadaMesa"])
-            ->setCellValue('E'.($i+2),$estadoCuenta[0]["Descripcion"])
-            ->setCellValue('F'.($i+2),$empleado[0]["Usuario"])
-            ->setCellValue('G'.($i+2),$arrayPedidos[$i]["CodigoMesa"])
-            ->setCellValue('H'.($i+2),$arrayPedidos[$i]["Importe"]);                
+            ->setCellValue('D'.($i+2),$estadoCuenta[0]["Descripcion"])
+            ->setCellValue('E'.($i+2),$empleado[0]["Usuario"])
+            ->setCellValue('F'.($i+2),$arrayPedidos[$i]["CodigoMesa"])
+            ->setCellValue('G'.($i+2),$arrayPedidos[$i]["Importe"]);                
          
 }
 
@@ -452,6 +446,7 @@ public function PedidosQueSeEntregaronEnTiempo($request, $response, $args)
 public function PedidosCancelados($request, $response, $args)
 {
     $array= ListaPedidos::TraerTodosLosPedidos();
+
     for($i=0; $i<count($array);$i++)
     {
         if($array[$i]["Id_estadoPedido"]==3)
@@ -461,13 +456,10 @@ public function PedidosCancelados($request, $response, $args)
     }
     if($arrayFinal==null)
     {
-        $resp["Estado"]= "No hay pedidos cancelados";
         return $response->withJson($resp);
-
     }
     else
     {
-        $arrayFinal["Canelados"] = "PEDIDOS CANCELADOS";
         return $response->withJson($arrayFinal);
     }
 }
@@ -488,8 +480,7 @@ public function TraerMesaMasUsada($request, $response, $args)
           $mayor=$cantidad;  
        }   
    
-   }
-  
+   }  
     $resp["IdMesa"] =  $CodigoMesa;
     $resp["Cantidad"] = $mayor[0]["Cantidad"];
 
@@ -551,27 +542,26 @@ public function TraerMesaQueMenosFacturo($request, $response, $args)
     $arrayMesas= Mesas::TraerMesas();
     $importeMayor=50000;
 
-    for($i=0; $i<count($arrayMesas);$i++)
-    {
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
-        if($aux[$i]["Importe"] <= $importeMayor)
-       { 
-          if($aux[$i]["Importe"] !=null)
-          {
 
-            $importeMayor=$aux[$i]["Importe"];  
-            $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
-          }
+    for($i=0; $i<count($arrayMesas);$i++)
+    {    
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
+
+        if($aux[0]["Importe"] !=null)
+        {
+        if($aux[0]["Importe"] < $importeMayor)
+       {       
+            $importeMayor=$aux[0]["Importe"];  
+            $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];      
+        }
           
-       }   
-   
+       }      
     }  
 
-    $resp["Mesa"] =  $importeMayor;
-    $resp["Importe"] =  $CodigoMesa;
+    $resp["Mesa"] = $CodigoMesa;
+    $resp["Importe"] =   $importeMayor;
 
-    return $response->withJson($resp);
-   
+    return $response->withJson($resp);   
 }
 
 
@@ -582,7 +572,7 @@ public function TraerFacturaMayorImporte($request, $response, $args)
     $pedidoMayor=0;
     $importeMayor=0;
 
-    
+
     for($i=0; $i<count($pedidos);$i++)
     {
      if($pedidos[$i]["Importe"]>= $importeMayor)
@@ -603,21 +593,24 @@ public function TraerFacturaMenorImporte($request, $response, $args)
 {
     $pedidos=Pedidos::TraerTodosPedidos();
     $arrayMesas= Mesas::TraerMesas();
-    $arrayPedidos = array();
+   
     $importeMenor=50000;
 
     
     for($i=0; $i<count($pedidos);$i++)
     {
-     if($pedidos[$i]["Importe"]<= $importeMenor)
-     {
-         $importeMenor=$pedidos[$i]["Importe"];
-         array_push($arrayPedidos,$pedidos[$i]["Id_mesa"]);
+        if($pedidos[$i]["Importe"]!=null)
+        {         
 
-     }
+            if($pedidos[$i]["Importe"]<= $importeMenor)
+            {
+                $importeMenor=$pedidos[$i]["Importe"];
+            $resp["factura Menor"]=$pedidos[$i]["Importe"];
+            $resp["mesa"] = $pedidos[$i]["CodigoMesa"];        
+            }
+        }
     }
-
-    $resp["Mesas con mayor importe facturado"] =  $arrayPedidos;
+   
     return $response->withJson($resp);
 }
 
@@ -626,20 +619,18 @@ public function TraerTiempoFaltante($request, $response, $args)
 {
     $data = $request->getParsedBody();
    
-    $arrayTiempo=Pedidos::TraerTiempoFaltante($data["Codigo"],$data["IdPedido"]);
+    $arrayTiempo=Pedidos::TraerTiempoFaltante($data["CodigoMesa"],$data["IdPedido"]);
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $fecha_ingreso = $dateTime->format("Y/m/d H:i:s");
     $tiempoActual= strtotime($fecha_ingreso);
     $tiempoEstimado=strtotime($arrayTiempo[0]["Tiempo_estimado"]);
     $tiempoFaltante =  $tiempoEstimado - $tiempoActual; 
     
-    $time = date("H:i:s",$tiempoFaltante);
-    $resp["Tiempo Faltante"] =   $time;
+    $time = date("i:s",$tiempoFaltante);
+    $resp["Tiempo Faltante"] =  $time;
     
     return $response->withJson($resp);
-}
-
-        
+}        
 
 }
 

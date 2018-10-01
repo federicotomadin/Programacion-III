@@ -187,11 +187,11 @@ $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function TraerOperacionesEntradaPorIdEmpleado($id_empleado)
+public static function TraerOperacionesEntradaPorIdEmpleado($Id_empleado)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("SELECT empleados.Usuario as Usuario , operaciones.FechaOperacion as FechaOperacion FROM empleados 
-INNER JOIN operaciones ON empleados.id_empleado=operaciones.Id_empleado WHERE operaciones.Id_empleado = '$id_empleado' group by '$id_empleado'");
+$consulta = $objetoAccesoDato->RetornarConsulta("SELECT empleados.Usuario  FROM empleados 
+INNER JOIN pedidos ON empleados.id_empleado=pedidos.Id_empleado WHERE pedidos.Id_empleado = '$Id_empleado'");
 $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -219,8 +219,8 @@ public static function TraerDatosParaExportar()
 {
 $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();
 $consulta = $objetoAcceso->RetornarConsulta("SELECT empleados.id_empleado as IdEmpleado, empleados.Usuario as Usuario, sesion.FechaIngreso, empleados.habilitado from empleados
-inner join sesion on empleados.id_empleado=sesion.IdEmpleado 
-inner join operaciones on empleados.id_empleado=operaciones.Id_empleado group by empleados.id_empleado");
+inner join sesion on empleados.id_empleado=sesion.IdEmpleado group by empleados.id_empleado");
+//inner join operaciones on empleados.id_empleado=operaciones.Id_empleado group by empleados.id_empleado");
 $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 

@@ -1,7 +1,7 @@
 body {
     margin: 0 auto;
     color: black;
-    background: url("restauranteFondo.jpg") no-repeat center center fixed;
+    background: url("portada1.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -127,10 +127,11 @@ form {
 }
 
 #Usuario {
-    font-size: 18px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
-    color: black;
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
 }
 
 input[placeholder] {
@@ -181,10 +182,15 @@ input[placeholder] {
     background: url("restauranteFondo.jpg") no-repeat center center fixed;
 }
 
+.navbar {
+    text-align: center;
+}
+
 .container {
     background: #fff;
     border-radius: 10px;
     box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .carousel-inner {

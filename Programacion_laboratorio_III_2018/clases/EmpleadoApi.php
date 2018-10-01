@@ -170,9 +170,9 @@ if($empleado == false)
 }
 else
 {
-    $sesiones = Empleado::TraerFechasDeSesionesPorIdEmpleado($empleado->id);
-    $password = str_repeat("*", strlen($empleado->clave));
-    $empleado->clave = $password;
+    $sesiones = Empleado::TraerFechasDeSesionesPorIdEmpleado($empleado[0]["id_empleado"]);
+    $password = str_repeat("*", strlen($empleado[0]["Clave"]));
+    $empleado[0]["Clave"] = $password;
     $resp["empleado"] = $empleado;
     $resp["sesiones"] = $sesiones;
 }
@@ -191,20 +191,18 @@ if($empleado == false)
 }
 else
 {
-    $password = str_repeat("*", strlen($empleado->Clave));
-    $empleado->clave = $password;
+   
+    $password = str_repeat("*", strlen($empleado[0]["Clave"]));
+    $empleado[0]["Clave"] = $password;
 
-
-    $operacionesEntrada = Empleado::TraerOperacionesEntradaPorIdEmpleado($empleado->id_empleado);  
-    $cantidadOperacionesEntrada = count($operacionesEntrada);
-    $resp["empleado"] = $empleado;
-    if($cantidadOperacionesEntrada == 0)
+    $operacionesEntrada = Empleado::TraerOperacionesEntradaPorIdEmpleado($empleado[0]["id_empleado"]); 
+    $resp["empleado"] = $empleado[0];
+    if(count($operacionesEntrada) == 0)
     {
         $operacionesEntrada = "EL EMPLEADO NO TIENE OPERACIONES DE ENTRADA";
     }
     $resp["empleado"] = $empleado;
-    $resp["operacionesEntrada"] = $operacionesEntrada;
-    $resp["cantidadOperacionesEntrada"] = $cantidadOperacionesEntrada;
+    $resp["operacionesEntrada"] = count($operacionesEntrada);
 
 }
 return $response->withJson($resp);
@@ -326,14 +324,15 @@ for($i=0;$i<count($arrayEmpleados);$i++)
       $objPHPExcel->setActiveSheetIndex(0)
       ->getStyle('D'.($i+2))
       ->applyFromArray($styleTextCenter);
+
      
-    $cantOperaciones=Operaciones::TraerOperacionesPorEmpleado($arrayEmpleados[$i]["IdEmpleado"]);
+    $cantOperaciones=Empleado::TraerOperacionesEntradaPorIdEmpleado($arrayEmpleados[$i]["IdEmpleado"]);
 
 
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.($i+2), $arrayEmpleados[$i]["Usuario"])
             ->setCellValue('B'.($i+2),$arrayEmpleados[$i]["FechaIngreso"])
-            ->setCellValue('C'.($i+2),$cantOperaciones[0]["CantidadOperaciones"])
+            ->setCellValue('C'.($i+2),count($cantOperaciones))
             ->setCellValue('D'.($i+2),$arrayEmpleados[$i]["habilitado"]);
 }
 
