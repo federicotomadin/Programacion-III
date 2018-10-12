@@ -5,7 +5,7 @@ window.onload = function() {
         url: '../vendor/Login/TraerEmpleado/' + usuario
     });
     funcionAjax.then(function(dato) {
-        document.getElementById("usuario").innerHTML = "<p id='Usuario'><span class='glyphicon glyphicon-user'>" + dato.Usuario + "</span></p>";
+        document.getElementById("usuario").innerHTML = "<p id='Usuario' style='color:white;'><span class='glyphicon glyphicon-user'>" + dato.Usuario + "</span></p>";
     }, function(dato) {
         console.log("No se pudo cargar el administrador!");
     });

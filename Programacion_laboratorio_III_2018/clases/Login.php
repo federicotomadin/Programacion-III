@@ -10,7 +10,6 @@ public function ValidarUsuario($request, $response, $args) {
  
    $datos = $request->getParsedBody();
    
-
     if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['Clave']))
       {
      

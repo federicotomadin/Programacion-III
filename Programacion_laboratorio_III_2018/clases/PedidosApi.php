@@ -56,13 +56,16 @@ public function ConfirmarPedido($request,$response,$args)
     $idPedidoFoto = Pedidos::TraerElUltimoAgregado();
     $idPedidoFoto+=1;
     $destino = "../fotosPedidos/";
-    $files = $request->getUploadedFiles();
+    $files = $request->getUploadedFiles(); 
     $nombreAnterior = $files['foto']->getClientFilename();
     $extension= explode(".", $nombreAnterior) ;
     $extension=array_reverse($extension);
     $files['foto']->moveTo($destino.$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
     $pedido->SetFoto($idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
-    
+    PedidosApi::redimensionarImagen("../fotosPedidos/".$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0] 
+    ,"../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]
+    ,100,40,$jpgQuality=100);
+
     if(!Pedidos::InsertarElPedido($pedido))
     {
        $resp["status"] = 400;
@@ -80,10 +83,9 @@ public function ConfirmarPedido($request,$response,$args)
     
 }
 
-
 public function CerrarMesa($request,$response,$args)
 {
-    $codigoMesa=$request->getParsedBody();
+    $codigoMesa=$args["CodigoMesa"];
 
     $resp["status"] = 200;
     $arrayConToken = $request->getHeader('token');
@@ -98,7 +100,7 @@ public function CerrarMesa($request,$response,$args)
     }
 
     $resp["status"]=200;
-    $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa["CodigoMesa"]);
+    $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa);
    /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
     {     
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
@@ -106,9 +108,9 @@ public function CerrarMesa($request,$response,$args)
     Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$codigoMesa["CodigoMesa"]);
     }*/
     
-    $importe=ListaPedidos::TraerImportePedido($pedido->Id_pedido,$codigoMesa["CodigoMesa"]);
+    $importe=ListaPedidos::TraerImportePedido($pedido->Id_pedido,$codigoMesa);
 
-    if(!Pedidos::CerrarMesa($codigoMesa["CodigoMesa"],$importe[0]["Importe"]))
+    if(!Pedidos::CerrarMesa($codigoMesa,$importe[0]["Importe"]))
     {
         $resp["status"]=400;
     }
@@ -145,10 +147,8 @@ return $response->withJson($resp);
 public function TraerTodosLosPedidos($request,$response,$args)
 {
 $pedidos = Pedidos::TraerTodosPedidos();
-
 $resp["pedidos"] = $pedidos;
-$response = $response->withJson($resp);
-return $response;
+return  $response->withJson($resp);
 }
 
 
@@ -159,7 +159,7 @@ public function ListadoConImporte($request,$response,$args)
 
 }
 
-public function TraerDatosParaExportarExcel($request, $response, $args)
+public function TraerDatosParaExportarExcel()
 {
 
 $arrayPedidos = Pedidos::TraerTodosPedidos();
@@ -317,20 +317,17 @@ for($i=0;$i<count($arrayPedidos);$i++)
       ->getStyle('G'.($i+2))
       ->applyFromArray($styleTextCenter);
 
-    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i]["Id_empleado"]);    
-    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i]["Id_estadoCuenta"]);
-   // $estadoPedido= EstadoPedidos::TraerEstadoPedidos($arrayPedidos[$i]["Id_estadoPedido"]);
-
+    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i] -> Id_empleado);    
+    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i] -> Id_estadoCuenta);
 
       $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A'.($i+2),$arrayPedidos[$i]["Tiempo_ingreso"])
-            ->setCellValue('B'.($i+2),$arrayPedidos[$i]["Tiempo_estimado"])
-            ->setCellValue('C'.($i+2),$arrayPedidos[$i]["Tiempo_llegadaMesa"])
+            ->setCellValue('A'.($i+2),$arrayPedidos[$i]-> Tiempo_ingreso)
+            ->setCellValue('B'.($i+2),$arrayPedidos[$i]-> Tiempo_estimado)
+            ->setCellValue('C'.($i+2),$arrayPedidos[$i]-> Tiempo_llegadaMesa)
             ->setCellValue('D'.($i+2),$estadoCuenta[0]["Descripcion"])
             ->setCellValue('E'.($i+2),$empleado[0]["Usuario"])
-            ->setCellValue('F'.($i+2),$arrayPedidos[$i]["CodigoMesa"])
-            ->setCellValue('G'.($i+2),$arrayPedidos[$i]["Importe"]);                
-         
+            ->setCellValue('F'.($i+2),$arrayPedidos[$i]-> CodigoMesa)
+            ->setCellValue('G'.($i+2),$arrayPedidos[$i]-> Importe);                 
 }
 
 $styleArrayFecha = array(
@@ -394,16 +391,16 @@ $pdf->SetTextColor(0,0,0);
 
 for($i=0;$i<count($arrayPedidos);$i++)
 {
-    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i]["Id_empleado"]);    
-    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i]["Id_estadoCuenta"]);
-    $estadoPedido= EstadoPedidos::TraerEstadoPedidos($arrayPedidos[$i]["Id_estadoPedido"]);
-    $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_ingreso"],1,0,'C');
-    $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_estimado"],1,0,'C');
-    $pdf->Cell(40,8,$arrayPedidos[$i]["Tiempo_llegadaMesa"],1,0,'C');
+    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i]-> Id_empleado);    
+    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i]-> Id_estadoCuenta);
+
+    $pdf->Cell(40,8,$arrayPedidos[$i]-> Tiempo_ingreso,1,0,'C');
+    $pdf->Cell(40,8,$arrayPedidos[$i]-> Tiempo_esttimado,1,0,'C');
+    $pdf->Cell(40,8,$arrayPedidos[$i]-> Tiempo_llegadaMesa,1,0,'C');
     $pdf->Cell(30,8,$estadoCuenta[0]["Descripcion"],1,0,'C');
     $pdf->Cell(20,8,$empleado[0]["Usuario"],1,0,'C');
-    $pdf->Cell(13,8,$arrayPedidos[$i]["CodigoMesa"],1,0,'C');
-    $pdf->Cell(25,8,$arrayPedidos[$i]["Importe"],1,0,'C');
+    $pdf->Cell(13,8,$arrayPedidos[$i]-> CodigoMesa,1,0,'C');
+    $pdf->Cell(25,8,$arrayPedidos[$i]-> Importe,1,0,'C');
     $pdf->Ln(8);
 }
 
@@ -630,7 +627,89 @@ public function TraerTiempoFaltante($request, $response, $args)
     $resp["Tiempo Faltante"] =  $time;
     
     return $response->withJson($resp);
-}        
+}
+
+public function CambiarTamanio($id)
+{
+    $empleado = Empleado::TraerElEmpleado($id);
+        if($empleado == false)
+            {
+            $resp["status"] = 400;
+            }
+        else
+        {
+        $fotosPedidos = '../fotosPedidos/';
+    if(file_exists($fotosPedidos.$empleado->GetFoto()))
+    {
+    $infoFoto = pathinfo("../fotosPedidos/".$empleado->GetFoto());
+    // open an image file
+    $img = Image::make($fotosPedidos.$empleado->GetFoto());
+
+    // now you are able to resize the instance
+    $img->resize(3000 , 2000);
+
+    //finally we save the image as a new file
+    $img->save($fotosPedidos.'FotosCambiadasDeTamanio/'.$infoFoto["basename"]);
+    $resp["status"] = 200;
+    }
+    else
+    {
+        $resp["status"] = 400;
+    }
+}
+return $response->withJson($resp);
+}
+
+function redimensionarImagen($origin,$destino,$newWidth,$newHeight,$jpgQuality=100)
+{
+    // getimagesize devuelve un array con: anchura,altura,tipo,cadena de 
+    // texto con el valor correcto height="yyy" width="xxx"
+    $datos=getimagesize($origin);
+ 
+    // comprobamos que la imagen sea superior a los tamaños de la nueva imagen
+    if($datos[0]>$newWidth || $datos[1]>$newHeight)
+    {
+ 
+        // creamos una nueva imagen desde el original dependiendo del tipo
+        if($datos[2]==1)
+            $img=imagecreatefromgif($origin);
+        if($datos[2]==2)
+            $img=imagecreatefromjpeg($origin);
+        if($datos[2]==3)
+            $img=imagecreatefrompng($origin);
+ 
+        // Redimensionamos proporcionalmente
+        if(rad2deg(atan($datos[0]/$datos[1]))>rad2deg(atan($newWidth/$newHeight)))
+        {
+            $anchura=$newWidth;
+            $altura=round(($datos[1]*$newWidth)/$datos[0]);
+        }else{
+            $altura=$newHeight;
+            $anchura=round(($datos[0]*$newHeight)/$datos[1]);
+        }
+ 
+        // creamos la imagen nueva
+        $newImage = imagecreatetruecolor($anchura,$altura);
+ 
+        // redimensiona la imagen original copiandola en la imagen
+        imagecopyresampled($newImage, $img, 0, 0, 0, 0, $anchura, $altura, $datos[0], $datos[1]);
+ 
+        // guardar la nueva imagen redimensionada donde indicia $destino
+        if($datos[2]==1)
+            imagegif($newImage,$destino);
+        if($datos[2]==2)
+            imagejpeg($newImage,$destino,$jpgQuality);
+        if($datos[2]==3)
+            imagepng($newImage,$destino);
+ 
+        // eliminamos la imagen temporal
+        imagedestroy($newImage);
+ 
+        return true;
+    }
+    return false;
+}
+
 
 }
 

@@ -3,7 +3,7 @@ function EnviarDatos() {
         url: '../vendor/Login/ValidarUsuario',
         type: 'POST',
         dataType: 'json',
-        data: { Usuario: $("#Usuario").val(), clave: $("#Clave").val() },
+        data: { Usuario: $("#Usuario").val(), Clave: $("#Clave").val() },
     });
 
     funcionAjax.then(function(dato) {
@@ -91,7 +91,7 @@ function EnviarDatos() {
                 'warning');
         }
     }, function(dato) {
-        alert(console.log(dato));
+        alert(console.log(dato.status));
         console.log("ERROR" + dato);
     });
 }

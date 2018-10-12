@@ -30,7 +30,7 @@ $app->group('/Login', function(){
 
 $app->group('/Pedidos',function(){
   $this->post('/ConfirmarPedido',\PedidosApi::class .':ConfirmarPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->post('/CerrarMesa',\PedidosApi::class .':CerrarMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/CerrarMesa/{CodigoMesa}',\PedidosApi::class .':CerrarMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->put('/ModificarElPedido/{id}',\PedidosApi::class .':ModificarElPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosQueSeEntregaron',\PedidosApi::class .':PedidosQueSeEntregaronEnTiempo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/TraerTiempoFaltante',\PedidosApi::class .':TraerTiempoFaltante')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -41,12 +41,15 @@ $app->group('/Pedidos',function(){
   $this->get('/TraerMesaQueMenosFacturo',\PedidosApi::class .':TraerMesaQueMenosFacturo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerFacturaMayorImporte',\PedidosApi::class .':TraerFacturaMayorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerFacturaMenorImporte',\PedidosApi::class .':TraerFacturaMenorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerTodosLosPedidos',\PedidosApi::class .':TraerTodosLosPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosExcel',\PedidosApi::class .':TraerDatosParaExportarExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosPdf',\PedidosApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->group('/ListaPedidos', function(){
   $this->post('/InsertarPedido',\ListaPedidosApi::class .':InsertarPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerTodosLosProductos',\ListaPedidosApi::class .':TraerTodosLosProductos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerTodasLasMesas',\ListaPedidosApi::class .':TraerTodasLasMesas')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/VerPedidos',\ListaPedidosApi::class .':VerPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/CambiarEstadoPedido',\ListaPedidosApi::class .':CambiarEstadoPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/ListadoImporte/{id}', \ListaPedidosApi::class .':TraerImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

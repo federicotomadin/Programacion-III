@@ -145,7 +145,7 @@ public static function TraerTodosPedidos()
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos");
     $consulta->execute();
-    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
 public static function BorrarElPedido($IdPedido)
@@ -234,21 +234,6 @@ public static function ActualizarTiempoLLegadaMesa($TiempoLlegadaMesa,$CodigoMes
     where CodigoMesa='$CodigoMesa'");
     return $consulta->execute();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 ?>

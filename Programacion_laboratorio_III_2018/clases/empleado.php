@@ -130,8 +130,8 @@ public static function TraerElEmpleado($Id_empleado)
 public static function InsertarElEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado)".
-    "VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado')");
+    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado)
+    VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado')");
     return $consulta->execute();
 }
 

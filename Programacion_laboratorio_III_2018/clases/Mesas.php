@@ -19,6 +19,14 @@ public static function TraerMesas()
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function TraerTodasLasMesas()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from mesas");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"mesas");
+}
+
 
 
 

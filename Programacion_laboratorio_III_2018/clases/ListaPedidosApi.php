@@ -358,6 +358,26 @@ public function TraerProductoMasVendido($request, $response, $args)
 
 }
 
+public function TraerTodosLosProductos($request, $response, $args)
+{
+
+    $productos=Productos::TraerTodosLosProductos();
+    $resp["productos"] = $productos;
+
+    return $response->withJson($resp);
+
+}
+
+public function TraerTodasLasMesas($request, $response, $args)
+{
+
+    $productos=Mesas::TraerTodasLasMesas();
+    $resp["mesas"] = $productos;
+
+    return $response->withJson($resp);
+
+}
+
 public function TraerProductoMenosVendido($request, $response, $args)
 {
 

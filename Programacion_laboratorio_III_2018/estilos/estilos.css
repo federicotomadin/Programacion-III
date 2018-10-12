@@ -126,11 +126,14 @@ form {
     background: transparent;
 }
 
+#Restaurante {
+    color: white;
+}
+
 #Usuario {
     float: left;
     font-size: 16px;
-    color: white;
-    text-align: center;
+    color: black;
     text-decoration: none;
 }
 
@@ -138,11 +141,20 @@ input[placeholder] {
     color: black;
 }
 
-.page-header {
+.page-header h1 {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+}
+
+tr {
+    font-size: 11px
+}
+
+td {
+    font-size: 11px;
+    background-color: white;
 }
 
 #RegistrarForm {
@@ -152,6 +164,8 @@ input[placeholder] {
 
 #tablaEncabezado {
     color: chartreuse;
+    text-align: center;
+    padding: 0px;
 }
 
 #BuscadorFechas {
@@ -186,12 +200,17 @@ input[placeholder] {
     text-align: center;
 }
 
-.container {
+.page-header h1 {
+    color: white;
+}
+
+
+/*.container {
     background: #fff;
     border-radius: 10px;
     box-shadow: 15px 20px 0px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
+}*/
 
 .carousel-inner {
     border-radius: 0 10px 10px 0;
