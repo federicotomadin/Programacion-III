@@ -93,7 +93,16 @@ function base64(fotoObj, callback) {
 }
 
 function DescargarPedidosExcel() {
-    var tokenUsuario = localStorage.getItem("token");
+    var headers = {
+        Id_pedido: 'Id_pedido',
+        Tiempo_ingreso: "Tiempo_ingreso",
+        Tiempo_estimado: "Tiempo_estimado",
+        Tiempo_llegadaMesa: "Tiempo_llegadaMesa",
+        Id_estadoCuenta: "Id_estadoCuenta",
+        Id_empleado: "Id_empleado",
+        CodigoMesa: "CodigoMesa",
+        Importe: "Importe"
+    };
     swal({
         title: 'Desea descargar el Excel?',
         type: 'info',
@@ -105,29 +114,16 @@ function DescargarPedidosExcel() {
         cancelButtonText: 'No, no descargar!'
     }).then(function() {
         var funcionAjax = $.ajax({
-            url: "../vendor/Pedidos/TraerTodosLosPedidosExcel",
-            headers: { token: tokenUsuario },
-            contentType: 'application/vnd.ms-excel',
-            method: "GET",
-
-            success: function(data) {
-                console.log('ok');
-                var blob = new Blob([data], { type: 'application/vnd.ms-excel' });
-                var link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = "report.xls";
-                link.click();
-            }
+            url: "../vendor/Pedidos/TraerTodosLosPedidos",
+            method: "GET"
         });
         funcionAjax.then(function(data) {
-                // if (dato.success) {
+                exportCSVFile(headers, data.pedidos, "pedidos");
                 swal("El listado fue descargado correctamente!").then(function() {
                     location.reload();
                 });
-                //} else {
-                //  swal("ERROR. El listado no pudo ser descargado");
-                // }
             },
+
             funcionAjax.then(function(dato) {
 
                 swal("ERROR. Su tiempo de sesión se ha acabado!").then(function() {
@@ -147,26 +143,10 @@ function DescargarPedidosExcel() {
                         console.log("ERROR en la API " + dato);
                     });
                 });
-            }));
+            }))
     });
 }
 
-jQuery.download = function(url, data, method) {
-    //url and data options required
-    if (url && data) {
-        //data can be string of parameters or array/object
-        data = typeof data == 'string' ? data : jQuery.param(data);
-        //split params into form inputs
-        var inputs = '';
-        jQuery.each(data.split('&'), function() {
-            var pair = this.split('=');
-            inputs += '<input type="hidden" name="' + pair[0] + '" value="' + pair[1] + '" />';
-        });
-        //send request
-        jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' + inputs + '</form>')
-            .appendTo('body').submit().remove();
-    };
-};
 
 function DescargarPedidosPdf() {
     swal({
@@ -211,13 +191,8 @@ function DescargarPedidosPdf() {
                     });
                 });
             }));
-
     });
 }
-
-
-
-
 
 var json2pdf;
 
@@ -233,7 +208,7 @@ function bajarPDF(json) {
 
     json2pdf.setFont("helvetica");
     //header
-    json2pdf.setFontSize(10);
+    json2pdf.setFontSize(5);
     json2pdf.setFontType("bold");
     cont = 0;
     $.each(json[0], function(key, value) {
@@ -262,4 +237,49 @@ function bajarPDF(json) {
 
 
     json2pdf.save('pdf.pdf');
+}
+
+function convertToCSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '';
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+            if (line != '') line += ','
+
+            line += array[i][index];
+        }
+        str += line + '\r\n';
+    }
+    return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+    if (headers) {
+        items.unshift(headers);
+    }
+
+    // Convert Object to JSON
+    var jsonObject = JSON.stringify(items);
+
+    var csv = this.convertToCSV(jsonObject);
+
+    var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilenmae);
+    } else {
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilenmae);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
 }
