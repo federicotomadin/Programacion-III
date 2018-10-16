@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
@@ -10,68 +11,73 @@
     <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../estilos/estilos.css">
-      <script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-  <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
     <script src="../bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
-<link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
     <script type="text/javascript" src="../js/funcionesAuto.js">
     </script>
     <script type="text/javascript" src="../js/validadorAuto.js">
     </script>
-        <title>Ingresar Auto</title>
-    </head>
-    <body>
-        <div class="container">
-         <div class="page-header">
-             <h1>Ingreso de un nuevo Auto
+    <title>Ingresar Auto</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Ingreso de un nuevo Auto
             </h1>
-         </div><!--Cierre Page Header -->
-         <div class="CajaInicio animated bounceInRight">
-			<form id="FormIngreso" class="form-horizontal" method="POST" enctype="multipart/form-data" action="" >
-            <br>
-				<div class="form-group">
-            <label for="" class="col-lg-4 control-label">Patente</label>
-            <div class="col-lg-6">
-                <input type="text" class="form-control" name="patente" id="patente" placeholder="Ingrese Patente" maxlength="7">
-            </div>
-           </div>
-            
-               <div class="form-group">
-            <label for="" class="col-lg-4 control-label">Marca</label>
-            <div class="col-lg-6">
-                <input type="text" class="form-control" name="marca" id="marca" placeholder="Ingrese Marca">
-            </div>
-           </div>
-               
-               
-            <div class="form-group">
-            <label for="" class="col-lg-4 control-label">Color</label>
-            <div class="col-lg-6">
-                <select id="color" name="color" class="form-control">
+        </div>
+        <!--Cierre Page Header -->
+        <div class="CajaInicio animated bounceInRight">
+            <form id="FormIngreso" class="form-horizontal" method="POST" enctype="multipart/form-data" action="">
+                <br>
+                <div class="form-group">
+                    <label for="" class="col-lg-4 control-label">Patente</label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="patente" id="patente" placeholder="Ingrese Patente" maxlength="7">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-lg-4 control-label">Marca</label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="marca" id="marca" placeholder="Ingrese Marca">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="" class="col-lg-4 control-label">Color</label>
+                    <div class="col-lg-6">
+                        <select id="color" name="color" class="form-control">
                   <option value="Rojo">Rojo</option>
                   <option value="Azul">Azul</option>
                   <option value="Blanco">Blanco</option>
                   <option value="Negro">Negro</option>
                   <option value="Verde">Verde</option>
                 </select>
-            </div>
-        </div>
+                    </div>
+                </div>
 
-               <div class="form-group">
-            <div class="col-lg-1 col-lg-offset-3">
-                <button onclick="IngresarAuto()" class="btn btn-success">
+                <div class="form-group">
+                    <div class="col-lg-1 col-lg-offset-3">
+                        <button onclick="IngresarAuto()" class="btn btn-success">
                 <span class="glyphicon glyphicon-ok"></span>
                 Aceptar</button>
-            </div>
-                <div class="col-lg-2 col-lg-offset-4">
-                <a href="estacionamiento.html" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Cancelar</a>
+                    </div>
+                    <div class="col-lg-2 col-lg-offset-4">
+                        <a href="estacionamiento.html" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Cancelar</a>
+                    </div>
                 </div>
-               </div>
 
-           
+
             </form>
 
-		</div><!-- dierre caja Inicio -->
-        </div><!-- Cierre Container-->
-    </body>
+        </div>
+        <!-- dierre caja Inicio -->
+    </div>
+    <!-- Cierre Container-->
+</body>
+
 </html>

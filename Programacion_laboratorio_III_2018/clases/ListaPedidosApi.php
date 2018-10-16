@@ -66,8 +66,8 @@ public function VerPedidos($request,$response,$args)
      array_push($productos["productos"],Productos::TraerProducto($arrayPedidos[$i]["Id_producto"]));
      array_push($productos["mesas"],$arrayPedidos[$i]["CodigoMesa"]);
     }
-    $respuesta["Nombre"]=array();
-    $respuesta["Mesa"]=array();
+    $respuesta["Pedido"]=array();
+  //  $respuesta["Mesa"]=array();
 
     if($productos["productos"][0][0]["Nombre"]=="")
     {
@@ -77,8 +77,8 @@ public function VerPedidos($request,$response,$args)
     {
         for($i=0;$i<count($productos["productos"]);$i++)
         {
-          array_push($respuesta["Nombre"],$productos["productos"][$i][0]["Nombre"]);
-          array_push($respuesta["Mesa"],$productos["mesas"][$i]);    
+          array_push($respuesta["Pedido"],$productos["productos"][$i][0]["Nombre"]);
+          array_push($respuesta["Pedido"],$productos["mesas"][$i]);    
         }     
     }
 

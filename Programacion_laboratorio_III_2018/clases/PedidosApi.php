@@ -52,35 +52,30 @@ public function ConfirmarPedido($request,$response,$args)
     $pedido->SetTiempo_estimado($fecha_estimada);
     }
 
- 
     $idPedidoFoto = Pedidos::TraerElUltimoAgregado();
     $idPedidoFoto+=1;
     $destino = "../fotosPedidos/";
-    $files = $request->getUploadedFiles(); 
-    $nombreAnterior = $files['foto']->getClientFilename();
-    $extension= explode(".", $nombreAnterior) ;
-    $extension=array_reverse($extension);
-    $files['foto']->moveTo($destino.$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
-    $pedido->SetFoto($idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]);
-    PedidosApi::redimensionarImagen("../fotosPedidos/".$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0] 
-    ,"../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"].".".$extension[0]
+
+    $urlImagen = $destino.$idPedidoFoto.$datos["CodigoMesa"]."."."png";
+    file_put_contents($urlImagen, base64_decode($datos["foto"]));
+    
+    PedidosApi::redimensionarImagen($urlImagen
+    ,"../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"]."."."png"
     ,100,40,$jpgQuality=100);
+    $pedido->SetFoto("../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"]."."."png");
 
     if(!Pedidos::InsertarElPedido($pedido))
     {
        $resp["status"] = 400;
     }
 
-   
     if($resp["status"]==200)
     {
         $IdPedido=Pedidos::TraerElUltimoAgregado();
         ListaPedidos::IntertarIdPedido($datos["CodigoMesa"],$IdPedido);
     }
 
-
     return $response->withJson($resp);  
-    
 }
 
 public function CerrarMesa($request,$response,$args)
@@ -101,6 +96,7 @@ public function CerrarMesa($request,$response,$args)
 
     $resp["status"]=200;
     $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa);
+
    /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
     {     
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 

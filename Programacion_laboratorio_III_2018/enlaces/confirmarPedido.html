@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
     <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -16,9 +17,9 @@
     <script src="../bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script type="text/javascript" src="../js/funcionesListaPedidos.js"></script>
+    <script type="text/javascript" src="../js/funcionesPedidos.js"></script>
     <script type="text/javascript" src="../js/cargarListaPedidos.js"></script>
-    <title>Tomar Pedido</title>
+    <title>Confirmar Pedido</title>
 </head>
 
 <body>
@@ -30,21 +31,33 @@
         <div class="CajaInicio animated bounceInRight">
 
 
-            <div class="w3-container w3-blue w3-card-4"><br><br>
-                <label for="" class="col-lg-2 col-sm-2 col-xs-2 control-label">Productos</label>
-                <div class="col-lg-6 col-sm-6 col-xs-6">
-                    <select id="Productos" class="form-control">               
-                </select>
-                </div><br><br>
+            <div class="w3-panel w3-blue w3-card-4"><br><br>
 
-                <label for="" class="col-lg-2 col-sm-2 col-xs-2 control-label">Codigos de Mesa</label>
-                <div class="col-lg-6 col-sm-6 col-xs-6">
+                <label for="" class="col-lg-3 col-sm-3 col-xs-3 control-label">Codigos de Mesa</label>
+                <div class="col-lg-6 col-sm-6 col-xs-6 ">
                     <select id="CodigoMesa" class="form-control">               
                         </select>
                 </div><br><br>
 
+
+                <label for="" class="col-lg-3 col-sm-3 col-xs-3  control-label">Foto para la mesa</label>
+                <div class="col-lg-6 col-sm-6 col-xs-6 ">
+                    <input id="foto" type='file'>
+                </div><br><br><br>
+
+
+                <label for="" class="col-lg-3 col-sm-3 col-xs-3  control-label">Minutos cocina</label>
+                <div class="col-lg-6 col-sm-6 col-xs-6 ">
+                    <select id="AgregarMinutos" class="form-control">  
+                    <option value="10">10 minutos</option>
+                    <option value="20">20 minutos</option>
+                    <option value="30">30 minutos</option>
+                    <option value="40">40 minutos</option>             
+                        </select>
+                </div><br><br>
+
                 <div class="col-lg-2 col-sm-2 col-xs-2 col-lg-offset-1">
-                    <button onclick="InsertarPedido()" class="btn btn-success">
+                    <button onclick="ConfirmarPedido()" class="btn btn-success">
                 <span class="glyphicon glyphicon-ok"></span>
                 Aceptar</button>
                 </div>
@@ -52,8 +65,10 @@
                     <a href="restauranteMozo.html" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Cancelar</a><br><br>
                 </div>
             </div>
+
         </div>
-        <!-- dierre caja Inicio -->
+    </div>
+    <!-- dierre caja Inicio -->
     </div>
     <!-- Cierre Container-->
 </body>
