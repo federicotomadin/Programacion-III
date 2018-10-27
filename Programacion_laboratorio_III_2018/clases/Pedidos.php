@@ -8,8 +8,8 @@ public $Id_pedido;
 public $Tiempo_ingreso;
 public $Tiempo_estimado;
 public $Tiempo_llegadaMesa;
-public $Id_estadoCuenta;
-public $Id_empleado;
+public $EstadoCuenta;
+public $Usuario;
 public $CodigoMesa;
 public $Importe;
 public $foto;
@@ -56,24 +56,24 @@ public function GetTiempo_llegadaMesa()
 }
 
 
-public function SetId_estadoCuenta($valor)
+public function SetEstadoCuenta($valor)
 {
-    $this->Id_estadoCuenta=$valor;
+    $this->EstadoCuenta=$valor;
 }
 
-public function GetId_estadoCuenta()
+public function GetEstadoCuenta()
 {
-    return $this->Id_estadoCuenta;
+    return $this->EstadoCuenta;
 }
 
-public function SetId_empleado($valor)
+public function SetUsuario($valor)
 {
-    $this->Id_empleado=$valor;
+    $this->Usuario=$valor;
 }
 
-public function GetId_empleado()
+public function GetUsuario()
 {
-    return $this->Id_empleado;
+    return $this->Usuario;
 }
 
 public function SetCodigoMesa($valor)
@@ -116,9 +116,9 @@ public function __construct()
 public static function InsertarElPedido($pedido)
 { 
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedidos(Tiempo_ingreso,Tiempo_estimado,Tiempo_llegadaMesa,Id_estadoCuenta,Id_empleado,CodigoMesa,Importe,foto)
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedidos(Tiempo_ingreso,Tiempo_estimado,Tiempo_llegadaMesa,EstadoCuenta,Usuario,CodigoMesa,Importe,foto)
 VALUES('$pedido->Tiempo_ingreso','$pedido->Tiempo_estimado','$pedido->Tiempo_llegadaMesa',
-'$pedido->Id_estadoCuenta','$pedido->Id_empleado','$pedido->CodigoMesa','$pedido->Importe','$pedido->foto')");
+'$pedido->EstadoCuenta','$pedido->Usuario','$pedido->CodigoMesa','$pedido->Importe','$pedido->foto')");
 return $consulta->execute();
 }
 
@@ -135,7 +135,7 @@ public static function TraerElPedidoPorCodigoMesa($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos 
-    WHERE CodigoMesa = '$CodigoMesa' and Id_estadoCuenta=1");
+    WHERE CodigoMesa = '$CodigoMesa' and EstadoCuenta ='Esperando Cierre'");
     $consulta->execute();
     return $consulta->fetchObject('pedidos');
 }
@@ -221,8 +221,8 @@ public static function CerrarMesa($CodigoMesa,$Importe)
 {
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
     $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
-    set Importe='$Importe', Id_estadoCuenta=4
-    where CodigoMesa='$CodigoMesa' and Id_estadoCuenta=1");
+    set Importe='$Importe', EstadoCuenta = 'Cerrada'
+    where CodigoMesa='$CodigoMesa' and EstadoCuenta='Esperando Cierre'");
     return $consulta->execute();
 }
 

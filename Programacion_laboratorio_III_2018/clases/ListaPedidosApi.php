@@ -1,7 +1,9 @@
 <?php
 require_once("ListaPedidos.php");
 require_once("Pedidos.php");
+require_once("Empleado.php");
 require_once("Productos.php");
+require_once("Operaciones.php");
 require_once("Roles.php");
 include_once("../bd/AccesoDatos.php");
 //include_once("../phpExcel/Classes/PHPExcel.php");
@@ -21,13 +23,13 @@ public function InsertarPedido($request,$response,$args)
     $arrayConToken = $request->getHeader('token');
     $token=$arrayConToken[0];
     $payload=AutentificadorJWT::ObtenerData($token); 
+    $empleado = Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
 
     if($payload->perfil!="Mozo")
     {
        $resp["status"]="401";
        return $response->withJson($resp);
-    }
-  
+    }  
 
     $datos=$request->getParsedBody();
     $resp["status"]=200;
@@ -45,8 +47,16 @@ public function InsertarPedido($request,$response,$args)
 
     if(!ListaPedidos::InsertarListaPedido($listaPedido))
     {
-    $resp["status"]=400;
+    return $resp["status"]=400;
     }
+
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $operacion = new Operaciones();
+    $operacion -> SetFechaOperacion($dateTime ->format("Y/m/d H:i:s"));
+    $operacion -> SetId_rol($idRol[0]["id_rol"]);
+    $operacion -> SetId_empleado($empleado->Getid_empleado());  
+    Operaciones::InsertarOperacion($operacion);
+
 
     return $response->withJson($resp);
 }
@@ -91,6 +101,8 @@ public function CambiarEstadoPedido($request,$response,$args)
     $arrayConToken = $request->getHeader('token');
     $token=$arrayConToken[0];
     $payload=AutentificadorJWT::ObtenerData($token); 
+    $empleado = Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
+
     $IdRol=Roles::TraerIdRol($payload->perfil);
     $pedido= Pedidos::TraerElPedidoPorCodigoMesa($datos["CodigoMesa"]);
 
@@ -101,8 +113,7 @@ public function CambiarEstadoPedido($request,$response,$args)
         $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
         $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s")); 
         Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$datos["CodigoMesa"]);
-     }
- 
+     } 
   
     }    
 
@@ -111,6 +122,15 @@ public function CambiarEstadoPedido($request,$response,$args)
     {
         $resp["status"]=400;
     }
+
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $operacion = new Operaciones();
+    $operacion -> SetFechaOperacion($dateTime ->format("Y/m/d H:i:s"));
+    $operacion -> SetId_rol($IdRol[0]["Id_rol"]);
+    $operacion -> SetId_empleado($empleado->Getid_empleado());  
+    Operaciones::InsertarOperacion($operacion);
+
+
     return $response->withJson($resp);
 }
 
@@ -136,7 +156,6 @@ for($i = 0; $i < count($importe); $i++)
         $hora_ini =$importe[$i]["TiempoInicio"];
         $hora_fin =$importe[$i]["TiempoFin"];
     } 
-
 }
 
 if($Total == 0)
@@ -153,9 +172,6 @@ else
 return $response->withJson($resp);
 
 }
-
-
-
 
 public function TraerDatosParaExportarExcel($request, $response, $args)
 {

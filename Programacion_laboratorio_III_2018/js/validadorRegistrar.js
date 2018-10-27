@@ -12,31 +12,28 @@ $(document).ready(function() {
             Nombre: {
                 validators: {
                     notEmpty: {
-                        message: 'El nombre del administrador es requerido'
+                        message: 'El campo nombre  es requerido'
                     }
                 }
             },
             Apellido: {
                 validators: {
                     notEmpty: {
-                        message: 'El nombre del administrador es requerido'
+                        message: 'El campo apellido es requerido'
                     }
                 }
             },
             Usuario: {
                 validators: {
                     notEmpty: {
-                        message: 'El mail del usuario es requerido'
+                        message: 'El campo usuario es requerido'
                     },
-                    emailAddress: {
-                        message: 'El mail ingresado no es válido'
-                    }
                 }
             },
             Clave: {
                 validators: {
                     notEmpty: {
-                        message: 'La contraseña es requerida'
+                        message: 'El campo clave es requerido'
                     }
                 }
             },
@@ -50,14 +47,14 @@ $(document).ready(function() {
             Sueldo: {
                 validators: {
                     notEmpty: {
-                        message: 'La contraseña es requerida'
+                        message: 'El campo Sueldo es requerido'
                     }
                 }
             },
             Habilitado: {
                 validators: {
                     notEmpty: {
-                        message: 'La contraseña es requerida'
+                        message: 'El campo habilitado es requerido'
                     }
                 }
             },

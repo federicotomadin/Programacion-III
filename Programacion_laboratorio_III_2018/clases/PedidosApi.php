@@ -32,15 +32,15 @@ public function ConfirmarPedido($request,$response,$args)
     $token=$arrayConToken[0];
     $payload=AutentificadorJWT::ObtenerData($token); 
     $empleado=Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
-    
+
     if($payload->perfil!="Mozo")
     {
         $resp["status"]="Operacion valida solo para Mozos";
         return $response->withJson($resp);
     }
-    $pedido->SetId_empleado($empleado->id_empleado);
+    $pedido->SetUsuario($empleado->Usuario);
     $pedido->SetCodigoMesa($datos["CodigoMesa"]);
-    $pedido->SetId_estadoCuenta(1);
+    $pedido->SetEstadoCuenta("En Preparacion");
     $pedido->SetImporte(Null);
 
     if(ListaPedidos::BuscarPedidoCocina($datos["CodigoMesa"]))
@@ -139,7 +139,6 @@ return $response->withJson($resp);
 
 }
 
-
 public function TraerTodosLosPedidos($request,$response,$args)
 {
 $pedidos = Pedidos::TraerTodosPedidos();
@@ -152,14 +151,12 @@ public function ListadoConImporte($request,$response,$args)
 {
     $pedidos = Pedidos::TraerTodosPedidos();
     $resp["Hora_inicio"] = $pedidos;
-
 }
 
 public function TraerDatosParaExportarExcel()
 {
 
 $arrayPedidos = Pedidos::TraerTodosPedidos();
-
 
 if (count($arrayPedidos) > 0) {
     $objPHPExcel = new PHPExcel();

@@ -16,10 +16,11 @@ function CerrarMesa(idMesa) {
                 url: "../vendor/Pedidos/CerrarMesa/" + idMesa,
                 headers: { token: tokenUsuario },
                 method: "POST"
-            });
 
-            funcionAjax.then(function(dato) {
-                if (dato.status == 200) {
+
+            }).then(function(dato) {
+                console.log(dato.status);
+                if (dato.status === 200) {
                     swal("La mesa fue cerrada correctamente!").then(function() {
                         location.reload();
                     });
@@ -30,6 +31,7 @@ function CerrarMesa(idMesa) {
         } else {
             location.reload();
         }
+
     });
 }
 
@@ -67,14 +69,11 @@ function ConfirmarPedido() {
                     }
                 });
             });
-
-
         } else {
             location.reload();
         }
     });
 }
-
 
 function base64(fotoObj, callback) {
     console.log("base64 " + fotoObj.name)
@@ -162,7 +161,6 @@ function DescargarPedidosPdf() {
 
         var funcionAjax = $.ajax({
             url: "../vendor/Pedidos/TraerTodosLosPedidos",
-            //  headers: { token: tokenUsuario },
             method: "GET"
         });
         funcionAjax.then(function(data) {
@@ -234,8 +232,6 @@ function bajarPDF(json) {
             fila = 1;
         }
     })
-
-
     json2pdf.save('pdf.pdf');
 }
 

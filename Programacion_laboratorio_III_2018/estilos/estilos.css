@@ -112,12 +112,13 @@ table {
     background: #638cb5;
 }
 
-form {
+
+/*form {
     background: cadetblue;
     font-size: 25px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
-}
+}*/
 
 #loginInicioForm {
     font-size: 20px;

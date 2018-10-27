@@ -25,9 +25,7 @@ function CargarAutomatico() {
     }, function(dato) {
 
     });
-
 }
-
 
 function CambiarEstado(CodigoMesa) {
     var tokenUsuario = localStorage.getItem("token");

@@ -33,22 +33,3 @@ window.onload = function() {
         alert("ERROR no se pudieron cargar los pedidos" + dato);
     });
 };
-
-function Graficar(datos) {
-
-    Chart.defaults.global.defaultFontFamily = "Lato";
-    Chart.defaults.global.defaultFontSize = 18;
-
-    var densityData = {
-        label: 'Empleados por Operacion',
-        data: [datos]
-    };
-
-    var barChart = new Chart(densityCanvas, {
-        type: 'bar',
-        data: {
-            labels: ["Cocinero", "Bartender", "Cervecero", "Socio"],
-            datasets: [densityData]
-        }
-    });
-}
