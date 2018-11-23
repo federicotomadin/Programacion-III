@@ -18,8 +18,8 @@ window.onload = function() {
             stringPedidos += "<td>" + PedidosFilter[i].CodigoMesa + "</td>";
             stringPedidos += "<td>" + PedidosFilter[i].Importe + "</td>";
             stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + PedidosFilter[i].foto + "'/></td>";
-            stringPedidos += "<td><button class='btn btn-warning' onclick='CerrarMesa(" + JSON.stringify(PedidosFilter[i].CodigoMesa) + ")'>" +
-                "<span class='glyphicon glyphicon-edit'></span>Cerrar Mesa</button>";
+            stringPedidos += "<td><button class='btn btn-warning' onclick='CambiarEstado(" + JSON.stringify(PedidosFilter[i].CodigoMesa) + ")'>" +
+                "<span class='glyphicon glyphicon-edit'></span>Cambiar Estado</button>";
             stringPedidos += "</tr>";
         }
 

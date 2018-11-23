@@ -405,13 +405,13 @@ return $pdf;
 
 public function PedidosQueSeEntregaronEnTiempo($request, $response, $args)
 {
-    $array= Pedidos::TraerTodosPedidos();
- 
+    $array= Pedidos::TraerTodosPedidosQueSeEntregaron();
+
     for($i=0; $i<count($array);$i++)
     {
-        $tiempoInicio= strtotime($array[$i]["Tiempo_ingreso"]);
-        $tiempoEstimado= strtotime($array[$i]["Tiempo_estimado"]);
-        $tiempoLlegada= strtotime($array[$i]["Tiempo_llegadaMesa"]);
+        $tiempoInicio= strtotime($array[$i]->GetTiempo_ingreso());
+        $tiempoEstimado= strtotime($array[$i]->GetTiempo_estimado());
+        $tiempoLlegada= strtotime($array[$i]->GetTiempo_llegadaMesa());
 
         $tiempoFinal = $tiempoLlegada - $tiempoEstimado;
 
@@ -459,13 +459,11 @@ public function TraerMesaMasUsada($request, $response, $args)
    $arrayMesas= Mesas::TraerMesas();
    $mayor=0;
  
-
    for($i=0; $i<count($arrayMesas);$i++)
    {
        $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
        if($cantidad >= $mayor)
-       {         
-          
+       {               
           $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   
           $mayor=$cantidad;  
        }   
@@ -532,22 +530,17 @@ public function TraerMesaQueMenosFacturo($request, $response, $args)
     $arrayMesas= Mesas::TraerMesas();
     $importeMayor=50000;
 
-
     for($i=0; $i<count($arrayMesas);$i++)
     {    
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);    
 
-        if($aux[0]["Importe"] !=null)
-        {
-        if($aux[0]["Importe"] < $importeMayor)
-       {       
-            $importeMayor=$aux[0]["Importe"];  
-            $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];      
-        }
+            if($aux[0]["Importe"] < $importeMayor)
+            {       
+                $importeMayor=$aux[0]["Importe"];  
+                $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];      
+            }          
           
-       }      
     }  
-
     $resp["Mesa"] = $CodigoMesa;
     $resp["Importe"] =   $importeMayor;
 
@@ -562,13 +555,12 @@ public function TraerFacturaMayorImporte($request, $response, $args)
     $pedidoMayor=0;
     $importeMayor=0;
 
-
     for($i=0; $i<count($pedidos);$i++)
     {
-     if($pedidos[$i]["Importe"]>= $importeMayor)
+     if($pedidos[$i]-> GetImporte()>= $importeMayor)
      {
-         $importeMayor=$pedidos[$i]["Importe"];
-         $CodigoMesa=$pedidos[$i]["CodigoMesa"];
+         $importeMayor=$pedidos[$i]->GetImporte();
+         $CodigoMesa=$pedidos[$i]->GetCodigoMesa();
      }
     }
 
@@ -586,19 +578,14 @@ public function TraerFacturaMenorImporte($request, $response, $args)
    
     $importeMenor=50000;
 
-    
     for($i=0; $i<count($pedidos);$i++)
-    {
-        if($pedidos[$i]["Importe"]!=null)
-        {         
-
-            if($pedidos[$i]["Importe"]<= $importeMenor)
-            {
-                $importeMenor=$pedidos[$i]["Importe"];
-            $resp["factura Menor"]=$pedidos[$i]["Importe"];
-            $resp["mesa"] = $pedidos[$i]["CodigoMesa"];        
-            }
-        }
+    {       
+        if($pedidos[$i]->GetImporte()<= $importeMenor)
+        {
+            $importeMenor=$pedidos[$i]->GetImporte();
+            $resp["factura Menor"]=$pedidos[$i]->GetImporte();
+            $resp["mesa"] = $pedidos[$i]->GetCodigoMesa();        
+        }        
     }
    
     return $response->withJson($resp);
@@ -609,13 +596,19 @@ public function TraerTiempoFaltante($request, $response, $args)
 {
     $data = $request->getParsedBody();
    
-    $arrayTiempo=Pedidos::TraerTiempoFaltante($data["CodigoMesa"],$data["IdPedido"]);
+    $arrayTiempo=Pedidos::TraerTiempoFaltante($data["CodigoMesa"]);
+
+    if($arrayTiempo == null)
+    {
+        $resp["Tiempo Faltante"] =  "El pedido fue entregado porque la mesa ya esta cerrada";
+        return $response->withJson($resp);
+    }
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $fecha_ingreso = $dateTime->format("Y/m/d H:i:s");
     $tiempoActual= strtotime($fecha_ingreso);
     $tiempoEstimado=strtotime($arrayTiempo[0]["Tiempo_estimado"]);
     $tiempoFaltante =  $tiempoEstimado - $tiempoActual; 
-    
+
     $time = date("i:s",$tiempoFaltante);
     $resp["Tiempo Faltante"] =  $time;
     

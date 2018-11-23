@@ -32,7 +32,7 @@ public function SetTiempo_ingreso($valor)
 
 public function GetTiempo_ingreso()
 {
-    return $this->$Tiempo_ingreso;
+    return $this->Tiempo_ingreso;
 }
 
 public function SetTiempo_estimado($valor)
@@ -148,6 +148,15 @@ public static function TraerTodosPedidos()
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
+
+public static function TraerTodosPedidosQueSeEntregaron()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos where EstadoCuenta='Cerrada'");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
 public static function BorrarElPedido($IdPedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -183,10 +192,10 @@ public static function TraerTotalFacturado($CodigoMesa)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function TraerTiempoFaltante($CodigoMesa,$IdPedido)
+public static function TraerTiempoFaltante($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso, Tiempo_estimado  from pedidos where Id_pedido='$IdPedido' and CodigoMesa='$CodigoMesa'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso, Tiempo_estimado  from pedidos where CodigoMesa='$CodigoMesa' and EstadoCuenta='En Preparacion'");
     $consulta->execute();    
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
