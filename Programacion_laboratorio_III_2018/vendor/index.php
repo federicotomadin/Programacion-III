@@ -6,6 +6,7 @@ require 'autoload.php';
 include_once('../clases/EmpleadoApi.php');
 include_once('../clases/PedidosApi.php');
 include_once('../clases/SesionApi.php');
+include_once('../clases/ProductosApi.php');
 include_once('../clases/ListaPedidosApi.php');
 include_once('../clases/Login.php');
 include_once('../clases/AutentificadorJWT.php');
@@ -68,12 +69,19 @@ $app->group('/Empleado', function(){
    $this->get('/DescargarEmpleadosPdf',\EmpleadoApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->delete('/BorrarElEmpleado/{id}',\EmpleadoApi::class .':BorrarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->put('/ModificarElEmpleado/{id}',\EmpleadoApi::class .':ModificarEmpleado');
-   $this->put('/SuspenderElEmpleado/{id}',\EmpleadoApi::class .':SuspenderEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->put('/HabilitarElEmpleado/{id}',\EmpleadoApi::class .':HabilitarEmpleado');
+   $this->post('/SuspenderElEmpleado/{id}',\EmpleadoApi::class .':SuspenderEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->post('/HabilitarElEmpleado/{id}',\EmpleadoApi::class .':HabilitarEmpleado');
    $this->get('/VerSesionesDelEmpleado/{id}',\EmpleadoApi::class .':VerSesionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/VerOperacionesDelEmpleado/{id}',\EmpleadoApi::class .':VerCantidadOperacionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
+$app->group('/Productos', function(){
+  $this->get('/TraerTodosLosProductos', \ProductosApi::class .':TraerTodosLosProductos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/ModificarProducto/{id}', \ProductosApi::class .':ModificarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerProducto/{id}', \ProductosApi::class .':TraerProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->delete('/BorrarProducto/{id}', \ProductosApi::class .':BorrarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/InsertarProducto', \ProductosApi::class .':InsertarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+})->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->run();
 ?>

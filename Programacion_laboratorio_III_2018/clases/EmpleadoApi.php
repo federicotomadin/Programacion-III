@@ -23,6 +23,11 @@ if(!Empleado::VerificarEmpleado($data["Usuario"],$data["Clave"]))
 
 $empleado = new Empleado();
 $resp["status"] = 200;
+if($data["Nombre"]=="" || $data["Apellido"]=="" || $data["Usuario"]=="" || $data["Clave"]=="" || $data["Sueldo"]=="")
+{
+   $resp["status"] = 402;
+   return $response->withJson($resp);
+}
 $empleado->SetNombre($data["Nombre"]);
 $empleado->SetApellido($data["Apellido"]);
 $empleado->SetUsuario($data["Usuario"]);
@@ -49,14 +54,8 @@ return $response->withJson($resp);
 public function TraerEmpleados($request, $response, $args)
 {
 $arrayEmpleados = Empleado::TraerTodosLosEmpleados();
-for($i = 0; $i < count($arrayEmpleados); $i++)
-{
-    $password = str_repeat("*", strlen($arrayEmpleados[$i]->clave));
-    $arrayEmpleados[$i]->clave = $password;
-}
 $resp["empleados"] = $arrayEmpleados;
-$response = $response->withJson($resp);
-return $response;
+return $response->withJson($resp);
 }
 
 public function TraerElEmpleado($request, $response, $args)
@@ -115,8 +114,7 @@ return $response->withJson($resp);
 
 
 public function SuspenderEmpleado($request,$response,$args)
-{
-    $data = $request->getParsedBody();
+{  
     $resp["status"] = 200;
     $id = $args['id'];
     $id = intval($id);
@@ -127,8 +125,7 @@ public function SuspenderEmpleado($request,$response,$args)
     }
     else
     {
-    $empleado->SetHabilitado("0");
-    if(!Empleado::SuspenderEmpleado($empleado))
+    if(!Empleado::SuspenderEmpleado($empleado[0]["id_empleado"]))
     {
         $resp["status"] = 400;
     }
@@ -138,19 +135,18 @@ public function SuspenderEmpleado($request,$response,$args)
 
 public function HabilitarEmpleado($request,$response,$args)
 {
-    $data = $request->getParsedBody();
     $resp["status"] = 200;
     $id = $args['id'];
     $id = intval($id);
     $empleado = Empleado::TraerElEmpleado($id);
+
     if($empleado == false)
     {
         $resp["status"] = 400;
     }
     else
     {
-    $empleado->SetHabilitado("1");
-    if(!Empleado::SuspenderEmpleado($empleado))
+    if(!Empleado::HabilitarEmpleado($empleado[0]["id_empleado"]))
     {
         $resp["status"] = 400;
     }
@@ -183,6 +179,7 @@ return $response->withJson($resp);
 public function VerCantidadOperacionesEmpleado($request, $response, $args)
 {
 $id = $args['id'];
+$resp["status"] = 200;
 $id = intval($id);
 $empleado = Empleado::TraerElEmpleado($id);
 if($empleado == false)
@@ -191,7 +188,6 @@ if($empleado == false)
 }
 else
 {
-   
     $password = str_repeat("*", strlen($empleado[0]["Clave"]));
     $empleado[0]["Clave"] = $password;
 

@@ -1,5 +1,6 @@
 <?php
 include_once("../bd/AccesoDatos.php");
+
 class Empleado
 {
 public $id_empleado;
@@ -108,7 +109,7 @@ public static function TraerTodosLosEmpleados()
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados");
     $consulta->execute();
-    return $consulta->fetchAll(PDO::FETCH_CLASS,'empleado');
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"empleado");
 }
 
 public static function TraerElEmpleadoPorUsuario($Usuario)
@@ -150,17 +151,17 @@ public static function ModificarElEmpleado($empleado)
     return $consulta->execute();
 }
 
-public static function SuspenderEmpleado($empleado)
+public static function SuspenderEmpleado($id_empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 0  where id_empleado = '$empleado->id_empleado'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 0  where id_empleado = '$id_empleado'");
     return $consulta->execute();
 }
 
-public static function HabilitarEmpleado($empleado)
+public static function HabilitarEmpleado($id_empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 1  where id_empleado = '$empleado->id_empleado'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set habilitado = 1  where id_empleado = '$id_empleado'");
     return $consulta->execute();
 }
 
@@ -182,7 +183,7 @@ public static function VerificarEmpleado($Usuario,$clave)
 public static function TraerFechasDeSesionesPorIdEmpleado($IdEmpleado)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("SELECT sesion.FechaIngreso AS fechaIngreso, sesion.FechaSalida AS FechaSalida FROM sesion WHERE sesion.IdEmpleado = '$IdEmpleado'");
+$consulta = $objetoAccesoDato->RetornarConsulta("SELECT sesion.IdSesion as IdSesion, sesion.FechaIngreso AS fechaIngreso, sesion.FechaSalida AS FechaSalida  FROM sesion WHERE sesion.IdEmpleado = '$IdEmpleado' order by sesion.IdSesion desc limit 10");
 $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -191,7 +192,7 @@ public static function TraerOperacionesEntradaPorIdEmpleado($Id_empleado)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
 $consulta = $objetoAccesoDato->RetornarConsulta("SELECT empleados.Usuario  FROM empleados 
-INNER JOIN pedidos ON empleados.id_empleado=pedidos.Id_empleado WHERE pedidos.Id_empleado = '$Id_empleado'");
+INNER JOIN operaciones ON empleados.id_empleado=operaciones.Id_empleado WHERE operaciones.Id_empleado = '$Id_empleado'");
 $consulta->execute();
 return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }

@@ -458,7 +458,7 @@ public function TraerMesaMasUsada($request, $response, $args)
 {
    $arrayMesas= Mesas::TraerMesas();
    $mayor=0;
- 
+   $resp["status"] =  200;
    for($i=0; $i<count($arrayMesas);$i++)
    {
        $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
@@ -478,24 +478,20 @@ public function TraerMesaMasUsada($request, $response, $args)
 public function TraerMesaMenosUsada($request, $response, $args)
 {
    $arrayMesas= Mesas::TraerMesas();
-   $menor=1;
-
+   $menor=2;
+   $resp["status"] =  200;
    for($i=0; $i<count($arrayMesas);$i++)
    {
-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
-       $variable=$cantidad[$i]["Cantidad"];
-   
-       if($variable < $menor)
-       {         
-          $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
-          $menor=$cantidad[$i]["Cantidad"];  
-       }   
-   
-   }
-  
-    $resp["CodigoMesa"] =  $CodigoMesa;
-    $resp["Cantidad"] = $menor;
 
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
+
+       if( $cantidad[0]["Cantidad"] < $menor)
+       {      
+          $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
+          //$menor=$cantidad[$i]["Cantidad"];  
+       }   
+   }
+    $resp["CodigoMesa"] =  $CodigoMesa;
     return $response->withJson($resp);
 }
 
@@ -504,7 +500,7 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
 {
     $arrayMesas= Mesas::TraerMesas();
     $importeMayor=0;
-
+    $resp["status"] =  200;
     for($i=0; $i<count($arrayMesas);$i++)
     {
         $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
@@ -517,11 +513,10 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
    
     }
 
-    $resp["Mesa"] =  $importeMayor;
-    $resp["Importe"] =  $CodigoMesa;
+    $resp["Mesa"] =  $CodigoMesa;
+    $resp["Importe"] = $importeMayor;
 
-    return $response->withJson($resp);
-   
+    return $response->withJson($resp);   
 }
 
 
@@ -529,7 +524,7 @@ public function TraerMesaQueMenosFacturo($request, $response, $args)
 {
     $arrayMesas= Mesas::TraerMesas();
     $importeMayor=50000;
-
+    $resp["status"] =  200;
     for($i=0; $i<count($arrayMesas);$i++)
     {    
         $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);    
@@ -538,8 +533,7 @@ public function TraerMesaQueMenosFacturo($request, $response, $args)
             {       
                 $importeMayor=$aux[0]["Importe"];  
                 $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];      
-            }          
-          
+            }               
     }  
     $resp["Mesa"] = $CodigoMesa;
     $resp["Importe"] =   $importeMayor;
@@ -554,7 +548,7 @@ public function TraerFacturaMayorImporte($request, $response, $args)
     $arrayMesas= Mesas::TraerMesas();
     $pedidoMayor=0;
     $importeMayor=0;
-
+    $resp["status"] = 200;
     for($i=0; $i<count($pedidos);$i++)
     {
      if($pedidos[$i]-> GetImporte()>= $importeMayor)
@@ -575,7 +569,7 @@ public function TraerFacturaMenorImporte($request, $response, $args)
 {
     $pedidos=Pedidos::TraerTodosPedidos();
     $arrayMesas= Mesas::TraerMesas();
-   
+    $resp["status"] =  200;
     $importeMenor=50000;
 
     for($i=0; $i<count($pedidos);$i++)
@@ -583,7 +577,7 @@ public function TraerFacturaMenorImporte($request, $response, $args)
         if($pedidos[$i]->GetImporte()<= $importeMenor)
         {
             $importeMenor=$pedidos[$i]->GetImporte();
-            $resp["factura Menor"]=$pedidos[$i]->GetImporte();
+            $resp["facturaMenor"]=$pedidos[$i]->GetImporte();
             $resp["mesa"] = $pedidos[$i]->GetCodigoMesa();        
         }        
     }

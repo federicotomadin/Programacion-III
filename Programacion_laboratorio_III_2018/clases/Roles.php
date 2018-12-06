@@ -26,6 +26,7 @@ public static function TraerIdRol($descripcion)
    return $consulta->fetchAll(PDO::FETCH_ASSOC);
 
 }
+
 }
 
 ?>

@@ -13,7 +13,7 @@ function RegistrarEmpleado() {
             Sueldo: $("#sueldo").val(),
             Habilitado: $("#habilitado").val()
         }
-    });
+    })
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
             swal(
@@ -25,10 +25,10 @@ function RegistrarEmpleado() {
             }, function() {
                 swal("Ocurrio algo inesperado!");
             });
-        } else {
-            swal("No se pudo registrar el usuario " + dato.status);
+        } else if (dato.status == 402) {
+            swal("Hay campos vacios en el formulario ERROR " + dato.status);
         }
     }, function(dato) {
-        swal("ERROR. Hubo un problema con registrar el administrador " + dato);
+        swal("ERROR. Hubo un problema al registrar " + dato);
     });
 }
