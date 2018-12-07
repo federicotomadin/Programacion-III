@@ -1,5 +1,4 @@
 window.onload = function() {
-    // document.getElementById("foto").addEventListener("change", readFile);
     let funcionAjax = $.ajax({
         method: "GET",
         url: "../vendor/ListaPedidos/TraerTodosLosProductos"

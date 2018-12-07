@@ -32,6 +32,7 @@ $app->group('/Login', function(){
 $app->group('/Pedidos',function(){
   $this->post('/ConfirmarPedido',\PedidosApi::class .':ConfirmarPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/CerrarMesa/{CodigoMesa}',\PedidosApi::class .':CerrarMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/CambiarEstadoMesa',\PedidosApi::class .':CambiarEstadoMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->put('/ModificarElPedido/{id}',\PedidosApi::class .':ModificarElPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosQueSeEntregaron',\PedidosApi::class .':PedidosQueSeEntregaronEnTiempo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/TraerTiempoFaltante',\PedidosApi::class .':TraerTiempoFaltante')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

@@ -1,5 +1,7 @@
 <?php
 include_once("../bd/AccesoDatos.php");
+include_once("ListaPedidos.php");
+
 
 
 class Pedidos
@@ -140,6 +142,15 @@ public static function TraerElPedidoPorCodigoMesa($CodigoMesa)
     return $consulta->fetchObject('pedidos');
 }
 
+public static function TraerElPedidoPorIdPedido($IdPedido)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos 
+    WHERE Id_pedido = '$IdPedido'");
+    $consulta->execute();
+    return $consulta->fetchObject('pedidos');
+}
+
 public static function TraerTodosPedidos()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -147,6 +158,16 @@ public static function TraerTodosPedidos()
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
+
+public static function TraerTodosPedidosListos()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos
+    inner join lista_pedidos on lista_pedidos.Id_estadoPedido=2 where pedidos.Id_pedido=lista_pedidos.Id_pedido ");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
 
 
 public static function TraerTodosPedidosQueSeEntregaron()
@@ -212,9 +233,11 @@ public static function VerPedidosPendientes($IdEmpleado)
 public static function CambiarEstadoMesa($idPedido,$estado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedidos set Id_estadoCuenta='$estado' where Id_pedido='$idPedido'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedidos set EstadoCuenta='$estado' where Id_pedido='$idPedido'");
     return $consulta->execute();    
 }
+
+
 
 public static function TraerElUltimoAgregado()
 {
@@ -235,12 +258,12 @@ public static function CerrarMesa($CodigoMesa,$Importe)
     return $consulta->execute();
 }
 
-public static function ActualizarTiempoLLegadaMesa($TiempoLlegadaMesa,$CodigoMesa)
+public static function ActualizarTiempoLLegadaMesaEstado($TiempoLlegadaMesa,$IdPedido)
 {
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
     $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
     set Tiempo_llegadaMesa='$TiempoLlegadaMesa'
-    where CodigoMesa='$CodigoMesa'");
+    where Id_pedido='$IdPedido'");
     return $consulta->execute();
 }
 }

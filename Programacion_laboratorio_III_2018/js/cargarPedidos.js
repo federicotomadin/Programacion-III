@@ -5,20 +5,20 @@ window.onload = function() {
     });
     funcionAjax.then(function(dato) {
         var stringPedidos = " ";
-        var PedidosFilter = dato.pedidos.filter(function(elemento) {
-            return elemento.EstadoCuenta != "Cerrada";
-        });
-        for (var i = 0; i < PedidosFilter.length; i++) {
+        /*  var dato.pedidos = dato.pedidos.filter(function(elemento) {
+              return elemento.EstadoCuenta != "Cerrada";
+          });*/
+        for (var i = 0; i < dato.pedidos.length; i++) {
             stringPedidos += "<tr>";
-            stringPedidos += "<td>" + PedidosFilter[i].Tiempo_ingreso + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].Tiempo_estimado + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].Tiempo_llegadaMesa + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].EstadoCuenta + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].Usuario + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].CodigoMesa + "</td>";
-            stringPedidos += "<td>" + PedidosFilter[i].Importe + "</td>";
-            stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + PedidosFilter[i].foto + "'/></td>";
-            stringPedidos += "<td><button class='btn btn-warning' onclick='CerrarMesa(" + JSON.stringify(PedidosFilter[i].CodigoMesa) + ")'>" +
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].EstadoCuenta + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].CodigoMesa + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Importe + "</td>";
+            stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + dato.pedidos[i].foto + "'/></td>";
+            stringPedidos += "<td><button class='btn btn-warning' onclick='CerrarMesa(" + JSON.stringify(dato.pedidos[i].CodigoMesa) + ")'>" +
                 "<span class='glyphicon glyphicon-edit'></span>Cerrar Mesa</button>";
             stringPedidos += "</tr>";
         }

@@ -17,10 +17,8 @@
     <link rel="icon" href="../estilos/favicon.jpg">
     <script type="text/javascript" src="../js/descargarPedidosExcel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
-    <script type="text/javascript" src="../js/funcionesPedidos.js"></script>
-    <script type="text/javascript" src="../js/cargarPedidos.js"></script>
+    <script type="text/javascript" src="../js/grillaVerPedidos.js"></script>
     <script type="text/javascript" src="../js/grillaPedidosMozo.js"></script>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
     <title>Restaurante Mozo</title>
 </head>
 
@@ -34,7 +32,6 @@
         </div>
         <div class="CajaInicio animated bounceInRight">
             <h1>Listado de PEDIDOS</h1>
-
             <div class="table-responsive">
                 <table class='table table-bordered table-hover'>
                     <thead id="tablaEncabezado">
@@ -47,7 +44,12 @@
                             <th> CODIGO MESA </th>
                             <th> IMPORTE </th>
                             <th> FOTO </th>
-                            <th> CAMBIAR ESTADO</th>
+                            <th>
+                                <select id='EstadoPedido' class='form-control'><option value= "Esperando Pedido">Esperando Pedido</option>
+                                    <option value= "Comiendo">Comiendo</option>
+                                    <option value= "Esperando Cierre">Esperando Cierre</option>                                  
+                                    <option value= "Cancelada">Cancelada</option>                                  
+                                </select> </th>
                         </tr>
                     </thead>
                     <thead id="pedidos">

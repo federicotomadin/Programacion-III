@@ -16,8 +16,6 @@ function CerrarMesa(idMesa) {
                 url: "../vendor/Pedidos/CerrarMesa/" + idMesa,
                 headers: { token: tokenUsuario },
                 method: "POST"
-
-
             }).then(function(dato) {
                 console.log(dato.status);
                 if (dato.status === 200) {

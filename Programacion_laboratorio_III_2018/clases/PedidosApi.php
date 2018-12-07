@@ -141,9 +141,31 @@ return $response->withJson($resp);
 
 public function TraerTodosLosPedidos($request,$response,$args)
 {
-$pedidos = Pedidos::TraerTodosPedidos();
+$pedidos = Pedidos::TraerTodosPedidosListos();
 $resp["pedidos"] = $pedidos;
 return  $response->withJson($resp);
+}
+
+
+public function CambiarEstadoMesa($request,$response,$args)
+{
+    $data = $request->getParsedBody();
+
+    $pedido=Pedidos::TraerElPedidoPorIdPedido($data["idPedido"]);
+    if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00" && $data["estadoMesa"]=="Comiendo")
+    {     
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
+    $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
+    Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido->Tiempo_llegadaMesa,$data["idPedido"]);
+    }
+
+    $resp["status"] = 200;
+    if(!Pedidos::CambiarEstadoMesa($data["idPedido"],$data["estadoMesa"]))
+    {
+        $resp["status"] = 400;
+    }
+  
+    return  $response->withJson($resp);
 }
 
 

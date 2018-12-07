@@ -130,7 +130,6 @@ public function CambiarEstadoPedido($request,$response,$args)
     $operacion -> SetId_empleado($empleado->Getid_empleado());  
     Operaciones::InsertarOperacion($operacion);
 
-
     return $response->withJson($resp);
 }
 
