@@ -41,9 +41,10 @@ public function InsertarPedido($request,$response,$args)
     $listaPedido->SetId_producto($datos["IdProducto"]);
    
     $listaPedido->SetId_rol($idRol[0]["id_rol"]);
-    $listaPedido->SetId_estadoPedido(1);
+    $listaPedido->SetId_estadoPedido(4);
     $listaPedido->SetCodigoMesa($datos["CodigoMesa"]);
-    $listaPedido->SetPrecio($precio[0]["Precio"]);
+    $listaPedido->SetCantidad($datos["Cantidad"]);
+    $listaPedido->SetPrecio($precio[0]["Precio"] * $datos["Cantidad"]);
 
     if(!ListaPedidos::InsertarListaPedido($listaPedido))
     {
@@ -67,59 +68,81 @@ public function VerPedidos($request,$response,$args)
     $token=$arrayConToken[0];
     $payload=AutentificadorJWT::ObtenerData($token); 
     $IdRol=Roles::TraerIdRol($payload->perfil);
-    $arrayPedidos=ListaPedidos::VerPedidosPendientes($IdRol[0]["Id_rol"]);
-    $mesas=array();
-    $productos["productos"]=array();
-    $productos["mesas"]=array();
-    for($i=0;$i<count($arrayPedidos);$i++)
-    {
-     array_push($productos["productos"],Productos::TraerProducto($arrayPedidos[$i]["Id_producto"]));
-     array_push($productos["mesas"],$arrayPedidos[$i]["CodigoMesa"]);
-    }
-    $respuesta["Pedido"]=array();
-  //  $respuesta["Mesa"]=array();
+    $arrayPedidos = array();
+    $arrayPedidosPendientesPorRol = ListaPedidos::VerPedidosPendientesPorRol($IdRol[0]["Id_rol"]);
 
-    if($productos["productos"][0][0]["Nombre"]=="")
+    for($i=0; $i<count($arrayPedidosPendientesPorRol);$i++)
     {
-      array_push($respuesta,"No hay ningun pedido  pendiente");
-    }
-    else
-    {
-        for($i=0;$i<count($productos["productos"]);$i++)
-        {
-          array_push($respuesta["Pedido"],$productos["productos"][$i][0]["Nombre"]);
-          array_push($respuesta["Pedido"],$productos["mesas"][$i]);    
-        }     
+       if($arrayPedidosPendientesPorRol[$i]["Id_estadoPedido"]==4 || 
+          $arrayPedidosPendientesPorRol[$i]["Id_estadoPedido"]==1)
+          {
+              if($arrayPedidosPendientesPorRol[$i]["Id_pedido"]!=0)
+              {             
+                array_push($arrayPedidos, $arrayPedidosPendientesPorRol[$i]);           
+              }
+          }
     }
 
-    return $response->withJson($respuesta);
+    $resp["pedidosPendientes"] = $arrayPedidos;
+    return $response->withJson($resp);
 }
 
 public function CambiarEstadoPedido($request,$response,$args)
 {
     $datos=$request->getParsedBody();
+
     $arrayConToken = $request->getHeader('token');
     $token=$arrayConToken[0];
-    $payload=AutentificadorJWT::ObtenerData($token); 
+    $payload=AutentificadorJWT::ObtenerData($token);
     $empleado = Empleado::TraerElEmpleadoPorUsuario($payload->Usuario);
-
     $IdRol=Roles::TraerIdRol($payload->perfil);
-    $pedido= Pedidos::TraerElPedidoPorCodigoMesa($datos["CodigoMesa"]);
 
-    if($IdRol[0]["Id_rol"]==3)
+
+    $pedido= Pedidos::TraerElPedidoPorCodigoMesaCambiarEstado($datos["CodigoMesa"]);
+    
+
+    if($IdRol[0]["Id_rol"]==3 && $datos["estadoPedido"]=="2")
     {
+
      if($pedido->Tiempo_llegadaMesa=="0000-00-00 00:00:00")
-     {     
-        $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
+     {      
+        $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));  
         $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s")); 
-        Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$datos["CodigoMesa"]);
-     } 
+        ListaPedidos::CambiarEstadoListoParaServir($pedido->Id_pedido, $empleado->Id_rol);
+        Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido,$pedido->Id_pedido);
+     }
+    } 
   
-    }    
+     if($IdRol[0]["Id_rol"]==3 && $datos["estadoPedido"]=="1")
+    {  
+     if($pedido->Tiempo_estimado=="0000-00-00 00:00:00")
+     {     
+        $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+        $pedido->SetTiempo_ingreso($dateTime->format("Y/m/d H:i:s"));
+        $dateTime->add(new DateInterval('PT' . intval($datos["AgregarMinutos"]) . 'M'));
+        $fecha_estimada = $dateTime->format("Y/m/d H:i:s");
+        $pedido->SetTiempo_estimado($fecha_estimada);
+        ListaPedidos::CambiarEstadoEnPreparacion($pedido->Id_pedido, $empleado->Id_rol);
+        Pedidos::ActualizarTiempoEstimado($pedido,$pedido->Id_pedido);
+     }  
+    }
 
     $resp["status"]=200;
-    if(!ListaPedidos::CambiarEstadoPedido($datos["estadoPedido"],$IdRol[0]["Id_rol"],$datos["CodigoMesa"]))
+    if($datos["estadoPedido"]=="1")
     {
+    Pedidos::ActualizarEstadoCuenta($pedido->Id_pedido);
+    ListaPedidos::CambiarEstadoEnPreparacion($pedido->Id_pedido, $empleado->Id_rol);
+    }
+    if($datos["estadoPedido"]=="2")
+    {
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
+    Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido,$pedido->Id_pedido);
+    Pedidos::ActualizarEstadoCuentaComiendo($pedido->Id_pedido);
+    ListaPedidos::CambiarEstadoListoParaServir($pedido->Id_pedido, $empleado->Id_rol);
+    }
+    if(!ListaPedidos::CambiarEstadoPedido($datos["estadoPedido"],$IdRol[0]["Id_rol"],$datos["CodigoMesa"]))
+    {       
         $resp["status"]=400;
     }
 

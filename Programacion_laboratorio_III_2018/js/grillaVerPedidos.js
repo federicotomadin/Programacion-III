@@ -36,19 +36,18 @@ function CargarAutomatico() {
     });
     funcionAjax.then(function(dato) {
         var stringPedidos = " ";
-        for (var i = 0; i < dato.Pedido.length; i++) {
+        for (var i = 0; i < dato.pedidosPendientes.length; i++) {
             stringPedidos += "<tr>";
-            stringPedidos += "<td>" + dato.Pedido[i] + "</td>";
-            stringPedidos += "<td>" + dato.Pedido[i + 1] + "</td>";
-            stringPedidos += "<td><button class='btn btn-warning' onclick='CambiarEstado(" + JSON.stringify(dato.Pedido[i + 1]) + ")' " +
+            stringPedidos += "<td>" + cambiarIdPorNombreProducto(dato.pedidosPendientes[i].Id_producto) + "</td>";
+            stringPedidos += "<td>" + dato.pedidosPendientes[i].CodigoMesa + "</td>";
+            stringPedidos += "<td>" + cambiarIdPorEstadoPedido(dato.pedidosPendientes[i].Id_estadoPedido) + "</td>";
+            stringPedidos += "<td align='center' colspan='2'><button  class='btn btn-warning' onclick='CambiarEstado(" + JSON.stringify(dato.pedidosPendientes[i].CodigoMesa) + ")' " +
                 "<span class='glyphicon glyphicon-edit'></span>Cambiar Estado</button></td>";
             stringPedidos += "</tr>";
             i++;
         }
         document.getElementById("pedidos").innerHTML = stringPedidos;
-    }, function(dato) {
-
-    });
+    })
 }
 
 function CambiarEstado(CodigoMesa) {
@@ -64,7 +63,7 @@ function CambiarEstado(CodigoMesa) {
         cancelButtonClass: 'btn btn-danger',
         cancelButtonText: 'Cancelar!'
     }).then(function(result) {
-        var objJson = { CodigoMesa: CodigoMesa, estadoPedido: parseInt($("#EstadoPedido").val()) }
+        var objJson = { CodigoMesa: CodigoMesa, estadoPedido: parseInt($("#EstadoPedido").val()), AgregarMinutos: parseInt($("#AgregarMinutos").val()) }
         if (result.value) {
             let funcionAjax = $.ajax({
                 method: "POST",
@@ -89,4 +88,29 @@ function CambiarEstado(CodigoMesa) {
         }
 
     });
-};
+}
+
+
+function cambiarIdPorNombreProducto(IdProducto) {
+    switch (IdProducto) {
+        case IdProducto = 1:
+            return "Asado de Tira";
+        case IdProducto = 2:
+            return "Cerveza Tirada Red";
+        case IdProducto = 3:
+            return "Caipiroshka";
+    }
+}
+
+function cambiarIdPorEstadoPedido(IdEstadoPedido) {
+    switch (IdEstadoPedido) {
+        case IdEstadoPedido = 1:
+            return "En Preparacion";
+        case IdEstadoPedido = 2:
+            return "Listo Para Servir";
+        case IdEstadoPedido = 3:
+            return "Cancelado";
+        case IdEstadoPedido = 4:
+            return "Sin Tiempo";
+    }
+}

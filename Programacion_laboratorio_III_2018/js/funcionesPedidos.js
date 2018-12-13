@@ -54,7 +54,7 @@ function ConfirmarPedido() {
                     headers: { token: tokenUsuario },
                     type: "POST",
                     enctype: 'multipart/form-data',
-                    data: { CodigoMesa: $("#CodigoMesa").val(), foto: foto, AgregarMinutos: $("#AgregarMinutos").val() }
+                    data: { CodigoMesa: $("#CodigoMesa").val(), foto: foto }
 
                 });
                 funcionAjax.then(function(dato) {
@@ -198,9 +198,7 @@ function bajarPDF(json) {
     espacioY = 7;
     cantLineasPorPag = 27;
 
-
     json2pdf = new jsPDF('l', 'mm', [297, 210]);
-
 
     json2pdf.setFont("helvetica");
     //header

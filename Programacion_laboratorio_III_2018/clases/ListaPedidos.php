@@ -10,6 +10,7 @@ public $Id_producto;
 public $Id_rol;
 public $Id_estadoPedido;
 public $CodigoMesa;
+public $Cantidad;
 public $Precio; 
 
 
@@ -41,6 +42,16 @@ public function SetPrecio($valor)
 public function GetPrecio()
 {
     return $this->Precio;
+}
+
+public function SetCantidad($valor)
+{
+    $this->Cantidad=$valor;
+}
+
+public function GetCantidad()
+{
+    return $this->Cantidad;
 }
 
 public function SetId_rol($valor)
@@ -81,8 +92,8 @@ public function __contruct()
 public static function InsertarListaPedido($pedido)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_producto,Id_rol,Id_estadoPedido,CodigoMesa,Precio)
-VALUES('$pedido->Id_pedido','$pedido->Id_producto','$pedido->Id_rol','$pedido->Id_estadoPedido','$pedido->CodigoMesa','$pedido->Precio')");		
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_producto,Id_rol,Id_estadoPedido,CodigoMesa,Cantidad,Precio)
+VALUES('$pedido->Id_pedido','$pedido->Id_producto','$pedido->Id_rol','$pedido->Id_estadoPedido','$pedido->CodigoMesa','$pedido->Cantidad','$pedido->Precio')");		
 return $consulta->execute();
 }
 
@@ -149,16 +160,17 @@ public static function BuscarPedidoCocina($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM lista_pedidos
-    where CodigoMesa='$CodigoMesa' and Id_rol=3 and Id_estadoPedido=1");
+    where CodigoMesa='$CodigoMesa' and Id_rol=3 and Id_estadoPedido=4");
     $consulta->execute(); 
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function VerPedidosPendientes($IdRol)
+
+public static function VerPedidosPendientesPorRol($IdRol)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM lista_pedidos 
-    where Id_rol='$IdRol' and Id_estadoPedido=1 and Id_pedido!=0");
+    where Id_rol='$IdRol'");
     $consulta->execute(); 
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -192,7 +204,23 @@ public static function TraerImportePedido($IdPedido,$CodigoMesa)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function CambiarEstadoEnPreparacion($IdPedido,$IdRol)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos 
+    set Id_estadoPedido=1
+    where  Id_pedido='$IdPedido' and Id_rol = '$IdRol'");
+    return $consulta->execute(); 
+}
 
+public static function CambiarEstadoListoParaServir($IdPedido,$IdRol)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos 
+    set Id_estadoPedido=2
+    where  Id_pedido='$IdPedido' and Id_rol = '$IdRol'");
+    return $consulta->execute(); 
+}
 
 
 

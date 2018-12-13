@@ -40,17 +40,12 @@ public function ConfirmarPedido($request,$response,$args)
     }
     $pedido->SetUsuario($empleado->Usuario);
     $pedido->SetCodigoMesa($datos["CodigoMesa"]);
-    $pedido->SetEstadoCuenta("En Preparacion");
+    $pedido->SetEstadoCuenta("Sin Tiempo");
     $pedido->SetImporte(Null);
 
-    if(ListaPedidos::BuscarPedidoCocina($datos["CodigoMesa"]))
-    {
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $pedido->SetTiempo_ingreso($dateTime->format("Y/m/d H:i:s"));
-    $dateTime->add(new DateInterval('PT' . intval($datos["AgregarMinutos"]) . 'M'));
-    $fecha_estimada = $dateTime->format("Y/m/d H:i:s");
-    $pedido->SetTiempo_estimado($fecha_estimada);
-    }
+   
 
     $idPedidoFoto = Pedidos::TraerElUltimoAgregado();
     $idPedidoFoto+=1;
@@ -103,7 +98,7 @@ public function CerrarMesa($request,$response,$args)
     $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
     Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$codigoMesa["CodigoMesa"]);
     }*/
-    
+
     $importe=ListaPedidos::TraerImportePedido($pedido->Id_pedido,$codigoMesa);
 
     if(!Pedidos::CerrarMesa($codigoMesa,$importe[0]["Importe"]))
@@ -144,6 +139,13 @@ public function TraerTodosLosPedidos($request,$response,$args)
 $pedidos = Pedidos::TraerTodosPedidosListos();
 $resp["pedidos"] = $pedidos;
 return  $response->withJson($resp);
+}
+
+public function TraerLosPedidos($request,$response,$args)
+{
+    $pedidos = Pedidos::TraerLosPedidos();
+    $resp["pedidos"] = $pedidos;
+    return  $response->withJson($resp);
 }
 
 
@@ -508,9 +510,11 @@ public function TraerMesaMenosUsada($request, $response, $args)
        $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
 
        if( $cantidad[0]["Cantidad"] < $menor)
-       {      
+       { 
+           if($cantidad[0]["Cantidad"] != null)   
+           {  
           $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
-          //$menor=$cantidad[$i]["Cantidad"];  
+           }
        }   
    }
     $resp["CodigoMesa"] =  $CodigoMesa;
@@ -545,20 +549,24 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
 public function TraerMesaQueMenosFacturo($request, $response, $args)
 {
     $arrayMesas= Mesas::TraerMesas();
-    $importeMayor=50000;
+    $importeMenor=50000;
     $resp["status"] =  200;
     for($i=0; $i<count($arrayMesas);$i++)
     {    
         $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);    
 
-            if($aux[0]["Importe"] < $importeMayor)
-            {       
-                $importeMayor=$aux[0]["Importe"];  
-                $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];      
-            }               
+            if($aux[0]["Importe"] < $importeMenor)
+            {   
+                if($aux[0]["Importe"]!=null)
+                {    
+                $importeMenor=$aux[0]["Importe"];  
+                $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];  
+                }    
+            }   
+       
     }  
     $resp["Mesa"] = $CodigoMesa;
-    $resp["Importe"] =   $importeMayor;
+    $resp["Importe"] = $importeMenor;
 
     return $response->withJson($resp);   
 }

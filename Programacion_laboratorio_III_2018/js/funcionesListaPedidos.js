@@ -53,7 +53,7 @@ function InsertarPedido() {
                 headers: { token: tokenUsuario },
                 enctype: 'multipart/form-data',
                 url: "../vendor/ListaPedidos/InsertarPedido",
-                data: { CodigoMesa: $("#CodigoMesa").val(), IdProducto: $("#Productos").val() }
+                data: { CodigoMesa: $("#CodigoMesa").val(), IdProducto: $("#Productos").val(), Cantidad: $("#Cantidad").val() }
             })
             funcionAjax.then(function(dato) {
                 if (dato.status == 200) {

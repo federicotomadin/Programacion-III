@@ -1,39 +1,29 @@
 window.onload = function() {
-        var funcionAjax = $.ajax({
-            method: "GET",
-            url: "../vendor/Pedidos/TraerTodosLosPedidos"
-        });
-        funcionAjax.then(function(dato) {
-            var stringPedidos = " ";
-            /* var PedidosFilter = dato.pedidos.filter(function(elemento) {
-                 return elemento.EstadoCuenta != "Cerrada";*/
-            //  });
-            for (var i = 0; i < dato.pedidos.length; i++) {
-                stringPedidos += "<tr>";
-                stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].EstadoCuenta + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].CodigoMesa + "</td>";
-                stringPedidos += "<td>" + dato.pedidos[i].Importe + "</td>";
-                stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + dato.pedidos[i].foto + "'/></td>";
-                stringPedidos += "<td><button class='btn btn-warning' onclick='CambiarEstadoMesa(" + dato.pedidos[i].Id_pedido + ")'>" +
-                    "<span class='glyphicon glyphicon-edit'></span>Cambiar Estado</button>";
-                stringPedidos += "</tr>";
-            }
+    var funcionAjax = $.ajax({
+        method: "GET",
+        url: "../vendor/Pedidos/TraerLosPedidos"
+    });
+    funcionAjax.then(function(dato) {
+        var stringPedidos = " ";
+        for (var i = 0; i < dato.pedidos.length; i++) {
+            stringPedidos += "<tr>";
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].EstadoCuenta + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].CodigoMesa + "</td>";
+            stringPedidos += "<td>" + dato.pedidos[i].Importe + "</td>";
+            stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + dato.pedidos[i].foto + "'/></td>";
+            stringPedidos += "<td><button class='btn btn-warning' onclick='CambiarEstadoMesa(" + dato.pedidos[i].Id_pedido + ")'>" +
+                "<span class='glyphicon glyphicon-edit'></span>Cambiar Estado</button>";
+            stringPedidos += "</tr>";
+        }
 
-            // var PedidosFiltros = dato.pedidos.map(function(elemento) {
-            //     return elemento.EstadoCuenta != "Cerrada";
-        });
         document.getElementById("pedidos").innerHTML = stringPedidos;
-        // $("#graficoBarra").html(stringPedidos);
-
-    },
-    function(dato) {
-        alert("ERROR no se pudieron cargar los pedidos" + dato);
     });
 };
+
 
 function CambiarEstadoMesa(Id_pedido) {
     var tokenUsuario = localStorage.getItem("token");
