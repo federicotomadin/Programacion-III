@@ -1,5 +1,0 @@
-
-{"sabor":"otro","tipo":"agua","precio":"20","cantidad":"20","fecha":"20171203"}
-{"sabor":"frutilla","tipo":"crema","precio":"20","cantidad":14,"fecha":"20171203"}
-{"sabor":"vainilla","tipo":"crema","precio":"20","cantidad":14,"fecha":"20171203"}
-{"sabor":"chocolate","tipo":"agua","precio":"20","cantidad":11,"fecha":"20171203"}

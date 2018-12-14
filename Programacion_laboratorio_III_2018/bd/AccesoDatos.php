@@ -12,14 +12,14 @@ class AccesoDatos
         $password= 'EX2UHciTeVpF';
         try {     
        
-           /* $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-            $this->_objetoPDO->exec("SET CHARACTER SET utf8");*/
+            $this->_objetoPDO->exec("SET CHARACTER SET utf8");
            
-            $this->_objetoPDO = new PDO("mysql:host=mysql.hostinger.com.ar;dbname=u663828753_resta", $username ,$password);
+           /* $this->_objetoPDO = new PDO("mysql:host=mysql.hostinger.com.ar;dbname=u663828753_resta", $username ,$password);
 
             $this->_objetoPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-            $this->_objetoPDO->exec("SET CHARACTER SET utf8");
+            $this->_objetoPDO->exec("SET CHARACTER SET utf8");*/
  
         } catch (PDOException $e) {
  

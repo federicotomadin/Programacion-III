@@ -1,5 +1,0 @@
-{"email":"fede@gmail.com","sabor":"frutilla","tipo":"crema","precio":"20","cantidad":"3","fecha":"20171203"}
-{"email":"fede@gmail.com","sabor":"frutilla","tipo":"crema","precio":"20","cantidad":"3","fecha":"20171203"}
-{"email":"fede@gmail.com","sabor":"chocolate","tipo":"agua","precio":"20","cantidad":"3","fecha":"20171203"}
-{"email":"fede@gmail.com","sabor":"chocolate","tipo":"agua","precio":"20","cantidad":"3","fecha":"20171203"}
-{"email":"fede@gmail.com","sabor":"chocolate","tipo":"agua","precio":"20","cantidad":"3","fecha":"20171203"}
