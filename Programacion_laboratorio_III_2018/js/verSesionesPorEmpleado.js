@@ -18,12 +18,13 @@ window.onload = function() {
 
 };
 
+
 function cambiarIdPorNombreRol(Idrol) {
     switch (Idrol) {
         case IdRol = 1:
-            return "Bartender";
+            return 'Bartender';
         case IdRol = 2:
-            return "Cevecero";
+            return Cevecero;
         case IdRol = 3:
             return "Cocinero";
         case IdRol = 4:
