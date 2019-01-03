@@ -7,8 +7,18 @@ function EnviarDatos() {
     });
 
     funcionAjax.then(function(dato) {
-
-        if (dato.status == "200" && dato.tipo == "Socio") {
+        if (dato.status == "200" && dato.tipo == "Cliente") {
+            swal(
+                'USUARIO VÁLIDO!',
+                'Usted esta registrado en la base de datos!',
+                'success', { button: 'aceptar', }
+            ).then(function() {
+                window.location.replace("../enlaces/restauranteCliente.html");
+            }, function() {
+                swal('Algo inesperado ocurrio');
+            });
+        }
+        else if (dato.status == "200" && dato.tipo == "Socio") {
             swal(
                 'USUARIO VÁLIDO!',
                 'Usted esta registrado en la base de datos!',
@@ -96,7 +106,3 @@ function EnviarDatos() {
     });
 }
 
-function Registrarme() {
-    location.reload();
-    window.location.replace("../enlaces/registrar.html");
-}

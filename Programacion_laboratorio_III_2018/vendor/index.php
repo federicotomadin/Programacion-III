@@ -6,6 +6,7 @@ require 'autoload.php';
 include_once('../clases/EmpleadoApi.php');
 include_once('../clases/PedidosApi.php');
 include_once('../clases/SesionApi.php');
+include_once('../clases/ClienteApi.php');
 include_once('../clases/ProductosApi.php');
 include_once('../clases/ListaPedidosApi.php');
 include_once('../clases/Login.php');
@@ -67,7 +68,7 @@ $app->group('/ListaPedidos', function(){
 
 $app->group('/Empleado', function(){
    $this->post('/IngresarEmpleado', \EmpleadoApi::class .':IngresarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->get('/TraerTodosLosEmpleados',\EmpleadoApi::class .':TraerEmpleados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/TraerClientes',\EmpleadoApi::class .':TraerEmpleados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/DescargarEmpleadosExcel',\EmpleadoApi::class .':TraerDatosParaExportarExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/DescargarEmpleadosPdf',\EmpleadoApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->delete('/BorrarElEmpleado/{id}',\EmpleadoApi::class .':BorrarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -85,6 +86,13 @@ $app->group('/Productos', function(){
   $this->delete('/BorrarProducto/{id}', \ProductosApi::class .':BorrarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/InsertarProducto', \ProductosApi::class .':InsertarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+
+$app->group('/Cliente', function(){
+  $this->post('/IngresarCliente', \ClienteApi::class .':IngresarCliente');
+  $this->get('/TraerClientes',\ClienteApi::class .':TraerClientes');
+  $this->get('/TraerElCliente/{Usuario}',\ClienteApi::class .':TraerElCliente');
+});
+
 
 $app->run();
 ?>

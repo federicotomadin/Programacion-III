@@ -31,7 +31,7 @@ $(document).ready(function() {
             usuario: {
                 validators: {
                     stringLength: {
-                        min: 8,
+                        min: 6,
                     },
                     notEmpty: {
                         message: 'Por favor ingrese un usuario'

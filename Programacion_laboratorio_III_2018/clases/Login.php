@@ -1,6 +1,7 @@
 <?php
 include_once("Empleado.php");
 include_once("Roles.php");
+include_once("Cliente.php");
 include_once("Sesion.php");
 include_once("AutentificadorJWT.php");
 class Login
@@ -9,7 +10,16 @@ class Login
 public function ValidarUsuario($request, $response, $args) {
  
    $datos = $request->getParsedBody();
-   
+
+   $usuario = Cliente::TraerElClientePorUsuario($datos['Usuario']);
+   if($usuario->Id_rol==6)
+   {
+    $resp["status"] = 200;
+    $resp["tipo"] = "Cliente";
+    return $response->withJson($resp);
+   }
+   else
+   {
     if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['Clave']))
       {
      
@@ -48,9 +58,9 @@ public function ValidarUsuario($request, $response, $args) {
     {  
         $resp["status"] = 400;
     }
-
    return $response->withJson($resp,200);
    }
+}
 
 
    public function TraerEmpleado($request,$response,$args)
