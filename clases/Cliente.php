@@ -111,6 +111,14 @@ public static function TraerElClientePorUsuario($Usuario)
     return $consulta->fetchObject('cliente');
 }
 
+public static function InsertarCalifiacion($idEmpleado, $calificacion)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO calificaciones (id_empleado,calificacion)
+    VALUES ('$idEmpleado', '$calificacion') ");
+    return $consulta->execute();
+}
+
 }
 
 ?>

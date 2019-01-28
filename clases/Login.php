@@ -12,17 +12,18 @@ public function ValidarUsuario($request, $response, $args) {
    $datos = $request->getParsedBody();
 
    $usuario = Cliente::TraerElClientePorUsuario($datos['Usuario']);
+   if($usuario != null)
+   {
    if($usuario->Id_rol==6)
    {
     $resp["status"] = 200;
     $resp["tipo"] = "Cliente";
     return $response->withJson($resp);
    }
-   else
-   {
-    if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['Clave']))
-      {
-     
+   }
+
+   if(Empleado::VerificarEmpleado($datos['Usuario'],$datos['Clave']))
+      {   
        $empleado = Empleado::TraerElEmpleadoPorUsuario($datos['Usuario']);
        if($empleado->habilitado == 1)
        {
@@ -59,7 +60,7 @@ public function ValidarUsuario($request, $response, $args) {
         $resp["status"] = 400;
     }
    return $response->withJson($resp,200);
-   }
+
 }
 
 

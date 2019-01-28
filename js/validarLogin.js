@@ -3,7 +3,7 @@ function EnviarDatos() {
         url: '../vendor/Login/ValidarUsuario',
         type: 'POST',
         dataType: 'json',
-        data: { Usuario: $("#Usuario").val(), Clave: $("#Clave").val() },
+        data: { Usuario: $("#Usuario").val(), Clave: $("#Clave").val() }
     });
 
     funcionAjax.then(function(dato) {
@@ -17,8 +17,7 @@ function EnviarDatos() {
             }, function() {
                 swal('Algo inesperado ocurrio');
             });
-        }
-        else if (dato.status == "200" && dato.tipo == "Socio") {
+        } else if (dato.status == "200" && dato.tipo == "Socio") {
             swal(
                 'USUARIO VÁLIDO!',
                 'Usted esta registrado en la base de datos!',
@@ -105,4 +104,3 @@ function EnviarDatos() {
         console.log("ERROR" + dato);
     });
 }
-

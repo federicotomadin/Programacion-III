@@ -128,6 +128,14 @@ public static function TraerElEmpleado($Id_empleado)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function TraerMozos()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados where Id_rol = 4");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
 public static function InsertarElEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();

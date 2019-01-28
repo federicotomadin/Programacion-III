@@ -58,6 +58,13 @@ $resp["empleados"] = $arrayEmpleados;
 return $response->withJson($resp);
 }
 
+public function TraerMozos($request, $response, $args)
+{
+$arrayMozos = Empleado::TraerMozos();
+$resp["mozos"] = $arrayMozos;
+return $response->withJson($resp);
+}
+
 public function TraerElEmpleado($request, $response, $args)
 {
 $Usuario = $args['Usuario'];

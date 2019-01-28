@@ -49,27 +49,33 @@ return $response->withJson($resp);
 
 public function TraerClientes($request, $response, $args)
 {
-$arrayClientes = Cliente::TraerTodosLosClientes();
-$resp["cliente"] = $arrayClientes;
-return $response->withJson($resp);
+    $arrayClientes = Cliente::TraerTodosLosClientes();
+    $resp["cliente"] = $arrayClientes;
+    return $response->withJson($resp);
+    }
+
+    public function TraerElCliente($request, $response, $args)
+    {
+    $Usuario = $args['Usuario'];
+    $cliente = Cliente::TraerElClientePorUsuario($Usuario);
+    if($cliente == false)
+    {
+        $resp["status"] = 400;
+        $response = $response->withJson($resp);
+    }
+    else 
+    {
+        $resp["cliente"] = $cliente;
+    }
+
+    return $response->withJson($resp);
+
+}
+public function InsertarCalificacion($request, $response, $args)
+{
+
 }
 
-public function TraerElCliente($request, $response, $args)
-{
-$Usuario = $args['Usuario'];
-$cliente = Cliente::TraerElClientePorUsuario($Usuario);
-if($cliente == false)
-{
-    $resp["status"] = 400;
-    $response = $response->withJson($resp);
-}
-else 
-{
-    $resp["cliente"] = $cliente;
-}
-
-return $response->withJson($resp);
-}
 
 }
 
