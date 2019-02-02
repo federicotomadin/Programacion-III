@@ -27,7 +27,7 @@ body {
 .rating label::before {
     content: '\f005';
     font-family: 'fontAwesome';
-    position: relative;
+    position: absolute;
     display: block;
     font-size: 150px;
     color: #101010;
@@ -36,7 +36,7 @@ body {
 .rating label::after {
     content: '\f005';
     font-family: 'fontAwesome';
-    position: absolute;
+    position: relative;
     display: block;
     font-size: 150px;
     color: #1f9cff;
@@ -50,4 +50,9 @@ body {
 .rating label:hover~label::after,
 .rating input:checked~label::after {
     opacity: 1;
+}
+
+button {
+    float: center;
+    margin-top: 180px;
 }

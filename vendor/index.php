@@ -90,6 +90,7 @@ $app->group('/Productos', function(){
 
 $app->group('/Cliente', function(){
   $this->post('/IngresarCliente', \ClienteApi::class .':IngresarCliente');
+  $this->post('/InsertarCalificacion', \ClienteApi::class .':InsertarCalificacion');
   $this->get('/TraerClientes',\ClienteApi::class .':TraerClientes');
   $this->get('/TraerElCliente/{Usuario}',\ClienteApi::class .':TraerElCliente');
 });

@@ -73,9 +73,16 @@ public function TraerClientes($request, $response, $args)
 }
 public function InsertarCalificacion($request, $response, $args)
 {
+    $data = $request->getParsedBody();
 
+    $resp["status"] = 200;
+    if(!Cliente::InsertarCalifiacion($data["idEmpleado"], $data["calificacion"]))
+    {
+        $resp["status"] = 400;
+    }
+
+    return $response->withJson($resp);
 }
-
 
 }
 
