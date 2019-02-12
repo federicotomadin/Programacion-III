@@ -1,4 +1,5 @@
 window.onload = function() {
+    $("#PrecioTotal").val(localStorage.getItem("PrecioTotal"));
     let funcionAjax = $.ajax({
         method: "GET",
         url: "../vendor/ListaPedidos/TraerTodosLosProductos"
@@ -6,7 +7,7 @@ window.onload = function() {
     funcionAjax.then(function(dato) {
             var productos = " ";
             for (var i = 0; i < dato.productos.length; i++) {
-                productos += "<option value=" + dato.productos[i].id_producto + ">" + dato.productos[i].Nombre + "</option>";
+                productos += "<option value=" + dato.productos[i].id_producto + ">" + dato.productos[i].Nombre + " ------- $ " + dato.productos[i].Precio + "</option>";
             }
             $("#Productos").html(productos);
         },
@@ -33,6 +34,10 @@ window.onload = function() {
         });
 };
 
+function ReiniciarValores() {
+    localStorage.setItem("PrecioTotal", 0);
+}
+
 
 function InsertarPedido() {
     var tokenUsuario = localStorage.getItem("token");
@@ -57,15 +62,22 @@ function InsertarPedido() {
             })
             funcionAjax.then(function(dato) {
                 if (dato.status == 200) {
+                    var precio = localStorage.getItem("PrecioTotal");
+                    var precioTemporal = parseInt(precio);
+                    var precio2 = precioTemporal + dato.precio * parseInt(dato.cantidad);
+                    localStorage.setItem("PrecioTotal", precio2);
+                    $('#PrecioTotal').val(precio2);
                     swal('El pedido fue cargado correctamente!').then(function() {
                         location.reload();
                     })
-                } else {
+                } else if (dato.status == 400) {
                     swal("ERROR. El pedido no pudo ser cargado");
+                } else if (dato.status == null) {
 
+                    swal("ERROR. Se termino el tiempo de su sesion");
+                    window.location.replace("../enlaces/login.html");
                 }
             })
         }
     })
-
 }

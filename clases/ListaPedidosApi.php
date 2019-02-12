@@ -35,6 +35,8 @@ public function InsertarPedido($request,$response,$args)
     $resp["status"]=200;
     $listaPedido= new ListaPedidos();
     $precio= Productos::TraerPrecio($datos["IdProducto"]);
+    $resp["precio"] = $precio[0]["Precio"];
+    $resp["cantidad"] = $datos["Cantidad"];
     $idRol= Productos::TraerIdRol($datos["IdProducto"]);
 
     $listaPedido->SetId_pedido(Null);
