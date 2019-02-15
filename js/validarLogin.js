@@ -33,6 +33,7 @@ function EnviarDatos() {
                 swal('Algo inesperado ocurrio');
             });
         } else if (dato.status == "200" && dato.tipo == "Mozo") {
+            localStorage.setItem("PrecioTotal", 0);
             localStorage.setItem("hora", dato.hora);
             localStorage.setItem("usuario", dato.Usuario);
             localStorage.setItem("rol", dato.tipo);

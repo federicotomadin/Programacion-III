@@ -48,6 +48,8 @@ $app->group('/Pedidos',function(){
   $this->get('/TraerTodosLosPedidosExcel',\PedidosApi::class .':TraerDatosParaExportarExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosPdf',\PedidosApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosPedidos',\PedidosApi::class .':TraerLosPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerLosPedidosSinDuplicar',\PedidosApi::class .':TraerLosPedidosSinDuplicar')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+
 
 })->add(\MWparaCORS::class . ':HabilitarCORS8080');
 

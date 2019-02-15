@@ -140,14 +140,13 @@ public static function TraerLosPedidos()
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,'pedidos');
 }
-
 public static function TraerElPedidoPorCodigoMesa($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos 
-    WHERE CodigoMesa = '$CodigoMesa' and EstadoCuenta='Esperando Cierre'");
+    WHERE CodigoMesa = '$CodigoMesa'  and EstadoCuenta='Esperando Cierre'");
     $consulta->execute();
-    return $consulta->fetchObject('pedidos');
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
 public static function TraerElPedidoPorCodigoMesaCambiarEstado($CodigoMesa)

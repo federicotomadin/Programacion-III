@@ -92,6 +92,7 @@ public function CerrarMesa($request,$response,$args)
     $resp["status"]=200;
     $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa);
 
+
    /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
     {     
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
@@ -99,7 +100,8 @@ public function CerrarMesa($request,$response,$args)
     Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$codigoMesa["CodigoMesa"]);
     }*/
 
-    $importe=ListaPedidos::TraerImportePedido($pedido->Id_pedido,$codigoMesa);
+    $importe=ListaPedidos::TraerImportePedido($pedido[intval(count($pedido)-1)]->Id_pedido,
+    $pedido[intval(count($pedido)-1)]->CodigoMesa);
 
     if(!Pedidos::CerrarMesa($codigoMesa,$importe[0]["Importe"]))
     {
@@ -141,9 +143,21 @@ $resp["pedidos"] = $pedidos;
 return  $response->withJson($resp);
 }
 
-public function TraerLosPedidos($request,$response,$args)
+public function TraerLosPedidosSinDuplicar($request,$response,$args)
 {
     $pedidos = Pedidos::TraerLosPedidos();
+    $pedidosSinDuplicados = array();
+
+    $temp = array_unique(array_column($pedidos, 'CodigoMesa'));
+    $pedidosSinDuplicados = array_intersect_key($pedidos, $temp);
+
+    $resp["pedidos"] = $pedidosSinDuplicados;
+    return  $response->withJson($resp);
+}
+
+public function TraerLosPedidos($request,$response,$args)
+{
+    $pedidos = Pedidos::TraerLosPedidos();  
     $resp["pedidos"] = $pedidos;
     return  $response->withJson($resp);
 }

@@ -1,13 +1,13 @@
 window.onload = function() {
     var funcionAjax = $.ajax({
         method: "GET",
-        url: "../vendor/Pedidos/TraerLosPedidos"
+        url: "../vendor/Pedidos/TraerLosPedidosSinDuplicar"
     });
     funcionAjax.then(function(dato) {
         var stringPedidos = " ";
-        /*  var dato.pedidos = dato.pedidos.filter(function(elemento) {
-              return elemento.EstadoCuenta != "Cerrada";
-          });*/
+        // dato.pedidos = dato.pedidos.filter(function(elemento) {
+        //     return elemento.unique();
+        // });
         for (var i = 0; i < dato.pedidos.length; i++) {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
@@ -23,6 +23,5 @@ window.onload = function() {
             stringPedidos += "</tr>";
         }
         document.getElementById("pedidos").innerHTML = stringPedidos;
-
     });
 };
