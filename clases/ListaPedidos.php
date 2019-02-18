@@ -147,6 +147,15 @@ public static function TraerCantidadProducto($IdProducto)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function BuscarMesa($CodigoMesa)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from lista_pedidos WHERE CodigoMesa = '$CodigoMesa' and Id_pedido=0");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+ 
+}
+
 
 public static function TraerElMaximoImporte()
 {

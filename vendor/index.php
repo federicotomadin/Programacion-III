@@ -9,6 +9,7 @@ include_once('../clases/SesionApi.php');
 include_once('../clases/ClienteApi.php');
 include_once('../clases/ProductosApi.php');
 include_once('../clases/ListaPedidosApi.php');
+include_once('../clases/CalificacionesApi.php');
 include_once('../clases/Login.php');
 include_once('../clases/AutentificadorJWT.php');
 include_once('../clases/MWparaCORS.php');
@@ -80,6 +81,8 @@ $app->group('/Empleado', function(){
    $this->post('/HabilitarElEmpleado/{id}',\EmpleadoApi::class .':HabilitarEmpleado');
    $this->get('/VerSesionesDelEmpleado/{id}',\EmpleadoApi::class .':VerSesionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/VerOperacionesDelEmpleado/{id}',\EmpleadoApi::class .':VerCantidadOperacionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/TraerPromedioCalificacion/{id}',\CalificacionesApi::class .':TraerPromedioCalificacion')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+
 })->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->group('/Productos', function(){

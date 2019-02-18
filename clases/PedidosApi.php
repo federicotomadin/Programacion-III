@@ -39,6 +39,13 @@ public function ConfirmarPedido($request,$response,$args)
         return $response->withJson($resp);
     }
     $pedido->SetUsuario($empleado->Usuario);
+
+    if(ListaPedidos::BuscarMesa($datos["CodigoMesa"]) == null)
+    {
+        $resp["status"] = 403;
+        return $response->withJson($resp);  
+    }
+
     $pedido->SetCodigoMesa($datos["CodigoMesa"]);
     $pedido->SetEstadoCuenta("Sin Tiempo");
     $pedido->SetImporte(Null);
@@ -93,6 +100,13 @@ public function CerrarMesa($request,$response,$args)
     $pedido=Pedidos::TraerElPedidoPorCodigoMesa($codigoMesa);
 
 
+    if($pedido == null)
+    {
+        $resp["status"]=401;
+        return $response->withJson($resp);   
+    }
+
+
    /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
     {     
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
@@ -105,7 +119,7 @@ public function CerrarMesa($request,$response,$args)
 
     if(!Pedidos::CerrarMesa($codigoMesa,$importe[0]["Importe"]))
     {
-        $resp["status"]=400;
+       
     }
 
     return $response->withJson($resp);   

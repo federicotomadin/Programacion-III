@@ -22,8 +22,8 @@ function CerrarMesa(idMesa) {
                     swal("La mesa fue cerrada correctamente!").then(function() {
                         location.reload();
                     });
-                } else {
-                    swal("ERROR. La mesa no pudo ser cerrada");
+                } else if (dato.status === 401) {
+                    swal("ERROR. No se puede cerrar una mesa antes de la orden del mozo");
                 }
             });
         } else {
@@ -62,8 +62,10 @@ function ConfirmarPedido() {
                         swal("El pedido fue confirmado correctamente!").then(function() {
                             location.reload();
                         });
+                    } else if (dato.status == 403) {
+                        swal("ERROR. No se puede confirmar mesa de un pedido que no se tomó");
                     } else {
-                        swal("ERROR. El pedido no fue confirmado");
+                        swal("ERROR");
                     }
                 });
             });

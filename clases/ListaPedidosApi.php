@@ -6,9 +6,6 @@ require_once("Productos.php");
 require_once("Operaciones.php");
 require_once("Roles.php");
 include_once("../bd/AccesoDatos.php");
-//include_once("../phpExcel/Classes/PHPExcel.php");
-//include_once('../fpdf/fpdf.php');
-// include composer autoload
 require 'autoload.php';
 
 // import the Intervention Image Manager Class
