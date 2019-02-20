@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-12-2018 a las 09:53:58
--- Versión del servidor: 10.1.25-MariaDB
--- Versión de PHP: 7.1.7
+-- Tiempo de generación: 18-02-2019 a las 16:06:05
+-- Versión del servidor: 10.1.37-MariaDB
+-- Versión de PHP: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,62 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `u663828753_resta`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `calificaciones`
+--
+
+CREATE TABLE `calificaciones` (
+  `id_empleado` int(11) NOT NULL,
+  `calificacion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `calificaciones`
+--
+
+INSERT INTO `calificaciones` (`id_empleado`, `calificacion`) VALUES
+(3, 1),
+(3, 5),
+(4, 3),
+(3, 2),
+(3, 5),
+(3, 5),
+(12, 1),
+(3, 2),
+(4, 3),
+(47, 1),
+(2, 2),
+(3, 2),
+(3, 5),
+(3, 1),
+(47, 5),
+(2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `Id_cliente` int(11) NOT NULL,
+  `Nombre` varchar(20) NOT NULL,
+  `Apellido` varchar(20) NOT NULL,
+  `Usuario` varchar(20) NOT NULL,
+  `clave` varchar(50) NOT NULL,
+  `Id_rol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`Id_cliente`, `Nombre`, `Apellido`, `Usuario`, `clave`, `Id_rol`) VALUES
+(1, 'Pedro', 'Mendoza', 'pmendoza', 'd41d8cd98f00b204e9800998ecf8427e', 6),
+(2, 'Daiana', 'Ojeda', 'dojeda', 'd41d8cd98f00b204e9800998ecf8427e', 6);
 
 -- --------------------------------------------------------
 
@@ -130,8 +186,17 @@ CREATE TABLE `lista_pedidos` (
   `Id_rol` int(11) NOT NULL,
   `Id_estadoPedido` int(11) NOT NULL,
   `CodigoMesa` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `Cantidad` int(11) NOT NULL,
   `Precio` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lista_pedidos`
+--
+
+INSERT INTO `lista_pedidos` (`Id_pedido`, `Id_producto`, `Id_rol`, `Id_estadoPedido`, `CodigoMesa`, `Cantidad`, `Precio`) VALUES
+(65, 3, 1, 2, 'abc11', 2, 200),
+(65, 2, 2, 2, 'abc11', 1, 180);
 
 -- --------------------------------------------------------
 
@@ -237,7 +302,87 @@ INSERT INTO `operaciones` (`IdOperacion`, `FechaOperacion`, `Id_rol`, `Id_emplea
 (64, '2018-12-07 07:59:49', 1, 2),
 (65, '2018-12-07 08:06:02', 3, 2),
 (66, '2018-12-07 08:07:21', 3, 2),
-(67, '2018-12-07 08:33:04', 1, 4);
+(67, '2018-12-07 08:33:04', 1, 4),
+(68, '2019-02-05 00:23:11', 1, 47),
+(69, '2019-02-05 00:27:37', 3, 47),
+(70, '2019-02-11 21:31:39', 1, 47),
+(71, '2019-02-11 21:32:28', 1, 47),
+(72, '2019-02-11 21:32:42', 2, 47),
+(73, '2019-02-11 21:32:47', 3, 47),
+(74, '2019-02-11 21:51:53', 3, 47),
+(75, '2019-02-11 21:53:05', 3, 47),
+(76, '2019-02-11 21:58:01', 3, 47),
+(77, '2019-02-11 22:02:16', 3, 47),
+(78, '2019-02-11 22:03:22', 3, 47),
+(79, '2019-02-11 22:08:32', 3, 47),
+(80, '2019-02-11 22:09:47', 3, 47),
+(81, '2019-02-11 22:10:40', 3, 47),
+(82, '2019-02-11 22:12:34', 3, 47),
+(83, '2019-02-11 22:15:05', 3, 47),
+(84, '2019-02-11 22:15:15', 1, 47),
+(85, '2019-02-11 22:18:32', 3, 47),
+(86, '2019-02-11 22:19:05', 3, 47),
+(87, '2019-02-11 22:19:10', 1, 47),
+(88, '2019-02-11 22:19:49', 3, 47),
+(89, '2019-02-11 22:19:57', 2, 47),
+(90, '2019-02-11 22:24:11', 3, 47),
+(91, '2019-02-11 22:24:45', 3, 47),
+(92, '2019-02-11 22:24:51', 1, 47),
+(93, '2019-02-11 22:25:14', 1, 47),
+(94, '2019-02-11 22:25:27', 3, 47),
+(95, '2019-02-11 22:26:33', 3, 47),
+(96, '2019-02-11 22:29:16', 3, 47),
+(97, '2019-02-11 22:29:35', 3, 47),
+(98, '2019-02-11 22:30:51', 3, 47),
+(99, '2019-02-11 22:30:56', 1, 47),
+(100, '2019-02-11 22:32:31', 3, 47),
+(101, '2019-02-11 22:33:28', 3, 47),
+(102, '2019-02-11 22:34:45', 3, 47),
+(103, '2019-02-11 22:34:49', 1, 47),
+(104, '2019-02-11 22:35:28', 3, 47),
+(105, '2019-02-11 22:36:17', 1, 47),
+(106, '2019-02-11 22:37:09', 3, 47),
+(107, '2019-02-11 22:38:59', 3, 47),
+(108, '2019-02-11 22:39:20', 1, 47),
+(109, '2019-02-11 22:40:23', 1, 47),
+(110, '2019-02-11 22:40:54', 1, 47),
+(111, '2019-02-11 22:42:34', 1, 47),
+(112, '2019-02-11 22:42:39', 1, 47),
+(113, '2019-02-11 22:43:13', 3, 47),
+(114, '2019-02-11 22:43:18', 1, 47),
+(115, '2019-02-11 23:22:41', 1, 47),
+(116, '2019-02-11 23:30:49', 3, 47),
+(117, '2019-02-11 23:30:54', 1, 47),
+(118, '2019-02-11 23:31:28', 1, 47),
+(119, '2019-02-11 23:32:22', 3, 47),
+(120, '2019-02-11 23:33:30', 1, 47),
+(121, '2019-02-11 23:35:55', 1, 47),
+(122, '2019-02-11 23:36:00', 1, 47),
+(123, '2019-02-11 23:38:59', 3, 47),
+(124, '2019-02-12 18:33:56', 2, 47),
+(125, '2019-02-12 18:34:47', 1, 47),
+(126, '2019-02-12 18:45:29', 1, 47),
+(127, '2019-02-12 18:52:21', 1, 4),
+(128, '2019-02-12 18:54:15', 1, 4),
+(129, '2019-02-12 20:13:30', 3, 47),
+(130, '2019-02-12 20:13:51', 2, 47),
+(131, '2019-02-12 20:15:08', 3, 12),
+(132, '2019-02-12 20:16:31', 2, 3),
+(133, '2019-02-12 20:18:32', 3, 12),
+(134, '2019-02-12 20:19:40', 2, 47),
+(135, '2019-02-12 20:24:05', 2, 3),
+(136, '2019-02-13 04:22:25', 3, 47),
+(137, '2019-02-13 04:22:38', 2, 47),
+(138, '2019-02-13 04:23:22', 2, 3),
+(139, '2019-02-13 04:23:53', 3, 12),
+(140, '2019-02-13 04:24:33', 3, 12),
+(141, '2019-02-13 04:25:22', 2, 47),
+(142, '2019-02-13 04:25:54', 2, 3),
+(143, '2019-02-18 01:23:28', 1, 47),
+(144, '2019-02-18 01:23:40', 2, 47),
+(145, '2019-02-18 01:29:52', 2, 3),
+(146, '2019-02-18 01:30:01', 2, 3),
+(147, '2019-02-18 01:30:26', 1, 4);
 
 -- --------------------------------------------------------
 
@@ -256,6 +401,13 @@ CREATE TABLE `pedidos` (
   `Importe` float DEFAULT NULL,
   `foto` varchar(250) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`Id_pedido`, `Tiempo_ingreso`, `Tiempo_estimado`, `Tiempo_llegadaMesa`, `EstadoCuenta`, `Usuario`, `CodigoMesa`, `Importe`, `foto`) VALUES
+(65, '2019-02-18 01:55:15', '0000-00-00 00:00:00', '2019-02-18 01:30:26', 'Cerrada', 'mreinoso', 'abc11', 380, '../fotosPedidosCambiadas/1abc11.png');
 
 -- --------------------------------------------------------
 
@@ -276,9 +428,9 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id_producto`, `Nombre`, `Descripcion`, `Precio`, `id_rol`) VALUES
-(1, 'Asado de Tira', 'Asado de tira', 290, 3),
+(1, 'Asado de Tira', 'Asado de ternera ', 290, 3),
 (3, 'Caipiroshka', 'Vodka - lima- azucar - hielo', 100, 1),
-(2, 'Red', 'Cerveza Tirada', 180, 2);
+(2, 'Cerveza Red', 'Cerveza Tirada IBU 40% ALC 30%', 180, 2);
 
 -- --------------------------------------------------------
 
@@ -367,7 +519,115 @@ INSERT INTO `sesion` (`IdSesion`, `IdEmpleado`, `FechaIngreso`, `FechaSalida`) V
 (281, 2, '12/07/2018 5:33 AM', '12/07/2018 5:33 AM'),
 (282, 1, '12/07/2018 5:33 AM', NULL),
 (283, 1, '12/07/2018 5:35 AM', '12/07/2018 5:50 AM'),
-(284, 1, '12/07/2018 5:50 AM', NULL);
+(284, 1, '12/07/2018 5:50 AM', NULL),
+(285, 1, '12/29/2018 3:35 PM', '12/29/2018 5:08 PM'),
+(286, 2, '12/29/2018 5:46 PM', '01/26/2019 8:43 PM'),
+(287, 2, '01/27/2019 11:27 PM', NULL),
+(288, 2, '01/27/2019 11:27 PM', NULL),
+(289, 2, '01/27/2019 11:27 PM', NULL),
+(290, 2, '01/27/2019 11:29 PM', NULL),
+(291, 2, '01/27/2019 11:29 PM', NULL),
+(292, 2, '01/27/2019 11:30 PM', NULL),
+(293, 1, '01/27/2019 11:30 PM', NULL),
+(294, 1, '01/27/2019 11:32 PM', NULL),
+(295, 1, '01/27/2019 11:32 PM', NULL),
+(296, 2, '01/27/2019 11:33 PM', NULL),
+(297, 1, '01/27/2019 11:37 PM', NULL),
+(298, 1, '01/27/2019 11:39 PM', NULL),
+(299, 1, '01/27/2019 11:41 PM', NULL),
+(300, 1, '01/27/2019 11:41 PM', NULL),
+(301, 1, '01/27/2019 11:42 PM', NULL),
+(302, 2, '01/27/2019 11:43 PM', NULL),
+(303, 1, '01/27/2019 11:44 PM', NULL),
+(304, 1, '01/27/2019 11:47 PM', NULL),
+(305, 1, '01/27/2019 11:47 PM', NULL),
+(306, 1, '01/27/2019 11:51 PM', NULL),
+(307, 1, '01/27/2019 11:52 PM', NULL),
+(308, 1, '01/27/2019 11:52 PM', NULL),
+(309, 1, '01/27/2019 11:53 PM', NULL),
+(310, 1, '01/27/2019 11:53 PM', NULL),
+(311, 2, '01/27/2019 11:58 PM', NULL),
+(312, 1, '01/27/2019 11:58 PM', '01/27/2019 11:59 PM'),
+(313, 47, '02/01/2019 8:33 PM', '02/01/2019 8:33 PM'),
+(314, 1, '02/02/2019 8:22 PM', '02/03/2019 4:47 PM'),
+(315, 47, '02/03/2019 4:48 PM', NULL),
+(316, 47, '02/04/2019 9:20 PM', '02/04/2019 9:27 PM'),
+(317, 47, '02/04/2019 9:27 PM', NULL),
+(318, 1, '02/04/2019 9:46 PM', '02/04/2019 9:46 PM'),
+(319, 47, '02/04/2019 9:46 PM', NULL),
+(320, 47, '02/11/2019 6:31 PM', '02/11/2019 6:51 PM'),
+(321, 47, '02/11/2019 6:51 PM', '02/11/2019 8:37 PM'),
+(322, 1, '02/11/2019 8:37 PM', '02/11/2019 8:37 PM'),
+(323, 47, '02/11/2019 8:38 PM', '02/11/2019 8:40 PM'),
+(324, 1, '02/11/2019 8:40 PM', '02/11/2019 8:41 PM'),
+(325, 47, '02/11/2019 8:41 PM', '02/12/2019 3:33 PM'),
+(326, 47, '02/12/2019 3:33 PM', '02/12/2019 3:45 PM'),
+(327, 4, '02/12/2019 3:46 PM', NULL),
+(328, 4, '02/12/2019 3:50 PM', '02/12/2019 3:51 PM'),
+(329, 47, '02/12/2019 3:51 PM', '02/12/2019 3:52 PM'),
+(330, 4, '02/12/2019 3:52 PM', '02/12/2019 3:52 PM'),
+(331, 1, '02/12/2019 3:52 PM', '02/12/2019 3:52 PM'),
+(332, 47, '02/12/2019 3:52 PM', '02/12/2019 3:53 PM'),
+(333, 1, '02/12/2019 3:53 PM', '02/12/2019 3:54 PM'),
+(334, 4, '02/12/2019 3:54 PM', '02/12/2019 3:54 PM'),
+(335, 47, '02/12/2019 3:54 PM', '02/12/2019 3:55 PM'),
+(336, 1, '02/12/2019 3:55 PM', NULL),
+(337, 1, '02/12/2019 3:58 PM', '02/12/2019 4:01 PM'),
+(338, 47, '02/12/2019 4:01 PM', '02/12/2019 4:03 PM'),
+(339, 1, '02/12/2019 4:03 PM', '02/12/2019 4:11 PM'),
+(340, 47, '02/12/2019 4:11 PM', '02/12/2019 4:14 PM'),
+(341, 47, '02/12/2019 4:14 PM', '02/12/2019 4:15 PM'),
+(342, 47, '02/12/2019 4:15 PM', '02/12/2019 4:18 PM'),
+(343, 47, '02/12/2019 4:18 PM', '02/12/2019 4:18 PM'),
+(344, 47, '02/12/2019 4:18 PM', '02/12/2019 4:22 PM'),
+(345, 47, '02/12/2019 4:23 PM', '02/12/2019 4:24 PM'),
+(346, 47, '02/12/2019 4:24 PM', '02/12/2019 4:25 PM'),
+(347, 47, '02/12/2019 4:25 PM', '02/12/2019 5:14 PM'),
+(348, 12, '02/12/2019 5:14 PM', '02/12/2019 5:15 PM'),
+(349, 47, '02/12/2019 5:15 PM', '02/12/2019 5:16 PM'),
+(350, 3, '02/12/2019 5:16 PM', '02/12/2019 5:16 PM'),
+(351, 47, '02/12/2019 5:17 PM', '02/12/2019 5:17 PM'),
+(352, 2, '02/12/2019 5:17 PM', '02/12/2019 5:18 PM'),
+(353, 12, '02/12/2019 5:18 PM', '02/12/2019 5:18 PM'),
+(354, 47, '02/12/2019 5:18 PM', '02/12/2019 5:20 PM'),
+(355, 3, '02/12/2019 5:20 PM', '02/12/2019 5:24 PM'),
+(356, 47, '02/12/2019 5:24 PM', '02/12/2019 5:26 PM'),
+(357, 1, '02/12/2019 5:26 PM', NULL),
+(358, 1, '02/12/2019 8:52 PM', NULL),
+(359, 1, '02/13/2019 1:20 AM', '02/13/2019 1:22 AM'),
+(360, 47, '02/13/2019 1:22 AM', '02/13/2019 1:23 AM'),
+(361, 3, '02/13/2019 1:23 AM', '02/13/2019 1:23 AM'),
+(362, 12, '02/13/2019 1:23 AM', '02/13/2019 1:24 AM'),
+(363, 47, '02/13/2019 1:24 AM', '02/13/2019 1:25 AM'),
+(364, 3, '02/13/2019 1:25 AM', '02/13/2019 1:26 AM'),
+(365, 47, '02/13/2019 1:26 AM', '02/13/2019 1:27 AM'),
+(366, 1, '02/13/2019 1:27 AM', '02/13/2019 11:29 PM'),
+(367, 1, '02/13/2019 11:29 PM', '02/14/2019 10:01 PM'),
+(368, 1, '02/14/2019 10:07 PM', '02/14/2019 10:07 PM'),
+(369, 47, '02/14/2019 10:07 PM', NULL),
+(370, 47, '02/14/2019 10:10 PM', '02/15/2019 12:06 AM'),
+(371, 1, '02/15/2019 12:06 AM', '02/15/2019 12:17 AM'),
+(372, 47, '02/15/2019 12:17 AM', '02/15/2019 12:17 AM'),
+(373, 1, '02/15/2019 12:17 AM', '02/15/2019 12:21 AM'),
+(374, 1, '02/15/2019 12:22 AM', '02/15/2019 2:02 PM'),
+(375, 1, '02/15/2019 2:02 PM', '02/15/2019 2:02 PM'),
+(376, 1, '02/15/2019 2:04 PM', NULL),
+(377, 1, '02/15/2019 2:23 PM', '02/17/2019 5:51 PM'),
+(378, 1, '02/17/2019 5:51 PM', '02/17/2019 5:51 PM'),
+(379, 47, '02/17/2019 5:51 PM', '02/17/2019 6:01 PM'),
+(380, 1, '02/17/2019 6:01 PM', '02/17/2019 10:14 PM'),
+(381, 1, '02/17/2019 10:15 PM', '02/17/2019 10:16 PM'),
+(382, 1, '02/17/2019 10:16 PM', '02/17/2019 10:17 PM'),
+(383, 1, '02/17/2019 10:18 PM', '02/17/2019 10:19 PM'),
+(384, 47, '02/17/2019 10:19 PM', '02/17/2019 10:29 PM'),
+(385, 3, '02/17/2019 10:29 PM', '02/17/2019 10:30 PM'),
+(386, 4, '02/17/2019 10:30 PM', '02/17/2019 10:30 PM'),
+(387, 1, '02/17/2019 10:30 PM', '02/17/2019 10:32 PM'),
+(388, 47, '02/17/2019 10:32 PM', '02/17/2019 10:33 PM'),
+(389, 1, '02/17/2019 10:33 PM', NULL),
+(390, 1, '02/17/2019 10:44 PM', '02/17/2019 10:54 PM'),
+(391, 47, '02/17/2019 10:54 PM', '02/17/2019 10:55 PM'),
+(392, 1, '02/17/2019 10:55 PM', '02/17/2019 10:55 PM');
 
 -- --------------------------------------------------------
 
@@ -392,6 +652,12 @@ INSERT INTO `zonas_mesas` (`Id_zonaMesa`, `Descripcion`) VALUES
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`Id_cliente`);
 
 --
 -- Indices de la tabla `empleados`
@@ -469,55 +735,71 @@ ALTER TABLE `zonas_mesas`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `Id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+
 --
 -- AUTO_INCREMENT de la tabla `encuesta`
 --
 ALTER TABLE `encuesta`
   MODIFY `IdEncuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `estadopedidos`
 --
 ALTER TABLE `estadopedidos`
   MODIFY `Id_estadoPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `estado_cuenta_pedidos`
 --
 ALTER TABLE `estado_cuenta_pedidos`
   MODIFY `Id_estadoCuenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT de la tabla `operaciones`
 --
 ALTER TABLE `operaciones`
-  MODIFY `IdOperacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `IdOperacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `Id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `Id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
   MODIFY `Id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT de la tabla `sesion`
 --
 ALTER TABLE `sesion`
-  MODIFY `IdSesion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=285;
+  MODIFY `IdSesion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=393;
+
 --
 -- AUTO_INCREMENT de la tabla `zonas_mesas`
 --
 ALTER TABLE `zonas_mesas`
-  MODIFY `Id_zonaMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;COMMIT;
+  MODIFY `Id_zonaMesa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

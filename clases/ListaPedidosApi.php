@@ -90,6 +90,7 @@ public function CambiarEstadoPedido($request,$response,$args)
 {
     $datos=$request->getParsedBody();
 
+
     $arrayConToken = $request->getHeader('token');
     $token=$arrayConToken[0];
     $payload=AutentificadorJWT::ObtenerData($token);

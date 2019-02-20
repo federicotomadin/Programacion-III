@@ -52,7 +52,7 @@ $app->group('/Pedidos',function(){
   $this->get('/TraerLosPedidosSinDuplicar',\PedidosApi::class .':TraerLosPedidosSinDuplicar')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
 
-})->add(\MWparaCORS::class . ':HabilitarCORS8080');
+})->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 
 $app->group('/ListaPedidos', function(){
   $this->post('/InsertarPedido',\ListaPedidosApi::class .':InsertarPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

@@ -38,9 +38,9 @@ function CargarAutomatico() {
         var stringPedidos = " ";
         for (var i = 0; i < dato.pedidosPendientes.length; i++) {
             stringPedidos += "<tr>";
-            stringPedidos += "<td>" + cambiarIdPorNombreProducto(dato.pedidosPendientes[i].Id_producto) + "</td>";
+            stringPedidos += "<td>" + cambiarIdPorNombreProducto(parseInt(dato.pedidosPendientes[i].Id_producto)) + "</td>";
             stringPedidos += "<td>" + dato.pedidosPendientes[i].CodigoMesa + "</td>";
-            stringPedidos += "<td>" + cambiarIdPorEstadoPedido(dato.pedidosPendientes[i].Id_estadoPedido) + "</td>";
+            stringPedidos += "<td>" + cambiarIdPorEstadoPedido(parseInt(dato.pedidosPendientes[i].Id_estadoPedido)) + "</td>";
             stringPedidos += "<td align='center' colspan='2'><button  class='btn btn-warning' onclick='CambiarEstado(" + JSON.stringify(dato.pedidosPendientes[i].CodigoMesa) + ")' " +
                 "<span class='glyphicon glyphicon-edit'></span>Cambiar Estado</button></td>";
             stringPedidos += "</tr>";

@@ -58,6 +58,7 @@ public function ConfirmarPedido($request,$response,$args)
     $idPedidoFoto+=1;
     $destino = "../fotosPedidos/";
 
+
     $urlImagen = $destino.$idPedidoFoto.$datos["CodigoMesa"]."."."png";
     file_put_contents($urlImagen, base64_decode($datos["foto"]));
     
@@ -82,6 +83,7 @@ public function ConfirmarPedido($request,$response,$args)
 
 public function CerrarMesa($request,$response,$args)
 {
+
     $codigoMesa=$args["CodigoMesa"];
 
     $resp["status"] = 200;

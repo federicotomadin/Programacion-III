@@ -47,14 +47,14 @@ function ConfirmarPedido() {
         cancelButtonText: 'No, no confirmar el pedido!'
     }).then(function(result) {
         if (result.value) {
+            console.log($("#foto")[0].files[0]);
             base64($("#foto")[0].files[0], function(foto) {
-                localStorage.setItem("foto", foto);
                 var funcionAjax = $.ajax({
                     url: "../vendor/Pedidos/ConfirmarPedido",
                     headers: { token: tokenUsuario },
-                    method: "POST",
+                    type: "POST",
                     enctype: 'multipart/form-data',
-                    data: { CodigoMesa: $("#CodigoMesa").val(), foto: JSON.stringify(localStorage.getItem("foto")) }
+                    data: { CodigoMesa: $("#CodigoMesa").val(), foto: foto }
 
                 });
                 funcionAjax.then(function(dato) {
@@ -64,8 +64,8 @@ function ConfirmarPedido() {
                         });
                     } else if (dato.status == 403) {
                         swal("ERROR. No se puede confirmar mesa de un pedido que no se tomó");
-                    } else if (dato.status == 404) {
-                        swal("ERROR. Ocurrio un error interno en el servidor");
+                    } else {
+                        swal("ERROR");
                     }
                 });
             });
@@ -75,60 +75,13 @@ function ConfirmarPedido() {
     });
 }
 
-function uploadFile() {
-    var file = document.getElementById('foto').files[0];
-    if (file != undefined) {
-        if (file.size <= 10000) {
-            file.size = 50;
-            attachmentName = file.name;
-            var fileReader = new FileReader();
-            fileReader.onloadend = function(e) {
-                var tempImg = new Image();
-                var dataURL;
-                tempImg.src = this.result;
-                tempImg.onload = function() {
-                    var MAX_WIDTH = 400;
-                    var MAX_HEIGHT = 300;
-                    var tempW = tempImg.width;
-                    var tempH = tempImg.height;
-                    if (tempW > tempH) {
-                        if (tempW > MAX_WIDTH) {
-                            tempH *= MAX_WIDTH / tempW;
-                            tempW = MAX_WIDTH;
-                        }
-                    } else {
-                        if (tempH > MAX_HEIGHT) {
-                            tempW *= MAX_HEIGHT / tempH;
-                            tempH = MAX_HEIGHT;
-                        }
-                    }
-                    var canvas = document.getElementById('myCanvas');
-                    canvas.width = tempW;
-                    canvas.height = tempH;
-                    var ctx = canvas.getContext("2d");
-                    ctx.drawImage(this, 0, 0, tempW, tempH);
-                    attachment = canvas.toDataURL("image/jpeg");
-                    attachment = attachment.slice(23);
-                    positionIndex = 0;
-                    fileSize = attachment.length;
-                    //this is a function to post the data
-                    uploadAttachment(null);
-                }
-            }
-            fileReader.readAsDataURL(file);
-        }
-    }
-}
-
-
 function base64(fotoObj, callback) {
-
+    console.log("base64 " + fotoObj.name)
     var reader = new FileReader();
 
     reader.onload = function(readerEvt) {
         var binaryString = readerEvt.target.result;
         var fotoBase64 = btoa(binaryString);
-
         //$(thumb).show();
         //$(thumb).attr("src", "data:image/png;base64," + fotoBase64);
         console.log("foto cargada");

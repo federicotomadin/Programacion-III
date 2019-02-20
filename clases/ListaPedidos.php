@@ -124,8 +124,8 @@ public static function BorrarElPedido($IdPedido)
 public static function ModificarPedido($pedido)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos set Id_pedido = '$pedido->Id_pedido',Id_producto = '$pedido->Id_producto', 
-    Precio = '$pedido->Precio' where Id_pedido = '$pedido->Id_pedido' ");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos set Id_pedido = '$pedido->Id_pedido',Id_producto = '$pedido->Id_producto'
+    ,$Precio = '$pedido->Precio' where Id_pedido = '$pedido->Id_pedido' ");
     return $consulta->execute();
 }
 
