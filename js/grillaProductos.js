@@ -32,7 +32,7 @@ function Editar(IdProducto) {
         url: '../vendor/Productos/TraerProducto/' + IdProducto
     })
     funcionAjax.then(function(dato) {
-        localStorage.setItem("IdProducto", JSON.stringify(dato.id_producto));
+        localStorage.setItem("IdProducto", dato.id_producto);
         $('#inputNombre').val(dato.Nombre);
         $('#inputDescripcion').val(dato.Descripcion);
         $('#inputPrecio').val(dato.Precio);
