@@ -3,6 +3,7 @@ require_once("ListaPedidos.php");
 require_once("Pedidos.php");
 require_once("Empleado.php");
 require_once("Productos.php");
+require_once("Mesas.php");
 require_once("Operaciones.php");
 require_once("Roles.php");
 include_once("../bd/AccesoDatos.php");
@@ -45,11 +46,13 @@ public function InsertarPedido($request,$response,$args)
     $listaPedido->SetCantidad($datos["Cantidad"]);
     $listaPedido->SetPrecio($precio[0]["Precio"] * $datos["Cantidad"]);
 
+
     if(!ListaPedidos::InsertarListaPedido($listaPedido))
     {
     return $resp["status"]=400;
     }
 
+    Mesas::CambiarEstadoMesaEsperandoPedido($datos["CodigoMesa"]);
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $operacion = new Operaciones();
     $operacion -> SetFechaOperacion($dateTime ->format("Y/m/d H:i:s"));

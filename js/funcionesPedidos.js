@@ -75,51 +75,6 @@ function ConfirmarPedido() {
     });
 }
 
-function uploadFile() {
-    var file = document.getElementById('foto').files[0];
-    if (file != undefined) {
-        if (file.size <= 10000) {
-            file.size = 50;
-            attachmentName = file.name;
-            var fileReader = new FileReader();
-            fileReader.onloadend = function(e) {
-                var tempImg = new Image();
-                var dataURL;
-                tempImg.src = this.result;
-                tempImg.onload = function() {
-                    var MAX_WIDTH = 400;
-                    var MAX_HEIGHT = 300;
-                    var tempW = tempImg.width;
-                    var tempH = tempImg.height;
-                    if (tempW > tempH) {
-                        if (tempW > MAX_WIDTH) {
-                            tempH *= MAX_WIDTH / tempW;
-                            tempW = MAX_WIDTH;
-                        }
-                    } else {
-                        if (tempH > MAX_HEIGHT) {
-                            tempW *= MAX_HEIGHT / tempH;
-                            tempH = MAX_HEIGHT;
-                        }
-                    }
-                    var canvas = document.getElementById('myCanvas');
-                    canvas.width = tempW;
-                    canvas.height = tempH;
-                    var ctx = canvas.getContext("2d");
-                    ctx.drawImage(this, 0, 0, tempW, tempH);
-                    attachment = canvas.toDataURL("image/jpeg");
-                    attachment = attachment.slice(23);
-                    positionIndex = 0;
-                    fileSize = attachment.length;
-                    //this is a function to post the data
-                    uploadAttachment(null);
-                }
-            }
-            fileReader.readAsDataURL(file);
-        }
-    }
-}
-
 
 function base64(fotoObj, callback) {
 

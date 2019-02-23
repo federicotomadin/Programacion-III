@@ -1,5 +1,9 @@
 window.onload = function() {
     let usuario = localStorage.getItem("usuario");
+    if (usuario == null) {
+        swal('Tiene que loguearse');
+        window.location.replace("../enlaces/login.html");
+    }
     let funcionAjax = $.ajax({
         method: 'GET',
         url: '../vendor/Login/TraerEmpleado/' + usuario

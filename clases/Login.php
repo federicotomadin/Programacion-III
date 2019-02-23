@@ -12,12 +12,14 @@ public function ValidarUsuario($request, $response, $args) {
    $datos = $request->getParsedBody();
 
    $usuario = Cliente::TraerElClientePorUsuario($datos['Usuario']);
+
    if($usuario != null)
    {
    if($usuario->Id_rol==6)
    {
     $resp["status"] = 200;
     $resp["tipo"] = "Cliente";
+    $resp["Usuario"] = $usuario->Usuario; 
     return $response->withJson($resp);
    }
    }

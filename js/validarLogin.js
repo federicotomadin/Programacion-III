@@ -13,6 +13,7 @@ function EnviarDatos() {
                 'Usted esta registrado en la base de datos!',
                 'success', { button: 'aceptar', }
             ).then(function() {
+                localStorage.setItem("usuario", dato.Usuario);
                 window.location.replace("../enlaces/restauranteCliente.html");
             }, function() {
                 swal('Algo inesperado ocurrio');

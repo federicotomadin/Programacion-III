@@ -1,6 +1,6 @@
 window.onload = function() {
     var funcionAjax = $.ajax({
-        method: "GET",
+        type: "GET",
         url: "../vendor/Pedidos/TraerLosPedidosSinDuplicar"
     });
     funcionAjax.then(function(dato) {

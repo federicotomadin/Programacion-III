@@ -16,8 +16,7 @@ window.onload = function() {
 
     let funcionAjax2 = $.ajax({
         method: "GET",
-        url: "../vendor/ListaPedidos/TraerTodasLasMesas"
-
+        url: "../vendor/Mesas/TraerLasMesasEsperandoPedido"
     });
 
     funcionAjax2.then(function(dato) {

@@ -5,6 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require 'autoload.php';
 include_once('../clases/EmpleadoApi.php');
 include_once('../clases/PedidosApi.php');
+include_once('../clases/MesasApi.php');
 include_once('../clases/SesionApi.php');
 include_once('../clases/ClienteApi.php');
 include_once('../clases/ProductosApi.php');
@@ -92,6 +93,17 @@ $app->group('/Productos', function(){
   $this->delete('/BorrarProducto/{id}', \ProductosApi::class .':BorrarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/InsertarProducto', \ProductosApi::class .':InsertarProducto')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
+
+$app->group('/Mesas', function(){
+  $this->post('/CambiarEstadoMesaEsperandoAtencion/{id}', \MesasApi::class .':CambiarEstadoMesaEsperandoAtencion');
+  $this->post('/CambiarEstadoMesaOcupada/{id}', \MesasApi::class .':CambiarEstadoMesaOcupada');
+  $this->post('/CambiarEstadoMesaLibre/{id}', \MesasApi::class .':CambiarEstadoMesaLibre');
+  $this->get('/TraerLasMesasEsperandoAtencion', \MesasApi::class .':TraerLasMesasEsperandoAtencion');
+  $this->get('/TraerLasMesasEsperandoPedido', \MesasApi::class .':TraerLasMesasEsperandoPedido');
+  $this->get('/TraerTodasLasMesas', \MesasApi::class .':TraerTodasLasMesas');
+
+});
+
 
 $app->group('/Cliente', function(){
   $this->post('/IngresarCliente', \ClienteApi::class .':IngresarCliente');

@@ -42,4 +42,43 @@
 
 </body>
 
+
+<!-- Modal para editar -->
+<div class="modal fade" id="modalFormMesa" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false">×</span>
+                        <span class="sr-only">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Mesa</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form">-->
+                <div class="form-group">
+                    <input type="text" class="form-control" id="CodigoMesa" placeholder="Codigo de Mesa" />
+                </div>
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="CambiarEstadoMesaEsperandoAtencion()">Enviar Codigo Mesa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script type="text/javascript">
+    $(window).on('load', function() {
+        $('#modalFormMesa').modal('show');
+    });
+</script> -->
+
+
 </html>

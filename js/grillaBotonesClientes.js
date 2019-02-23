@@ -1,7 +1,39 @@
+window.onload = function() {
+    let usuario = localStorage.getItem("usuario");
+    if (usuario == null) {
+        swal('tiene que loguearse');
+        window.location.replace("../enlaces/login.html");
+    }
+
+    $('#modalFormMesa').modal('show');
+
+
+}
+
 function ElegirMozoParaCalificarRemus() {
 
     localStorage.setItem("idEmpleado", $("#aremus").val());
     window.location.replace("../enlaces/calificaciones.html");
+
+}
+
+function CambiarEstadoMesaEsperandoAtencion() {
+    var funcionAjax = $.ajax({
+        method: "POST",
+        url: '../vendor/Mesas/CambiarEstadoMesaEsperandoAtencion/' + $('#CodigoMesa').val()
+    });
+    funcionAjax.then(function(dato) {
+        if (dato.status == 200) {
+            swal({
+                title: "ASIGNADA",
+                icon: "success",
+            }).then(function() {
+                $('#modalFormMesa').modal('hide');
+            })
+        } else {
+            swal("ERROR");
+        }
+    })
 
 }
 

@@ -1,10 +1,10 @@
 window.onload = function() {
     $("#PrecioTotal").val(localStorage.getItem("PrecioTotal"));
-    let funcionAjax = $.ajax({
+    let funcionAjaxProductos = $.ajax({
         method: "GET",
         url: "../vendor/ListaPedidos/TraerTodosLosProductos"
     });
-    funcionAjax.then(function(dato) {
+    funcionAjaxProductos.then(function(dato) {
             var productos = " ";
             for (var i = 0; i < dato.productos.length; i++) {
                 productos += "<option value=" + dato.productos[i].id_producto + ">" + dato.productos[i].Nombre + " ------- $ " + dato.productos[i].Precio + "</option>";
@@ -15,13 +15,13 @@ window.onload = function() {
             alert("ERROR no se pudieron cargar los productos" + dato);
         });
 
-    let funcionAjax2 = $.ajax({
+    let funcionAjaxMesas = $.ajax({
         method: "GET",
-        url: "../vendor/ListaPedidos/TraerTodasLasMesas"
+        url: "../vendor/Mesas/TraerLasMesasEsperandoAtencion"
 
     });
 
-    funcionAjax2.then(function(dato) {
+    funcionAjaxMesas.then(function(dato) {
             var mesas = " ";
             for (var i = 0; i < dato.mesas.length; i++) {
                 mesas += "<option value=" + dato.mesas[i].CodigoMesa + ">" + dato.mesas[i].CodigoMesa + "</option><br>";
@@ -32,6 +32,81 @@ window.onload = function() {
         function(dato) {
             alert("ERROR no se pudieron cargar los productos" + dato);
         });
+
+    let funcionAjaxBotonoesMesas = $.ajax({
+        method: "GET",
+        url: "../vendor/Mesas/TraerTodasLasMesas"
+    });
+
+    funcionAjaxBotonoesMesas.then(function(dato) {
+            var mesas = " ";
+            for (var i = 0; i < dato.mesas.length; i++) {
+                if (dato.mesas[i].CodigoMesa === 'abc11') {
+                    if (dato.mesas[i].EstadoMesa === "EsperandoAtencion") {
+                        $('#abc11').css('background-color', 'yellow');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Libre") {
+                        $('#abc11').css('background-color', 'green');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Ocupada") {
+                        $('#abc11').css('background-color', 'red');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "EsperandoPedido") {
+                        $('#abc11').css('background-color', 'blue');
+                    }
+                }
+
+                if (dato.mesas[i].CodigoMesa === 'abc12') {
+                    if (dato.mesas[i].EstadoMesa === "EsperandoAtencion") {
+                        $('#abc12').css('background-color', 'yellow');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Libre") {
+                        $('#abc12').css('background-color', 'green');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Ocupada") {
+                        $('#abc12').css('background-color', 'red');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "EsperandoPedido") {
+                        $('#abc12').css('background-color', 'blue');
+                    }
+                }
+                if (dato.mesas[i].CodigoMesa === 'abc13') {
+                    if (dato.mesas[i].EstadoMesa === "EsperandoAtencion") {
+                        $('#abc13').css('background-color', 'yellow');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Libre") {
+                        $('#abc13').css('background-color', 'green');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Ocupada") {
+                        $('#abc13').css('background-color', 'red');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "EsperandoPedido") {
+                        $('#abc13').css('background-color', 'blue');
+                    }
+                }
+                if (dato.mesas[i].CodigoMesa === 'abc14') {
+                    if (dato.mesas[i].EstadoMesa === "EsperandoAtencion") {
+                        $('#abc14').css('background-color', 'yellow');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Libre") {
+                        $('#abc14').css('background-color', 'green');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "Ocupada") {
+                        $('#abc14').css('background-color', 'red');
+                    }
+                    if (dato.mesas[i].EstadoMesa === "EsperandoPedido") {
+                        $('#abc14').css('background-color', 'blue');
+                    }
+                }
+            }
+            mesas += "<option value=" + dato.mesas[i].CodigoMesa + ">" + dato.mesas[i].CodigoMesa + "</option><br>";
+            $("#CodigoMesa").html(mesas);
+        },
+        function(dato) {
+            alert("ERROR no se pudieron cargar los productos" + dato);
+        });
+
+
 };
 
 function ReiniciarValores() {

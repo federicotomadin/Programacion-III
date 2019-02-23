@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -28,42 +27,42 @@
     <a class="btn btn-info" href="restaurante.html">
         <span class="glyphicon glyphicon-home"></span> Volver al Menú Principal</a>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>Listado de pedidos</h1>
-        </div>
-        <div class="CajaInicio animated bounceInRight">
-            <h1>Listado de PEDIDOS</h1>
 
-            <div class="table-responsive">
-                <table class='table table-bordered table-hover'>
-                    <thead id="tablaEncabezado">
-                        <tr style="font-size:10px">
-                            <th> TIEMPO INGRESO </th>
-                            <th> TIEMPO ESTIMADO </th>
-                            <th> TIEMPO LLEGADA MESA </th>
-                            <th> ESTADO CUENTA </th>
-                            <th> EMPLEADO </th>
-                            <th> CODIGO MESA </th>
-                            <th> IMPORTE </th>
-                            <th> FOTO </th>
-                            <th> CERRAR MESA</th>
-                        </tr>
-                    </thead>
-                    <thead id="pedidos">
-                    </thead>
-                </table>
-                <div id="csv"></div>
+    <div class="page-header">
+        <h1>Listado de pedidos</h1>
+    </div>
+    <div class="CajaInicio animated bounceInRight">
+        <h1>Listado de PEDIDOS</h1>
+
+        <div class="table-responsive">
+            <table class='table table-bordered table-hover'>
+                <thead id="tablaEncabezado">
+                    <tr style="font-size:10px">
+                        <th> TIEMPO INGRESO </th>
+                        <th> TIEMPO ESTIMADO </th>
+                        <th> TIEMPO LLEGADA MESA </th>
+                        <th> ESTADO CUENTA </th>
+                        <th> EMPLEADO </th>
+                        <th> CODIGO MESA </th>
+                        <th> IMPORTE </th>
+                        <th> FOTO </th>
+                        <th> CERRAR MESA</th>
+                    </tr>
+                </thead>
+                <thead id="pedidos">
+                </thead>
+            </table>
+            <div id="csv"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <a onclick="DescargarPedidosExcel()" name="descargarExcel" id="descargarExcel" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-download-alt"></span> Descargar Excel</a>
             </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <a onclick="DescargarPedidosExcel()" name="descargarExcel" id="descargarExcel" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-download-alt"></span> Descargar Excel</a>
-                </div>
-                <div class="col-lg-4 ">
-                    <a onclick="DescargarPedidosPdf()" class="btn btn-lg btn-danger" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Descargar PDF</a>
-                </div>
+            <div class="col-lg-4 ">
+                <a onclick="DescargarPedidosPdf()" class="btn btn-lg btn-danger" target="_blank"><span class="glyphicon glyphicon-download-alt"></span> Descargar PDF</a>
             </div>
         </div>
+
 </body>
 
 </html>
