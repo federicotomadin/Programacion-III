@@ -47,7 +47,7 @@ public static function CambiarEstadoMesaOcupada($CodigoMesa)
 public static function CambiarEstadoMesaLibre($CodigoMesa)
 { 
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesas  set EstadoMesa = 'Cerrada' where CodigoMesa = '$CodigoMesa'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesas  set EstadoMesa = 'Libre' where CodigoMesa = '$CodigoMesa'");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,"mesas");
 }

@@ -105,9 +105,44 @@ window.onload = function() {
         function(dato) {
             alert("ERROR no se pudieron cargar los productos" + dato);
         });
-
-
 };
+
+function AsignarMesaAbc11() {
+
+    var boton = document.querySelector("#abc11");
+    if (boton.style.backgroundColor == "yellow" || boton.style.backgroundColor == "blue" ||
+        boton.style.backgroundColor == "red") {
+        $("#CodigoMesa").val("abc11");
+        $("#abc11").css("background-color", "blue");
+    }
+}
+
+function AsignarMesaAbc12() {
+    var boton = document.querySelector("#abc12");
+    if (boton.style.backgroundColor == "yellow" || boton.style.backgroundColor == "blue" ||
+        boton.style.backgroundColor == "red") {
+        $("#CodigoMesa").val("abc12");
+        $("#abc12").css("background-color", "blue");
+    }
+}
+
+function AsignarMesaAbc13() {
+    var boton = document.querySelector("#abc13");
+    if (boton.style.backgroundColor == "yellow" || boton.style.backgroundColor == "blue" ||
+        boton.style.backgroundColor == "red") {
+        $("#CodigoMesa").val("abc13");
+        $("#abc13").css("background-color", "blue");
+    }
+}
+
+function AsignarMesaAbc14() {
+    var boton = document.querySelector("#abc14");
+    if (boton.style.backgroundColor == "yellow" || boton.style.backgroundColor == "blue" ||
+        boton.style.backgroundColor == "red") {
+        $("#CodigoMesa").val("abc14");
+        $("#abc14").css("background-color", "blue");
+    }
+}
 
 function ReiniciarValores() {
     localStorage.setItem("PrecioTotal", 0);

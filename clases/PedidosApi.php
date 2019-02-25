@@ -121,7 +121,13 @@ public function CerrarMesa($request,$response,$args)
 
     if(!Pedidos::CerrarMesa($codigoMesa,$importe[0]["Importe"]))
     {
-       
+        $resp["status"]=401;
+    }
+
+
+    if( $resp["status"] === 200)
+    {
+        Mesas::CambiarEstadoMesaLibre($pedido[0]->CodigoMesa);
     }
 
     return $response->withJson($resp);   
@@ -184,12 +190,20 @@ public function CambiarEstadoMesa($request,$response,$args)
     $data = $request->getParsedBody();
 
     $pedido=Pedidos::TraerElPedidoPorIdPedido($data["idPedido"]);
+
+    if($pedido->EstadoCuenta == "Cerrada")
+    {
+        $resp["status"] = 403;
+        return  $response->withJson($resp);
+    }
+
     if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00" && $data["estadoMesa"]=="Comiendo")
     {     
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
     $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
     Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido->Tiempo_llegadaMesa,$data["idPedido"]);
     }
+
 
     $resp["status"] = 200;
     if(!Pedidos::CambiarEstadoMesa($data["idPedido"],$data["estadoMesa"]))

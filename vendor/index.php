@@ -60,6 +60,7 @@ $app->group('/ListaPedidos', function(){
   $this->get('/TraerTodosLosProductos',\ListaPedidosApi::class .':TraerTodosLosProductos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodasLasMesas',\ListaPedidosApi::class .':TraerTodasLasMesas')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/VerPedidos',\ListaPedidosApi::class .':VerPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/VerPedido/{id}',\ListaPedidosApi::class .':VerPedidosPorIdPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/CambiarEstadoPedido',\ListaPedidosApi::class .':CambiarEstadoPedido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/ListadoImporte/{id}', \ListaPedidosApi::class .':TraerImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLoMenosVendido',\ListaPedidosApi::class .':TraerProductoMenosVendido')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

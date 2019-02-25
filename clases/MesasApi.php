@@ -19,8 +19,8 @@ public function CambiarEstadoMesaOcupada($request,$response,$args)
     }
 
     return $response->withJson($resp);
-
 }
+
 
 public function CambiarEstadoMesaEsperandoAtencion($request,$response,$args)
 {

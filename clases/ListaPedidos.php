@@ -184,6 +184,16 @@ public static function VerPedidosPendientesPorRol($IdRol)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public static function VerPedidosPendientesPorIdPedido($IdPedido)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM lista_pedidos lp
+    inner join pedidos ped on lp.Id_pedido = ped.Id_pedido
+    where lp.Id_pedido='$IdPedido'");
+    $consulta->execute(); 
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 public static function IntertarIdPedido($CodigoMesa,$IdPedido)
 {

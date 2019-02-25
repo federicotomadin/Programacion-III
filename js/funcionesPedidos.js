@@ -13,9 +13,9 @@ function CerrarMesa(idMesa) {
     }).then(function(result) {
         if (result.value) {
             var funcionAjax = $.ajax({
+                type: "POST",
                 url: "../vendor/Pedidos/CerrarMesa/" + idMesa,
-                headers: { token: tokenUsuario },
-                method: "POST"
+                headers: { token: tokenUsuario }
             }).then(function(dato) {
                 console.log(dato.status);
                 if (dato.status === 200) {
@@ -29,8 +29,12 @@ function CerrarMesa(idMesa) {
         } else {
             location.reload();
         }
-
     });
+}
+
+function LimpiarCampos() {
+    $('#CodigoMesa').val("");
+    $('#foto').val("");
 }
 
 function ConfirmarPedido() {

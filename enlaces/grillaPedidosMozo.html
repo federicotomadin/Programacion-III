@@ -26,7 +26,7 @@
     <a class="btn btn-info" href="restauranteMozo.html">
         <span class="glyphicon glyphicon-home"></span> Volver al Menú Principal</a>
 
-    <div class="container">
+    <div class="conainer">
         <div class="page-header">
             <h1>Listado de pedidos</h1>
         </div>
@@ -50,13 +50,51 @@
                                     <option value= "Esperando Cierre">Esperando Cierre</option>                                  
                                     <option value= "Cancelada">Cancelada</option>                                  
                                 </select> </th>
+                            <th> ESTADO PEDIDOS </th>
                         </tr>
                     </thead>
                     <thead id="pedidos">
                     </thead>
                 </table>
             </div>
-        </div>
 </body>
+
+<!-- Modal para editar -->
+<div class="modal fade" id="modalFormEstadoPedidos" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="false">×</span>
+                            <span class="sr-only">Cerrar</span>
+                        </button>
+                <h4 class="modal-title" id="myModalLabel">Pedidos</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!--<form role="form">-->
+                <table class='table table-bordered table-hover'>
+                    <thead id="tablaEncabezado">
+                        <tr style="font-size:10px">
+                            <th> PRODUCTO </th>
+                            <th> ESTADO PEDIDO </th>
+                            <th> TIEMPO LLEGADA MESA </th>
+                        </tr>
+                    </thead>
+                    <thead id="pedidosPendientes">
+                    </thead>
+                </table>
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>

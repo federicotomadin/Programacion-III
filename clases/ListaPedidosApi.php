@@ -89,6 +89,16 @@ public function VerPedidos($request,$response,$args)
     return $response->withJson($resp);
 }
 
+function VerPedidosPorIdPedido($request,$response,$args)
+{
+    $idPedido = $args['id'];
+
+    $pedidos = ListaPedidos::VerPedidosPendientesPorIdPedido($idPedido);
+    $resp["pedidosPendientes"] = $pedidos;
+    return $response->withJson($resp);
+
+}
+
 public function CambiarEstadoPedido($request,$response,$args)
 {
     $datos=$request->getParsedBody();
@@ -135,6 +145,7 @@ public function CambiarEstadoPedido($request,$response,$args)
     {
     Pedidos::ActualizarEstadoCuenta($pedido->Id_pedido);
     ListaPedidos::CambiarEstadoEnPreparacion($pedido->Id_pedido, $empleado->Id_rol);
+    Mesas::CambiarEstadoMesaOcupada($pedido->CodigoMesa);
     }
     if($datos["estadoPedido"]=="2")
     {
@@ -143,6 +154,7 @@ public function CambiarEstadoPedido($request,$response,$args)
     Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido,$pedido->Id_pedido);
     Pedidos::ActualizarEstadoCuentaComiendo($pedido->Id_pedido);
     ListaPedidos::CambiarEstadoListoParaServir($pedido->Id_pedido, $empleado->Id_rol);
+    Mesas::CambiarEstadoMesaOcupada($pedido->CodigoMesa);
     }
     if(!ListaPedidos::CambiarEstadoPedido($datos["estadoPedido"],$IdRol[0]["Id_rol"],$datos["CodigoMesa"]))
     {       

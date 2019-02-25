@@ -43,15 +43,16 @@
 
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Codigo de Mesa</label>
-                    <div class="col-sm-10">
-                        <select id="CodigoMesa" class="form-control">               
-                                    </select><br> </div>
+                    <div class="col-sm-5">
+                        <input type="text" readonly id="CodigoMesa" class="form-control"><br><br>
+                    </div>
                 </div>
 
+
                 <div class="form-group row">
-                    <label for="" class="col-lg-3 col-sm-3 col-xs-3  control-label">Foto para la mesa</label>
+                    <label class="col-lg-2 col-sm-2 col-xs-2  control-label">Foto para la mesa</label>
                     <div class="col-lg-6 col-sm-6 col-xs-6 ">
-                        <input id="foto" type='file' onchange="uploadFile()">
+                        <input id="foto" type='file'>
                     </div>
                 </div>
 
@@ -61,7 +62,7 @@
                 Aceptar</button>
                 </div>
                 <div class="col-lg-2 col-sm-2 col-xs-2 col-lg-offset-1">
-                    <a href="restauranteMozo.html" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Cancelar</a><br><br>
+                    <a href="restauranteMozo.html" onclick="LimpiarCampos()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Cancelar</a><br><br>
                 </div>
             </div>
 

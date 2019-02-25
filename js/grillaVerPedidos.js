@@ -66,7 +66,7 @@ function CambiarEstado(CodigoMesa) {
         var objJson = { CodigoMesa: CodigoMesa, estadoPedido: parseInt($("#EstadoPedido").val()), AgregarMinutos: parseInt($("#AgregarMinutos").val()) }
         if (result.value) {
             let funcionAjax = $.ajax({
-                method: "POST",
+                type: "POST",
                 headers: { token: tokenUsuario },
                 dataType: "json",
                 url: "../vendor/ListaPedidos/CambiarEstadoPedido",

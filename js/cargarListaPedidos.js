@@ -20,13 +20,10 @@ window.onload = function() {
     });
 
     funcionAjax2.then(function(dato) {
-            var mesas = " ";
             for (var i = 0; i < dato.mesas.length; i++) {
-                mesas += "<option value=" + dato.mesas[i].CodigoMesa + ">" + dato.mesas[i].CodigoMesa + "</option><br>";
-
+                $("#CodigoMesa").val(dato.mesas[i].CodigoMesa);
             }
 
-            $("#CodigoMesa").html(mesas);
         },
         function(dato) {
             alert("ERROR no se pudieron cargar los productos" + dato);
