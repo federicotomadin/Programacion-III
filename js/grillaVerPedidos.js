@@ -90,7 +90,6 @@ function CambiarEstado(CodigoMesa) {
     });
 }
 
-
 function cambiarIdPorNombreProducto(IdProducto) {
     switch (IdProducto) {
         case IdProducto = 1:

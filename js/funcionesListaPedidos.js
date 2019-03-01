@@ -7,7 +7,7 @@ window.onload = function() {
     funcionAjaxProductos.then(function(dato) {
             var productos = " ";
             for (var i = 0; i < dato.productos.length; i++) {
-                productos += "<option value=" + dato.productos[i].id_producto + ">" + dato.productos[i].Nombre + " ------- $ " + dato.productos[i].Precio + "</option>";
+                productos += "<option value=" + parseInt(dato.productos[i].id_producto) + ">" + dato.productos[i].Nombre + " ------- $ " + dato.productos[i].Precio + "</option>";
             }
             $("#Productos").html(productos);
         },
@@ -33,12 +33,12 @@ window.onload = function() {
             alert("ERROR no se pudieron cargar los productos" + dato);
         });
 
-    let funcionAjaxBotonoesMesas = $.ajax({
+    let funcionAjaxBotonesMesas = $.ajax({
         method: "GET",
         url: "../vendor/Mesas/TraerTodasLasMesas"
     });
 
-    funcionAjaxBotonoesMesas.then(function(dato) {
+    funcionAjaxBotonesMesas.then(function(dato) {
             var mesas = " ";
             for (var i = 0; i < dato.mesas.length; i++) {
                 if (dato.mesas[i].CodigoMesa === 'abc11') {
@@ -98,9 +98,10 @@ window.onload = function() {
                         $('#abc14').css('background-color', 'blue');
                     }
                 }
+
+                mesas += "<option value=" + dato.mesas[i].CodigoMesa + ">" + dato.mesas[i].CodigoMesa + "</option><br>";
+                $("#CodigoMesa").html(mesas);
             }
-            mesas += "<option value=" + dato.mesas[i].CodigoMesa + ">" + dato.mesas[i].CodigoMesa + "</option><br>";
-            $("#CodigoMesa").html(mesas);
         },
         function(dato) {
             alert("ERROR no se pudieron cargar los productos" + dato);

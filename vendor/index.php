@@ -102,8 +102,8 @@ $app->group('/Mesas', function(){
   $this->get('/TraerLasMesasEsperandoAtencion', \MesasApi::class .':TraerLasMesasEsperandoAtencion');
   $this->get('/TraerLasMesasEsperandoPedido', \MesasApi::class .':TraerLasMesasEsperandoPedido');
   $this->get('/TraerTodasLasMesas', \MesasApi::class .':TraerTodasLasMesas');
-
 });
+
 
 
 $app->group('/Cliente', function(){

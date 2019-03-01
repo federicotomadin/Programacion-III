@@ -7,7 +7,7 @@ window.onload = function() {
     funcionAjax.then(function(dato) {
             var empleados = " ";
             for (var i = 0; i < dato.empleados.length; i++) {
-                empleados += "<option value=" + dato.empleados[i].id_empleado + ">" + dato.empleados[i].Usuario + "----------" + cambiarIdPorNombreRol(dato.empleados[i].Id_rol) + "</option>";
+                empleados += "<option value=" + dato.empleados[i].id_empleado + ">" + dato.empleados[i].Usuario + "----------" + cambiarIdPorNombreRol(parseInt(dato.empleados[i].Id_rol)) + "</option>";
             }
             $("#SelectEmpleado").html(empleados);
 
