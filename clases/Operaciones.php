@@ -89,7 +89,14 @@ public static function TraerOperacionesPorEmpleado($IdEmpleado)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
+public static function TraerCantidadOperacionesPorFecha($IdEmpleado,$Fecha, $FechaActual)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT  COUNT(*) as cantidadOperaciones  from operaciones   
+    WHERE   Id_empleado = $IdEmpleado and  FechaOperacion BETWEEN CAST('$Fecha' AS DATE) AND CAST('$FechaActual' AS DATE)");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 }

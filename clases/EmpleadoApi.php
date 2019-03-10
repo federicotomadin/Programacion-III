@@ -51,6 +51,26 @@ return $response->withJson($resp);
 }
 }
 
+public function TraerCantidadOperacionesPorFecha($request, $response, $args)
+{
+    $data = $request->getParsedBody();
+    
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $fechaActual = $dateTime->format("Y-m-d");
+    
+    $fecha =  new DateTime($data["Fecha"], new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $fechaIngresada = $fecha->format("Y-m-d");
+    
+    $resp["status"]=200;
+    if(!$operaciones = Operaciones::TraerCantidadOperacionesPorFecha($data["IdEmpleado"],$fechaIngresada, $fechaActual))
+    {
+        $resp["status"] = 400;
+    }
+
+    $resp["cantidadOperaciones"]= $operaciones[0]["cantidadOperaciones"];  
+    return $response->withJson($resp);
+}
+
 public function TraerEmpleados($request, $response, $args)
 {
 $arrayEmpleados = Empleado::TraerTodosLosEmpleados();

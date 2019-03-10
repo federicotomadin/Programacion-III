@@ -11,19 +11,21 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
     <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
+    <!-- <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet"> -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../estilos/estilos.css">
     <script src="../bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
-    <script type="text/javascript" src="../js/cargarPaginaPrincipal.js"></script>
-    <script type="text/javascript" src="../js/descargarPedidosExcel.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
     <script type="text/javascript" src="../js/grillaEmpleados.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
-    <link rel="icon" href="../estilos/favicon.jpg">
+
+    <!-- <script src="../bootstrapCalendar/locales/bootstrap-datepicker.es.min.js "></script> -->
+    <script src=" ../bootstrapCalendar/css/bootstrap-datepicker.css"></script>
+    <script src="../bootstrapCalendar/js/bootstrap-datepicker.min.js"></script>
+    <link rel="icon " href="../estilos/favicon.jpg ">
     <title>Restaurante</title>
 </head>
 
@@ -55,5 +57,45 @@
         </div>
     </div>
 </body>
+
+
+
+<!-- Modal calendario-->
+<div class="modal fade" id="modalCalendario" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="false ">×</span>
+                    <span class="sr-only ">Cerrar</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fecha" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="CantidadOperaciones" type="button" class="btn btn-primary" onclick="VerCantidadOperaciones()">Cantidad Operaciones</button>
+            </div>
+            <div id="spinner">
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>

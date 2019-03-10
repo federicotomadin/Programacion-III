@@ -1,6 +1,6 @@
 window.onload = function() {
     var funcionAjax = $.ajax({
-        method: "GET",
+        type: "GET",
         url: "../vendor/Empleado/TraerTodosLosEmpleados"
     });
 
@@ -11,9 +11,9 @@ window.onload = function() {
                 stringEmpleados += "<td>" + dato.empleados[i].Nombre + "</td>";
                 stringEmpleados += "<td>" + dato.empleados[i].Apellido + "</td>";
                 stringEmpleados += "<td>" + dato.empleados[i].Usuario + "</td>";
-                stringEmpleados += "<td>" + cambiarIdPorNombreRol(dato.empleados[i].Id_rol) + "</td>";
+                stringEmpleados += "<td>" + cambiarIdPorNombreRol(parseInt(dato.empleados[i].Id_rol)) + "</td>";
                 stringEmpleados += "<td>" + dato.empleados[i].Sueldo + "</td>";
-                stringEmpleados += "<td>" + cambiarHabilitacion(dato.empleados[i].habilitado) + "</td>";
+                stringEmpleados += "<td>" + cambiarHabilitacion(parseInt(dato.empleados[i].habilitado)) + "</td>";
                 stringEmpleados += "<td><button id='suspender' class='btn btn-warning' onclick='SuspenderEmpleado(" +
                     dato.empleados[i].id_empleado + ")'>" +
                     "<span class='glyphicon glyphicon-edit'></span>Suspender Empleado</button>" +
@@ -21,7 +21,7 @@ window.onload = function() {
                     "<span class='glyphicon glyphicon-ok'></span >Habilitar Empleado</button>" +
                     "<td><button class='btn btn-danger' onclick='BorrarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
                     "<span class='glyphicon glyphicon-remove'></span >Borrar Empleado</button>" +
-                    "<td><button class='btn btn-info' onclick='VerCantidadOperaciones(" + dato.empleados[i].id_empleado + ")'>" +
+                    "<td><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + dato.empleados[i].id_empleado + ")'>" +
                     "<span class='glyphicon glyphicon-play'></span >Cant Operaciones</button>";
 
                 stringEmpleados += "</tr>";
@@ -132,23 +132,57 @@ function HabilitarEmpleado(idEmpleado) {
     });
 };
 
-function VerCantidadOperaciones(idEmpleado) {
+function TraerModalDeFecha($IdEmpleado) {
+    localStorage.setItem("IdEmpleado", $IdEmpleado);
+    $("#modalCalendario").modal();
+    $('.fj-date').datepicker({
+        format: "dd/mm/yyyy"
+    });
+};
+
+function CerrarModal() {
+    $('#fecha').val("");
+}
+
+
+function VerCantidadOperaciones() {
+    var tokenUsuario = localStorage.getItem("token");
     var funcionAjax = $.ajax({
-        method: 'GET',
-        url: '../vendor/Empleado/VerOperacionesDelEmpleado/' + idEmpleado,
+        method: 'POST',
+        headers: { token: tokenUsuario },
+        data: { IdEmpleado: parseInt(localStorage.getItem("IdEmpleado")), Fecha: $('#fecha').val() },
+        url: '../vendor/Empleado/TraerCantidadOperacionesPorFecha'
     })
     funcionAjax.then(function(dato) {
-        if (dato.status == 200) {
-            swal('Cantidad de Operaciones' + "  " + dato.operacionesEntrada).then(function() {
-                // window.location.reload();
-            }, function() {
-                swal("OCURRIO ALGO INESPERADO!");
-            });
-        } else if (dato.status == 400) {
-            swal("Hubo un error!");
-        }
-    }, function(dato) {
-        console.log("ERROR en la API " + dato);
-    });
+            if (dato.status == 200) {
+                swal('Cantidad de Operaciones' + " - " + cambiarIdEmpleadoPorNombre(parseInt(localStorage.getItem("IdEmpleado"))) + "  " + dato.cantidadOperaciones).then(function() {
+                    // window.location.reload();
+                }, function() {
+                    swal("OCURRIO ALGO INESPERADO!");
+                });
+            } else if (dato.status == 400) {
+                swal("Hubo un error!");
+            }
+        },
+        function(dato) {
+            console.log("ERROR en la API " + dato);
+        });
+}
 
+
+function cambiarIdEmpleadoPorNombre(IdEmpleado) {
+    switch (IdEmpleado) {
+        case IdEmpleado = 1:
+            return "ftomadin";
+        case IdEmpleado = 2:
+            return "aremus";
+        case IdEmpleado = 3:
+            return "ddaroli";
+        case IdEmpleado = 4:
+            return "fsaiegh";
+        case IdEmpleado = 12:
+            return "atomadin";
+        case IdEmpleado = 47:
+            return "mreinoso";
+    }
 }

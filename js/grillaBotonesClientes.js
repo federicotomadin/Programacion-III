@@ -1,14 +1,18 @@
 window.onload = function() {
+    localStorage.setItem("CodigoMesa", $('#CodigoMesa'));
     let usuario = localStorage.getItem("usuario");
     if (usuario == null) {
         swal('tiene que loguearse');
         window.location.replace("../enlaces/login.html");
     }
 
-    $('#modalFormMesa').modal('show');
-
-
-}
+    var codigoMesa = localStorage.getItem('CodigoMesa');
+    if (codigoMesa == null) {
+        $('#modalFormMesa').modal('show');
+    } else {
+        $('#modalFormMesa').modal('show');
+    }
+};
 
 function ElegirMozoParaCalificarRemus() {
 

@@ -84,7 +84,7 @@ $app->group('/Empleado', function(){
    $this->get('/VerSesionesDelEmpleado/{id}',\EmpleadoApi::class .':VerSesionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/VerOperacionesDelEmpleado/{id}',\EmpleadoApi::class .':VerCantidadOperacionesEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/TraerPromedioCalificacion/{id}',\CalificacionesApi::class .':TraerPromedioCalificacion')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-
+   $this->post('/TraerCantidadOperacionesPorFecha',\EmpleadoApi::class .':TraerCantidadOperacionesPorFecha')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
 })->add(\MWparaAutentificar::class . ':VerificarUsuario')->add(\MWparaCORS::class . ':HabilitarCORS8080');
 
 $app->group('/Productos', function(){
@@ -103,8 +103,6 @@ $app->group('/Mesas', function(){
   $this->get('/TraerLasMesasEsperandoPedido', \MesasApi::class .':TraerLasMesasEsperandoPedido');
   $this->get('/TraerTodasLasMesas', \MesasApi::class .':TraerTodasLasMesas');
 });
-
-
 
 $app->group('/Cliente', function(){
   $this->post('/IngresarCliente', \ClienteApi::class .':IngresarCliente');
