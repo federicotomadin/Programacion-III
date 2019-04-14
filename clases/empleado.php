@@ -11,6 +11,7 @@ public $Clave;
 public $Id_rol;
 public $Sueldo;
 public $habilitado;
+public $borrado;
 
 
 public function Getid_empleado()
@@ -88,6 +89,16 @@ public function GetHabilitado()
     return $this->habilitado;
 }
 
+public function SetBorrado($valor)
+{
+    $this->borrado=$valor;
+}
+
+public function GetBorrado()
+{
+    return $this->borrado;
+}
+
 public function SetFoto($valor)
 {
     $this->foto=$valor;
@@ -108,6 +119,14 @@ public static function TraerTodosLosEmpleados()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"empleado");
+}
+
+public static function TraerTodosLosEmpleadosMenosSocios()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados where Id_rol != 5");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,"empleado");
 }
@@ -139,15 +158,16 @@ public static function TraerMozos()
 public static function InsertarElEmpleado($empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado)
-    VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado')");
+    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado,borrado)
+    VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado',0)");
     return $consulta->execute();
 }
 
 public static function BorrarElEmpleado($id_empleado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("DELETE from empleados where id_empleado = '$id_empleado' ");
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set borrado = 1, habilitado = 0
+    where id_empleado = '$id_empleado'");
     return $consulta->execute();
 }
 

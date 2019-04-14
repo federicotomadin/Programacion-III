@@ -192,6 +192,14 @@
                         background-color: white;
                     }
                     
+                    .filaSuspendida {
+                        background-color: yellow;
+                    }
+                    
+                    .filaBorrada {
+                        background-color: red
+                    }
+                    
                     #RegistrarForm {
                         background: lightgrey;
                         color: black;

@@ -1,13 +1,82 @@
-function MesaMasUsada() {
+function MesaMasUsadaModal() {
+    $('#mesaMasUsada').modal('show');
 
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+function MesaMenosUsadaModal() {
+    $('#mesaMenosUsada').modal('show');
+
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+function MesaMasFacturoModal() {
+    $('#mesaMasFacturo').modal('show');
+
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+function MesaMenosFacturoModal() {
+    $('#mesaMenosFacturo').modal('show');
+
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+function FacturaMayorImporteModal() {
+    $('#facturaMayorImporte').modal('show');
+
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+function FacturaMenorImporteModal() {
+    $('#facturaMenorImporte').modal('show');
+
+    $.fn.datepicker.dates.es = { days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"], daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"], months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"], monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"], today: "Hoy", monthsTitle: "Meses", clear: "Borrar", weekStart: 1, format: "dd/mm/yyyy" };
+    $('.fj-date').datepicker({
+        language: 'es',
+        format: "yyyy/mm/dd",
+        autoclose: true
+    });
+}
+
+
+function VerMesaMasUsada() {
+    var tokenUsuario = localStorage.getItem("token");
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        headers: { token: tokenUsuario },
+        data: { "fechaDesde": $('#fechaDesde').val(), "fechaHasta": $('#fechaHasta').val() },
         url: '../vendor/Pedidos/TraerMesaMasUsada'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
-            swal('Mesa MAS usada' + " - " + dato.IdMesa + "-",
-                "Cantidad de Operaciones" + " " + dato.Cantidad
+            swal('Mesa más usada' + "  -  " + dato.IdMesa,
+                "Cantidad de Operaciones" + " - " + dato.Cantidad
             ).then(function() {
                 window.location.reload();
             }, function() {
@@ -21,15 +90,18 @@ function MesaMasUsada() {
     });
 }
 
-function MesaMenosUsada() {
+function VerMesaMenosUsada() {
+    var tokenUsuario = localStorage.getItem("token");
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        headers: { token: tokenUsuario },
+        data: { "fechaDesde": $('#fechaDesdeMesaMenosUsada').val(), "fechaHasta": $('#fechaHastaMesaMenosUsada').val() },
         url: '../vendor/Pedidos/TraerMesaMenosUsada'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
-            swal('Mesa' + " - " + dato.CodigoMesa + " - "
-                //  "Cantidad de Operaciones" + "  " + dato.Cantidad
+            swal('Mesa' + " - " + dato.CodigoMesa
+                //"Cantidad de Operaciones" + "  " + dato.Cantidad
             ).then(function() {
                 window.location.reload();
             }, function() {
@@ -39,15 +111,18 @@ function MesaMenosUsada() {
             swal("Hubo un error!");
         }
     }, function(dato) {
-        console.log("ERROR en la API " + dato.CodigoMesa);
+        console.log("ERROR en la API " + dato.status);
     });
 }
 
-function MesaMasFacturo() {
+function VerMesaMasFacturo() {
+    var tokenUsuario = localStorage.getItem("token");
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        headers: { token: tokenUsuario },
+        data: { "fechaDesde": $('#fechaDesdeMesaMasFacturo').val(), "fechaHasta": $('#fechaHastaMesaMasFacturo').val() },
         url: '../vendor/Pedidos/TraerMesaQueMasFacturo'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
             swal('Mesa' + " - " + dato.Mesa + " - ",
@@ -61,15 +136,16 @@ function MesaMasFacturo() {
             swal("Hubo un error!");
         }
     }, function(dato) {
-        console.log("ERROR en la API " + dato.Nombre);
+        console.log("ERROR en la API " + dato.status);
     });
 }
 
-function MesaMenosFacturo() {
+function VerMesaMenosFacturo() {
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        data: { "fechaDesde": $('#fechaDesdeMesaMenosFacturo').val(), "fechaHasta": $('#fechaHastaMesaMenosFacturo').val() },
         url: '../vendor/Pedidos/TraerMesaQueMenosFacturo'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
             swal('Mesa' + " - " + dato.Mesa + " - ",
@@ -83,15 +159,16 @@ function MesaMenosFacturo() {
             swal("Hubo un error!");
         }
     }, function(dato) {
-        console.log("ERROR en la API " + dato.Nombre);
+        console.log("ERROR en la API " + dato.status);
     });
 }
 
-function FacturaMenorImporte() {
+function VerFacturaMenorImporte() {
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        data: { "fechaDesde": $('#fechaDesdeFacturaMenorImporte').val(), "fechaHasta": $('#fechaHastaFacturaMenorImporte').val() },
         url: '../vendor/Pedidos/TraerFacturaMenorImporte'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
             swal('Factura' + " - " + dato.facturaMenor + " - ",
@@ -105,15 +182,16 @@ function FacturaMenorImporte() {
             swal("Hubo un error!");
         }
     }, function(dato) {
-        console.log("ERROR en la API " + dato.Nombre);
+        console.log("ERROR en la API " + dato.status);
     });
 }
 
-function FacturaMayorImporte() {
+function VerFacturaMayorImporte() {
     var funcionAjax = $.ajax({
-        method: 'GET',
+        method: 'POST',
+        data: { "fechaDesde": $('#fechaDesdeFacturaMayorImporte').val(), "fechaHasta": $('#fechaHastaFacturaMayorImporte').val() },
         url: '../vendor/Pedidos/TraerFacturaMayorImporte'
-    })
+    });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
             swal('Factura' + " - " + dato.Importe + " - ",
@@ -127,6 +205,6 @@ function FacturaMayorImporte() {
             swal("Hubo un error!");
         }
     }, function(dato) {
-        console.log("ERROR en la API " + dato.Nombre);
+        console.log("ERROR en la API " + dato.status);
     });
 }

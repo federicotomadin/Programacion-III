@@ -78,6 +78,13 @@ $resp["empleados"] = $arrayEmpleados;
 return $response->withJson($resp);
 }
 
+public function TraerEmpleadosMenosSocios($request, $response, $args)
+{
+$arrayEmpleados = Empleado::TraerTodosLosEmpleadosMenosSocios();
+$resp["empleados"] = $arrayEmpleados;
+return $response->withJson($resp);
+}
+
 public function TraerMozos($request, $response, $args)
 {
 $arrayMozos = Empleado::TraerMozos();

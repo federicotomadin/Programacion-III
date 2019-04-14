@@ -175,10 +175,28 @@ public static function TraerTodosPedidos()
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
+public static function TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos
+    where Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
 public static function TraerTodosPedidosParaPdf()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
+
+public static function TraerTodosPedidosParaExcel()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso as Tiempo_ingreso,Tiempo_estimado,Tiempo_llegadaMesa,EstadoCuenta,Usuario,CodigoMesa,Importe from pedidos");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
@@ -189,6 +207,15 @@ public static function TraerTodosPedidosListos()
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos
     inner join lista_pedidos on lista_pedidos.Id_estadoPedido=2 or lista_pedidos.Id_estadoPedido=1 
     or lista_pedidos.Id_estadoPedido=4 where pedidos.Id_pedido=lista_pedidos.Id_pedido ");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
+public static function TraerTodosPedidosPorCodigoMesa($CodigoMesa)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos
+    where pedidos.EstadoCuenta!='Cerrada' and pedidos.CodigoMesa = '$CodigoMesa'");
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
@@ -221,19 +248,31 @@ public static function ModificarPedido($pedido)
     return $consulta->execute();
 }
 
-public static function TraerCantidadMesas($CodigoMesa)
+
+public static function TraerMesasPorFecha($fechaDesde, $fechaHasta)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT  COUNT(*) as Cantidad from pedidos where CodigoMesa='$CodigoMesa'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT  COUNT(*) as Cantidad from pedidos where 
+    between $fechaDesde AND $fechaHasta");
     $consulta->execute();    
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public static function TraerTotalFacturado($CodigoMesa)
+
+public static function TraerCantidadMesas($CodigoMesa, $fechaDesde, $fechaHasta)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT CodigoMesa as Mesa, SUM(Importe) as Importe  from pedidos
-    where CodigoMesa='$CodigoMesa'");
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT COUNT(*) as Cantidad from pedidos where CodigoMesa='$CodigoMesa' 
+    and Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");
+    $consulta->execute();    
+    return $consulta->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public static function TraerTotalFacturado($CodigoMesa,$fechaDesde,$fechaHasta)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT CodigoMesa, SUM(Importe) as Importe from pedidos where CodigoMesa='$CodigoMesa'
+    and Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");
     $consulta->execute();    
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }

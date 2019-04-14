@@ -99,56 +99,35 @@ function base64(fotoObj, callback) {
 
 function DescargarPedidosExcel() {
     var headers = {
-        Id_pedido: 'Id_pedido',
         Tiempo_ingreso: "Tiempo_ingreso",
         Tiempo_estimado: "Tiempo_estimado",
         Tiempo_llegadaMesa: "Tiempo_llegadaMesa",
-        Id_estadoCuenta: "Id_estadoCuenta",
-        Id_empleado: "Id_empleado",
+        EstadoCuenta: "EstadoCuenta",
+        Usuario: "Usuario",
         CodigoMesa: "CodigoMesa",
         Importe: "Importe"
     };
     swal({
-        title: 'Desea descargar el Excel?',
+        title: 'Descargar el Excel?',
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si, descargar!',
         cancelButtonClass: 'btn btn-danger',
-        cancelButtonText: 'No, no descargar!'
+        cancelButtonText: 'Cancelar'
     }).then(function() {
         var funcionAjax = $.ajax({
-            url: "../vendor/Pedidos/TraerTodosLosPedidos",
+            url: "../vendor/Pedidos/TraerTodosLosPedidosExcel",
             method: "GET"
         });
         funcionAjax.then(function(data) {
-                exportCSVFile(headers, data.pedidos, "pedidos");
-                swal("El listado fue descargado correctamente!").then(function() {
-                    location.reload();
-                });
-            },
+            exportCSVFile(headers, data.pedidos, "pedidos");
+            swal("El listado fue descargado correctamente!").then(function() {
+                location.reload();
+            });
+        });
 
-            funcionAjax.then(function(dato) {
-
-                swal("ERROR. Su tiempo de sesión se ha acabado!").then(function() {
-                    var funcionAjax = $.ajax({
-                        method: 'POST',
-                        url: '../vendor/Login/CerrarSesion'
-
-                    });
-                    funcionAjax.then(function(dato) {
-                        if (dato.status == 200) {
-                            localStorage.clear();
-                            window.location.replace("../enlaces/login.html");
-                        } else if (dato.status == 400) {
-                            swal("Hubo un error al cerrar sesión del usuario!");
-                        }
-                    }, function(dato) {
-                        console.log("ERROR en la API " + dato);
-                    });
-                });
-            }))
     });
 }
 
@@ -245,7 +224,7 @@ function convertToCSV(objArray) {
     for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
-            if (line != '') line += ','
+            if (line != " ") line += ','
 
             line += array[i][index];
         }
@@ -255,28 +234,46 @@ function convertToCSV(objArray) {
 }
 
 function exportCSVFile(headers, items, fileTitle) {
+    for (var i = 0; i < items.length; i++) {
+
+        var item = {
+            Usuario: "Usuario",
+            Tiempo_ingreso: "Tiempo_ingreso",
+            Tiempo_estimado: "Tiempo_estimado",
+            Tiempo_llegadaMesa: "Tiempo_llegadaMesa",
+            CodigoMesa: "CodigoMesa",
+            EstadoCuenta: "EstadoCuenta",
+            Importe: "Importe"
+        };
+    }
+
+
+
+
     if (headers) {
         items.unshift(headers);
     }
 
     // Convert Object to JSON
+
     var jsonObject = JSON.stringify(items);
 
     var csv = this.convertToCSV(jsonObject);
 
     var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
 
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var blob = new Blob([csv], { type: 'text/csv' });
     if (navigator.msSaveBlob) { // IE 10+
         navigator.msSaveBlob(blob, exportedFilenmae);
     } else {
         var link = document.createElement("a");
         if (link.download !== undefined) { // feature detection
             // Browsers that support HTML5 download attribute
-            var url = URL.createObjectURL(blob);
+            var url = window.URL.createObjectURL(blob);
             link.setAttribute("href", url);
             link.setAttribute("download", exportedFilenmae);
             link.style.visibility = 'hidden';
+            link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

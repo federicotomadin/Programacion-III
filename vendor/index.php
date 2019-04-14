@@ -40,14 +40,15 @@ $app->group('/Pedidos',function(){
   $this->get('/TraerLosQueSeEntregaron',\PedidosApi::class .':PedidosQueSeEntregaronEnTiempo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/TraerTiempoFaltante',\PedidosApi::class .':TraerTiempoFaltante')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosQueSeCancelaron',\PedidosApi::class .':PedidosCancelados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerMesaMasUsada',\PedidosApi::class .':TraerMesaMasUsada')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerMesaMenosUsada',\PedidosApi::class .':TraerMesaMenosUsada')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerMesaQueMasFacturo',\PedidosApi::class .':TraerMesaQueMasFacturo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerMesaQueMenosFacturo',\PedidosApi::class .':TraerMesaQueMenosFacturo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerFacturaMayorImporte',\PedidosApi::class .':TraerFacturaMayorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerFacturaMenorImporte',\PedidosApi::class .':TraerFacturaMenorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerMesaMasUsada',\PedidosApi::class .':TraerMesaMasUsada')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerMesaMenosUsada',\PedidosApi::class .':TraerMesaMenosUsada')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerMesaQueMasFacturo',\PedidosApi::class .':TraerMesaQueMasFacturo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerMesaQueMenosFacturo',\PedidosApi::class .':TraerMesaQueMenosFacturo')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerFacturaMayorImporte',\PedidosApi::class .':TraerFacturaMayorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->post('/TraerFacturaMenorImporte',\PedidosApi::class .':TraerFacturaMenorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidos',\PedidosApi::class .':TraerTodosLosPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-  $this->get('/TraerTodosLosPedidosExcel',\PedidosApi::class .':TraerDatosParaExportarExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerTodosPedidosPorCodigoMesa/{CodigoMesa}',\PedidosApi::class .':TraerTodosPedidosPorCodigoMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerTodosLosPedidosExcel',\PedidosApi::class .':TraerTodosLosPedidosExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosPdf',\PedidosApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosPedidos',\PedidosApi::class .':TraerLosPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerLosPedidosSinDuplicar',\PedidosApi::class .':TraerLosPedidosSinDuplicar')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
@@ -74,10 +75,11 @@ $app->group('/ListaPedidos', function(){
 $app->group('/Empleado', function(){
    $this->post('/IngresarEmpleado', \EmpleadoApi::class .':IngresarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/TraerTodosLosEmpleados',\EmpleadoApi::class .':TraerEmpleados')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->get('/TraerTodosLosEmpleadosMenosSocios',\EmpleadoApi::class .':TraerEmpleadosMenosSocios')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/TraerMozos',\EmpleadoApi::class .':TraerMozos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/DescargarEmpleadosExcel',\EmpleadoApi::class .':TraerDatosParaExportarExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->get('/DescargarEmpleadosPdf',\EmpleadoApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
-   $this->delete('/BorrarElEmpleado/{id}',\EmpleadoApi::class .':BorrarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+   $this->post('/BorrarElEmpleado/{id}',\EmpleadoApi::class .':BorrarEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->put('/ModificarElEmpleado/{id}',\EmpleadoApi::class .':ModificarEmpleado');
    $this->post('/SuspenderElEmpleado/{id}',\EmpleadoApi::class .':SuspenderEmpleado')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
    $this->post('/HabilitarElEmpleado/{id}',\EmpleadoApi::class .':HabilitarEmpleado');

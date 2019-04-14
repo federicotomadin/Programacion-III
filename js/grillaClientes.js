@@ -18,4 +18,9 @@ window.onload = function() {
         function(dato) {
             alert("ERROR no se pudieron cargar los pedidos" + dato);
         });
-};
+
+}
+
+function CerrarSesionCliente() {
+    localStorage.setItem("CodigoMesa", '');
+}

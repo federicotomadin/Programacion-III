@@ -12,6 +12,7 @@ require_once("EstadoPedidos.php");
 include_once("../bd/AccesoDatos.php");
 include_once("../phpExcel/Classes/PHPExcel.php");
 include_once('../fpdf/fpdf.php');
+
 // include composer autoload
 require 'autoload.php';
 
@@ -161,8 +162,37 @@ return $response->withJson($resp);
 public function TraerTodosLosPedidos($request,$response,$args)
 {
 $pedidos = Pedidos::TraerTodosPedidosListos();
+return $response->withJson($pedidos);
+
+}
+
+public function TraerTodosPedidosPorCodigoMesa($request,$response,$args)
+{
+$CodigoMesa = $args['CodigoMesa'];
+$pedidos = Pedidos::TraerTodosPedidosPorCodigoMesa($CodigoMesa);
+return $response->withJson($pedidos);
+
+}
+
+public function TraerTodosLosPedidosExcel($request,$response,$args)
+{
+$pedidos = Pedidos::TraerTodosPedidosParaExcel();
+
+unset($pedidos[0]->Id_pedido);
+unset($pedidos[0]->foto);
+
 $resp["pedidos"] = $pedidos;
 return  $response->withJson($resp);
+
+$arrayPedidos = array();
+
+array_push($arrayPedidos,strval($pedidos[0]->Usuario), strval($pedidos[0]->Tiempo_ingreso), strval($pedidos[0]->Tiempo_estimado),
+strval($pedidos[0]->Tiempo_llegadaMesa), strval($pedidos[0]->EstadoCuenta),
+strval($pedidos[0]->CodigoMesa), strval($pedidos[0]->Importe));
+
+$resp["pedidos"] = $arrayPedidos;
+
+//return  $response->withJson($resp);
 }
 
 public function TraerLosPedidosSinDuplicar($request,$response,$args)
@@ -225,6 +255,7 @@ public function TraerDatosParaExportarExcel()
 {
 
 $arrayPedidos = Pedidos::TraerTodosPedidos();
+
 
 if (count($arrayPedidos) > 0) {
     $objPHPExcel = new PHPExcel();
@@ -378,17 +409,16 @@ for($i=0;$i<count($arrayPedidos);$i++)
       ->getStyle('G'.($i+2))
       ->applyFromArray($styleTextCenter);
 
-    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i] -> Id_empleado);    
-    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i] -> Id_estadoCuenta);
+
 
       $objPHPExcel->setActiveSheetIndex(0)
             ->setCellValue('A'.($i+2),$arrayPedidos[$i]-> Tiempo_ingreso)
             ->setCellValue('B'.($i+2),$arrayPedidos[$i]-> Tiempo_estimado)
             ->setCellValue('C'.($i+2),$arrayPedidos[$i]-> Tiempo_llegadaMesa)
-            ->setCellValue('D'.($i+2),$estadoCuenta[0]["Descripcion"])
-            ->setCellValue('E'.($i+2),$empleado[0]["Usuario"])
+            ->setCellValue('D'.($i+2),$arrayPedidos[$i]-> EstadoCuenta)
+            ->setCellValue('E'.($i+2),$arrayPedidos[$i]-> Usuario)
             ->setCellValue('F'.($i+2),$arrayPedidos[$i]-> CodigoMesa)
-            ->setCellValue('G'.($i+2),$arrayPedidos[$i]-> Importe);                 
+            ->setCellValue('G'.($i+2),$arrayPedidos[$i]-> Importe);             
 }
 
 $styleArrayFecha = array(
@@ -405,13 +435,18 @@ $objPHPExcel->getActiveSheet()->getCell('I1')->setValue("Fecha de creación:");
 $objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($styleArrayFecha);
 $objPHPExcel->getActiveSheet()->getCell('I2')->setValue($fecha_creacion);
 $objPHPExcel->getActiveSheet()->getStyle('I2')->applyFromArray($styleArrayFecha);
+
+
  }
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="listadoEmpleados.xlsx"');
 header('Cache-Control: max-age=0');
 $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');
 $objWriter->save('php://output');
-return $objWriter;
+//return $objWriter;
+exit;
+
+
 }
 
 public function TraerDatosParaExportarPdf($request, $response, $args)
@@ -523,13 +558,17 @@ public function PedidosCancelados($request, $response, $args)
 }
 
 public function TraerMesaMasUsada($request, $response, $args)
-{
+{  
+   $data = $request->getParsedBody();
+   $fechaDesde= $data["fechaDesde"];
+   $fechaHasta= $data["fechaHasta"];
    $arrayMesas= Mesas::TraerMesas();
+
    $mayor=0;
    $resp["status"] =  200;
    for($i=0; $i<count($arrayMesas);$i++)
    {
-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
+       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"], $fechaDesde, $fechaHasta);
        if($cantidad >= $mayor)
        {               
           $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   
@@ -545,13 +584,17 @@ public function TraerMesaMasUsada($request, $response, $args)
 
 public function TraerMesaMenosUsada($request, $response, $args)
 {
+ 
+   $data = $request->getParsedBody();
+   $fechaDesde= $data["fechaDesde"];
+   $fechaHasta= $data["fechaHasta"];
    $arrayMesas= Mesas::TraerMesas();
    $menor=2;
    $resp["status"] =  200;
    for($i=0; $i<count($arrayMesas);$i++)
    {
 
-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);
+    $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"], $fechaDesde, $fechaHasta);
 
        if( $cantidad[0]["Cantidad"] < $menor)
        { 
@@ -568,13 +611,16 @@ public function TraerMesaMenosUsada($request, $response, $args)
 
 public function TraerMesaQueMasFacturo($request, $response, $args)
 {
+    $data = $request->getParsedBody();
+    $fechaDesde= $data["fechaDesde"];
+    $fechaHasta= $data["fechaHasta"];
     $arrayMesas= Mesas::TraerMesas();
     $importeMayor=0;
     $resp["status"] =  200;
     for($i=0; $i<count($arrayMesas);$i++)
     {
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);
-
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"],$fechaDesde,$fechaHasta);
+        
         if($aux[0]["Importe"] >= $importeMayor)
        {
           $importeMayor = $aux[0]["Importe"];       
@@ -592,12 +638,15 @@ public function TraerMesaQueMasFacturo($request, $response, $args)
 
 public function TraerMesaQueMenosFacturo($request, $response, $args)
 {
+    $data = $request->getParsedBody();
+    $fechaDesde= $data["fechaDesde"];
+    $fechaHasta= $data["fechaHasta"];
     $arrayMesas= Mesas::TraerMesas();
     $importeMenor=50000;
     $resp["status"] =  200;
     for($i=0; $i<count($arrayMesas);$i++)
     {    
-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);    
+        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"],$fechaDesde,$fechaHasta);
 
             if($aux[0]["Importe"] < $importeMenor)
             {   
@@ -618,7 +667,11 @@ public function TraerMesaQueMenosFacturo($request, $response, $args)
 
 public function TraerFacturaMayorImporte($request, $response, $args)
 {
-    $pedidos=Pedidos::TraerTodosPedidos();
+
+    $data = $request->getParsedBody();
+    $fechaDesde= $data["fechaDesde"];
+    $fechaHasta= $data["fechaHasta"];
+    $pedidos=Pedidos::TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta);
     $arrayMesas= Mesas::TraerMesas();
     $pedidoMayor=0;
     $importeMayor=0;
@@ -641,7 +694,10 @@ public function TraerFacturaMayorImporte($request, $response, $args)
 
 public function TraerFacturaMenorImporte($request, $response, $args)
 {
-    $pedidos=Pedidos::TraerTodosPedidos();
+    $data = $request->getParsedBody();
+    $fechaDesde= $data["fechaDesde"];
+    $fechaHasta= $data["fechaHasta"];
+    $pedidos=Pedidos::TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta);
     $arrayMesas= Mesas::TraerMesas();
     $resp["status"] =  200;
     $importeMenor=50000;
@@ -682,6 +738,7 @@ public function TraerTiempoFaltante($request, $response, $args)
     
     return $response->withJson($resp);
 }
+
 
 public function CambiarTamanio($id)
 {

@@ -23,6 +23,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
     <script type="text/javascript" src="../js/grillaBotones.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
+    <script src="../bootstrapCalendar/locales/bootstrap-datepicker.es.min.js"></script>
+    <script src=" ../bootstrapCalendar/css/bootstrap-datepicker.css"></script>
+    <script src="../bootstrapCalendar/js/bootstrap-datepicker.min.js"></script>
     <link rel="icon" href="../estilos/favicon.jpg">
     <title>Datos Utiles</title>
 </head>
@@ -35,14 +38,265 @@
         <div class="page-header">
             <h1>Acciones Útiles</h1>
         </div>
-        <button type="button" onclick="MesaMasUsada()" class="boton btn btn-primary btn-lg col-md-4">Mesa Más Usada</button>
-        <button type="button" onclick="MesaMenosUsada()" class="boton2 btn btn-primary btn-lg col-lg-offset-1">Mesa Menos Usada</button>
-        <button type="button" onclick="MesaMasFacturo()" class="boton3 btn btn-primary btn-lg col-lg-offset-1">Mesa Más Facturó</button>
+        <button type="button" onclick="MesaMasUsadaModal()" class="boton btn btn-primary btn-lg col-md-4">Mesa Más Usada</button>
+        <button type="button" onclick="MesaMenosUsadaModal()" class="boton2 btn btn-primary btn-lg col-lg-offset-1">Mesa Menos Usada</button>
+        <button type="button" onclick="MesaMasFacturoModal()" class="boton3 btn btn-primary btn-lg col-lg-offset-1">Mesa Más Facturó</button>
         <hr>
 
-        <button type="button" onclick="MesaMenosFacturo()" class="boton4 btn btn-primary btn-lg col-md-4">Mesa Que Menos Facturó</button>
-        <button type="button" onclick="FacturaMayorImporte()" class="boton5 btn btn-primary btn-lg col-lg-offset-1">Factura Mayor Importe</button>
-        <button type="button" onclick="FacturaMenorImporte()" class="boton6 btn btn-primary btn-lg col-lg-offset-1">Factura Menor Importe</button>
+        <button type="button" onclick="MesaMenosFacturoModal()" class="boton4 btn btn-primary btn-lg col-md-4">Mesa Que Menos Facturó</button>
+        <button type="button" onclick="FacturaMayorImporteModal()" class="boton5 btn btn-primary btn-lg col-lg-offset-1">Factura Mayor Importe</button>
+        <button type="button" onclick="FacturaMenorImporteModal()" class="boton6 btn btn-primary btn-lg col-lg-offset-1">Factura Menor Importe</button>
 </body>
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="mesaMasUsada" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesde" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHasta" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerMesaMasUsada" type="button" class="btn btn-primary" onclick="VerMesaMasUsada()">Mesa Más Usada</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="mesaMenosUsada" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesdeMesaMenosUsada" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHastaMesaMenosUsada" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerMesaMenosUsada" type="button" class="btn btn-primary" onclick="VerMesaMenosUsada()">Mesa Menos Usada</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="mesaMasFacturo" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesdeMesaMasFacturo" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHastaMesaMasFacturo" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerMesaMasFacturo" type="button" class="btn btn-primary" onclick="VerMesaMasFacturo()">Mesa Más Facturó</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="mesaMenosFacturo" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesdeMesaMenosFacturo" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHastaMesaMenosFacturo" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerMesaMenosFacturo" type="button" class="btn btn-primary" onclick="VerMesaMenosFacturo()">Mesa Menos Factuó</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="facturaMayorImporte" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesdeFacturaMayorImporte" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHastaFacturaMayorImporte" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerFacturaMayorImporte" type="button" class="btn btn-primary" onclick="VerFacturaMayorImporte()">Factura Mayor Importe</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------------->
+<!-- Modal calendario-->
+<div class="modal fade" id="facturaMenorImporte" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false ">×</span>
+                        <span class="sr-only ">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Elegir Fecha</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form ">-->
+                <div class="input-group date fj-date">
+                    <input id="fechaDesdeFacturaMenorImporte" placeholder="Fecha Desde" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <div class="input-group date fj-date">
+                    <input id="fechaHastaFacturaMenorImporte" placeholder="Fecha Hasta" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button onclick="CerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="VerFacturaMenorImporte" type="button" class="btn btn-primary" onclick="VerFacturaMenorImporte()">Factura Menor Importe</button>
+            </div>
+            <div id="spinner">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>

@@ -1,5 +1,5 @@
 window.onload = function() {
-    localStorage.setItem("CodigoMesa", $('#CodigoMesa'));
+    // localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
     let usuario = localStorage.getItem("usuario");
     if (usuario == null) {
         swal('tiene que loguearse');
@@ -7,8 +7,8 @@ window.onload = function() {
     }
 
     var codigoMesa = localStorage.getItem('CodigoMesa');
-    if (codigoMesa == null) {
-        $('#modalFormMesa').modal('show');
+    if (codigoMesa != "") {
+        $('#modalFormMesa').modal('hide');
     } else {
         $('#modalFormMesa').modal('show');
     }
@@ -28,6 +28,7 @@ function CambiarEstadoMesaEsperandoAtencion() {
     });
     funcionAjax.then(function(dato) {
         if (dato.status == 200) {
+            localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
             swal({
                 title: "ASIGNADA",
                 icon: "success",
