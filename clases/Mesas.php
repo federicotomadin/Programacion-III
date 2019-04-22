@@ -30,7 +30,6 @@ public static function TraerTodasLasMesas()
 
 public static function CambiarEstadoMesaEsperandoAtencion($CodigoMesa)
 { 
-
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesas set EstadoMesa = 'EsperandoAtencion' where CodigoMesa = '$CodigoMesa'");
     return $consulta->execute();

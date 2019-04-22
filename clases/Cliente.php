@@ -119,6 +119,20 @@ public static function InsertarCalifiacion($idEmpleado, $calificacion)
     return $consulta->execute();
 }
 
+public static function ActualizarCodigoMesaEnElCliente($CodigoMesa,$Usuario)
+{ 
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE clientes set CodigoMesa = '$CodigoMesa' where Usuario = '$Usuario'");
+    return $consulta->execute();
 }
 
+public static function TraerCodigoMesaPorUsuario($usuario)
+{ 
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT CodigoMesa from clientes where Usuario = '$usuario'");
+    $consulta->execute();
+    return $consulta->fetchObject('cliente');
+}
+
+}
 ?>

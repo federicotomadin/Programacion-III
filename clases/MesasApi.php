@@ -1,5 +1,6 @@
 <?php
 require_once("Mesas.php");
+require_once("Cliente.php");
 include_once("../bd/AccesoDatos.php");
 require 'autoload.php';
 
@@ -25,10 +26,13 @@ public function CambiarEstadoMesaOcupada($request,$response,$args)
 public function CambiarEstadoMesaEsperandoAtencion($request,$response,$args)
 {
     $IdMesa = $args['id'];
+    $data = $request->getParsedBody();
+    
 
     $resp["status"] = 400;
     if (Mesas::CambiarEstadoMesaEsperandoAtencion($IdMesa))
     {
+        Cliente::ActualizarCodigoMesaEnElCliente($IdMesa,$data["usuario"]);
          $resp["status"] = 200;
     }
 

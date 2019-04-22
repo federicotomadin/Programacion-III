@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../estilos/estilos.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+    <script type="text/javascript" src="../js/grillaBotonesClientes.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">
+    <link rel="icon" href="../estilos/favicon.jpg">
+    <title>Calificar Empleado</title>
+</head>
+
+<body>
+    <a class="btn btn-info" href="grillaClientes.html">
+        <span class="glyphicon glyphicon-star"></span> Ver Carta</a>
+    <a class="btn btn-info" href="restauranteCliente.html">
+        <span class="glyphicon glyphicon-star"></span>Pedido</a>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>CALIFICAR</h1>
+        </div>
+        <div class="row">
+            <button type="button" onclick="location.href='grillaMozoParaCalificar.html'" class="boton btn btn-primary col-md-offset-1"> MOZO</button>
+            <button id="atomadin" value="12" type="button" onclick="CalificarCocinero()" class="boton btn btn-primary col-md-offset-3">COCINERO</button>
+            <hr>
+            <button id="ddaroli" value="3" type="button" onclick="CalificarCervecero()" class="boton btn btn-primary col-md-offset-1">CERVECERO</button>
+            <button id="fsaiegh" value="4" type="button" onclick="CalificarBartender()" class="boton btn btn-primary col-md-offset-3">BARTENDER</button>
+        </div>
+    </div>
+
+</body>
+
+
+<!-- Modal para editar -->
+<div class="modal fade" id="modalFormMesa" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="false">×</span>
+                        <span class="sr-only">Cerrar</span>
+                    </button>
+                <h4 class="modal-title" id="myModalLabel">Ingresar Mesa</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <!--<form role="form">-->
+                <div class="form-group">
+                    <input type="text" class="form-control" id="CodigoMesa" placeholder="Codigo de Mesa" />
+                </div>
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="CambiarEstadoMesaEsperandoAtencion()">Enviar Codigo Mesa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

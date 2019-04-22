@@ -9,6 +9,7 @@ class Pedidos
 public $Id_pedido;
 public $Tiempo_ingreso;
 public $Tiempo_estimado;
+public $Tiempo_esperandoEntrega;
 public $Tiempo_llegadaMesa;
 public $EstadoCuenta;
 public $Usuario;
@@ -45,6 +46,16 @@ public function SetTiempo_estimado($valor)
 public function GetTiempo_estimado()
 {
     return $this->Tiempo_estimado;
+}
+
+public function SetTiempo_esperandoEntrega($valor)
+{
+    $this->Tiempo_esperandoEntrega=$valor;
+}
+
+public function GetTiempo_esperandoEntrega()
+{
+    return $this->Tiempo_esperandoEntrega;
 }
 
 public function SetTiempo_llegadaMesa($valor)
@@ -118,8 +129,8 @@ public function __construct()
 public static function InsertarElPedido($pedido)
 { 
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedidos(Tiempo_ingreso,Tiempo_estimado,Tiempo_llegadaMesa,EstadoCuenta,Usuario,CodigoMesa,Importe,foto)
-VALUES('$pedido->Tiempo_ingreso','$pedido->Tiempo_estimado','$pedido->Tiempo_llegadaMesa',
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedidos(Tiempo_ingreso,Tiempo_estimado,Tiempo_esperandoEntrega,Tiempo_llegadaMesa,EstadoCuenta,Usuario,CodigoMesa,Importe,foto)
+VALUES('$pedido->Tiempo_ingreso','$pedido->Tiempo_estimado','$pedido->Tiempo_esperandoEntrega','$pedido->Tiempo_llegadaMesa',
 '$pedido->EstadoCuenta','$pedido->Usuario','$pedido->CodigoMesa','$pedido->Importe','$pedido->foto')");
 return $consulta->execute();
 }
@@ -140,6 +151,16 @@ public static function TraerLosPedidos()
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_CLASS,'pedidos');
 }
+
+public static function TraerLosPedidosPorCodigoMesa($codigoMesa)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos where CodigoMesa = '$codigoMesa'");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,'pedidos');
+}
+
+
 public static function TraerElPedidoPorCodigoMesa($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -220,8 +241,6 @@ public static function TraerTodosPedidosPorCodigoMesa($CodigoMesa)
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
-
-
 public static function TraerTodosPedidosQueSeEntregaron()
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -248,7 +267,6 @@ public static function ModificarPedido($pedido)
     return $consulta->execute();
 }
 
-
 public static function TraerMesasPorFecha($fechaDesde, $fechaHasta)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
@@ -257,7 +275,6 @@ public static function TraerMesasPorFecha($fechaDesde, $fechaHasta)
     $consulta->execute();    
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 public static function TraerCantidadMesas($CodigoMesa, $fechaDesde, $fechaHasta)
 {
@@ -293,15 +310,12 @@ public static function VerPedidosPendientes($IdEmpleado)
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
 public static function CambiarEstadoMesa($idPedido,$estado)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE pedidos set EstadoCuenta='$estado' where Id_pedido='$idPedido'");
     return $consulta->execute();    
 }
-
-
 
 public static function TraerElUltimoAgregado()
 {
@@ -331,6 +345,16 @@ public static function ActualizarTiempoLLegadaMesaEstado($Pedido,$IdPedido)
     return $consulta->execute();
 }
 
+public static function ActualizarTiempoEsperandoEntrega($Pedido,$IdPedido)
+{
+    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
+    $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
+    set Tiempo_esperandoEntrega='$Pedido->Tiempo_esperandoEntrega', EstadoCuenta='EsperandoEntrega'
+    where Id_pedido='$IdPedido'");
+    return $consulta->execute();
+}
+
+
 public static function ActualizarTiempoEstimado($Pedido,$IdPedido)
 {
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
@@ -355,6 +379,15 @@ public static function ActualizarEstadoCuentaComiendo($IdPedido)
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
     $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
     set  EstadoCuenta='Comiendo'
+    where Id_pedido='$IdPedido'");
+    return $consulta->execute();
+}
+
+public static function ActualizarEstadoCuentaEsperandoEntrega($IdPedido)
+{
+    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
+    $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
+    set  EstadoCuenta='EsperandoEntrega'
     where Id_pedido='$IdPedido'");
     return $consulta->execute();
 }

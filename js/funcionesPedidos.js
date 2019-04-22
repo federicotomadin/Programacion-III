@@ -64,7 +64,7 @@ function ConfirmarPedido() {
                 funcionAjax.then(function(dato) {
                     if (dato.status == 200) {
                         swal("El pedido fue confirmado correctamente!").then(function() {
-                            location.reload();
+                            location.reload("restauranteMozo.html");
                         });
                     } else if (dato.status == 403) {
                         swal("ERROR. No se puede confirmar mesa de un pedido que no se tomó");

@@ -4,6 +4,7 @@ require_once("Pedidos.php");
 require_once("ListaPedidos.php");
 require_once("AutentificadorJWT.php");
 require_once("Mesas.php");
+require_once("Cliente.php");
 require_once("Roles.php");
 require_once("Operaciones.php");
 require_once("EstadoCuentaPedidos.php");
@@ -207,9 +208,21 @@ public function TraerLosPedidosSinDuplicar($request,$response,$args)
     return  $response->withJson($resp);
 }
 
+
 public function TraerLosPedidos($request,$response,$args)
 {
     $pedidos = Pedidos::TraerLosPedidos();  
+    $resp["pedidos"] = $pedidos;
+    return  $response->withJson($resp);
+}
+
+public function TraerLosPedidosPorCodigoMesa($request,$response,$args)
+{
+    $usuario = $args['usuario'];
+    $codigoMesa = Cliente::TraerCodigoMesaPorUsuario($usuario);
+    
+    $data = $request->getParsedBody();
+    $pedidos = Pedidos::TraerLosPedidosPorCodigoMesa($codigoMesa->CodigoMesa);
     $resp["pedidos"] = $pedidos;
     return  $response->withJson($resp);
 }

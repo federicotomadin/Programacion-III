@@ -1,7 +1,8 @@
 window.onload = function() {
+    cliente = localStorage.getItem("cliente");
     var funcionAjax = $.ajax({
         method: "GET",
-        url: "../vendor/Pedidos/TraerLosPedidos"
+        url: "../vendor/Pedidos/TraerLosPedidosPorCodigoMesa/" + cliente
     });
     funcionAjax.then(function(dato) {
         var stringPedidos = " ";
@@ -9,11 +10,9 @@ window.onload = function() {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_esperandoEntrega + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
             stringPedidos += "<td>" + ActualizarEstadoCuenta(dato.pedidos[i].EstadoCuenta) + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].CodigoMesa + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Importe + "</td>";
             stringPedidos += "<td><img src='../fotosPedidosCambiadas/" + dato.pedidos[i].foto + "'/></td>";
             stringPedidos += "<td><button class='btn btn-warning' onclick='CambiarEstadoMesa(" + dato.pedidos[i].Id_pedido + ")'>" +
@@ -32,6 +31,8 @@ window.onload = function() {
                 return "En Curso";
             case $estadoCuenta = "Comiendo":
                 return "Consumiendo";
+            case $estadoCuenta = "EsperandoEntrega":
+                return "Esperando Entrega en Mesa";
             case $estadoCuenta = "Sin Tiempo":
                 return "Esperando";
             case $estadoCuenta = "Cancelada":

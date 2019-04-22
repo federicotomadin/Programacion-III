@@ -1,0 +1,416 @@
+[33mcommit ae7d23248fb1a76932fb7ab63bc04f12b9aea4cc[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: federico.tomadin <federico.tomadin@hotmail.com>
+Date:   Sun Apr 14 14:04:02 2019 -0300
+
+    se pinta fila de color de empleados segun borrado o suspendido y se implementa entre fechas en Acciones Utiles
+
+[1mdiff --git a/clases/EmpleadoApi.php b/clases/EmpleadoApi.php[m
+[1mindex 52d710c..cbce0a9 100644[m
+[1m--- a/clases/EmpleadoApi.php[m
+[1m+++ b/clases/EmpleadoApi.php[m
+[36m@@ -78,6 +78,13 @@[m [m$resp["empleados"] = $arrayEmpleados;[m
+ return $response->withJson($resp);[m
+ }[m
+ [m
+[32m+[m[32mpublic function TraerEmpleadosMenosSocios($request, $response, $args)[m
+[32m+[m[32m{[m
+[32m+[m[32m$arrayEmpleados = Empleado::TraerTodosLosEmpleadosMenosSocios();[m
+[32m+[m[32m$resp["empleados"] = $arrayEmpleados;[m
+[32m+[m[32mreturn $response->withJson($resp);[m
+[32m+[m[32m}[m
+[32m+[m
+ public function TraerMozos($request, $response, $args)[m
+ {[m
+ $arrayMozos = Empleado::TraerMozos();[m
+[1mdiff --git a/clases/Pedidos.php b/clases/Pedidos.php[m
+[1mindex b104d4c..cfe6668 100644[m
+[1m--- a/clases/Pedidos.php[m
+[1m+++ b/clases/Pedidos.php[m
+[36m@@ -175,6 +175,15 @@[m [mpublic static function TraerTodosPedidos()[m
+     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+ }[m
+ [m
+[32m+[m[32mpublic static function TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta)[m
+[32m+[m[32m{[m
+[32m+[m[32m    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos[m
+[32m+[m[32m    where Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");[m
+[32m+[m[32m    $consulta->execute();[m
+[32m+[m[32m    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+[32m+[m[32m}[m
+[32m+[m
+ public static function TraerTodosPedidosParaPdf()[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[36m@@ -183,6 +192,15 @@[m [mpublic static function TraerTodosPedidosParaPdf()[m
+     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+ }[m
+ [m
+[32m+[m
+[32m+[m[32mpublic static function TraerTodosPedidosParaExcel()[m
+[32m+[m[32m{[m
+[32m+[m[32m    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT Tiempo_ingreso as Tiempo_ingreso,Tiempo_estimado,Tiempo_llegadaMesa,EstadoCuenta,Usuario,CodigoMesa,Importe from pedidos");[m
+[32m+[m[32m    $consulta->execute();[m
+[32m+[m[32m    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+[32m+[m[32m}[m
+[32m+[m
+ public static function TraerTodosPedidosListos()[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[36m@@ -193,6 +211,15 @@[m [mpublic static function TraerTodosPedidosListos()[m
+     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+ }[m
+ [m
+[32m+[m[32mpublic static function TraerTodosPedidosPorCodigoMesa($CodigoMesa)[m
+[32m+[m[32m{[m
+[32m+[m[32m    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from pedidos[m
+[32m+[m[32m    where pedidos.EstadoCuenta!='Cerrada' and pedidos.CodigoMesa = '$CodigoMesa'");[m
+[32m+[m[32m    $consulta->execute();[m
+[32m+[m[32m    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");[m
+[32m+[m[32m}[m
+[32m+[m
+ [m
+ [m
+ public static function TraerTodosPedidosQueSeEntregaron()[m
+[36m@@ -221,19 +248,31 @@[m [mpublic static function ModificarPedido($pedido)[m
+     return $consulta->execute();[m
+ }[m
+ [m
+[31m-public static function TraerCantidadMesas($CodigoMesa)[m
+[32m+[m
+[32m+[m[32mpublic static function TraerMesasPorFecha($fechaDesde, $fechaHasta)[m
+[32m+[m[32m{[m
+[32m+[m[32m    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT  COUNT(*) as Cantidad from pedidos where[m[41m [m
+[32m+[m[32m    between $fechaDesde AND $fechaHasta");[m
+[32m+[m[32m    $consulta->execute();[m[41m    [m
+[32m+[m[32m    return $consulta->fetchAll(PDO::FETCH_ASSOC);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
+[32m+[m[32mpublic static function TraerCantidadMesas($CodigoMesa, $fechaDesde, $fechaHasta)[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[31m-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT  COUNT(*) as Cantidad from pedidos where CodigoMesa='$CodigoMesa'");[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT COUNT(*) as Cantidad from pedidos where CodigoMesa='$CodigoMesa'[m[41m [m
+[32m+[m[32m    and Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");[m
+     $consulta->execute();    [m
+     return $consulta->fetchAll(PDO::FETCH_ASSOC);[m
+ }[m
+ [m
+[31m-public static function TraerTotalFacturado($CodigoMesa)[m
+[32m+[m[32mpublic static function TraerTotalFacturado($CodigoMesa,$fechaDesde,$fechaHasta)[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[31m-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT CodigoMesa as Mesa, SUM(Importe) as Importe  from pedidos[m
+[31m-    where CodigoMesa='$CodigoMesa'");[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT CodigoMesa, SUM(Importe) as Importe from pedidos where CodigoMesa='$CodigoMesa'[m
+[32m+[m[32m    and Tiempo_ingreso between '$fechaDesde' AND '$fechaHasta'");[m
+     $consulta->execute();    [m
+     return $consulta->fetchAll(PDO::FETCH_ASSOC);[m
+ }[m
+[1mdiff --git a/clases/PedidosApi.php b/clases/PedidosApi.php[m
+[1mindex b677ea7..18ba61f 100644[m
+[1m--- a/clases/PedidosApi.php[m
+[1m+++ b/clases/PedidosApi.php[m
+[36m@@ -12,6 +12,7 @@[m [mrequire_once("EstadoPedidos.php");[m
+ include_once("../bd/AccesoDatos.php");[m
+ include_once("../phpExcel/Classes/PHPExcel.php");[m
+ include_once('../fpdf/fpdf.php');[m
+[32m+[m
+ // include composer autoload[m
+ require 'autoload.php';[m
+ [m
+[36m@@ -161,8 +162,37 @@[m [mreturn $response->withJson($resp);[m
+ public function TraerTodosLosPedidos($request,$response,$args)[m
+ {[m
+ $pedidos = Pedidos::TraerTodosPedidosListos();[m
+[32m+[m[32mreturn $response->withJson($pedidos);[m
+[32m+[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mpublic function TraerTodosPedidosPorCodigoMesa($request,$response,$args)[m
+[32m+[m[32m{[m
+[32m+[m[32m$CodigoMesa = $args['CodigoMesa'];[m
+[32m+[m[32m$pedidos = Pedidos::TraerTodosPedidosPorCodigoMesa($CodigoMesa);[m
+[32m+[m[32mreturn $response->withJson($pedidos);[m
+[32m+[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mpublic function TraerTodosLosPedidosExcel($request,$response,$args)[m
+[32m+[m[32m{[m
+[32m+[m[32m$pedidos = Pedidos::TraerTodosPedidosParaExcel();[m
+[32m+[m
+[32m+[m[32munset($pedidos[0]->Id_pedido);[m
+[32m+[m[32munset($pedidos[0]->foto);[m
+[32m+[m
+ $resp["pedidos"] = $pedidos;[m
+ return  $response->withJson($resp);[m
+[32m+[m
+[32m+[m[32m$arrayPedidos = array();[m
+[32m+[m
+[32m+[m[32marray_push($arrayPedidos,strval($pedidos[0]->Usuario), strval($pedidos[0]->Tiempo_ingreso), strval($pedidos[0]->Tiempo_estimado),[m
+[32m+[m[32mstrval($pedidos[0]->Tiempo_llegadaMesa), strval($pedidos[0]->EstadoCuenta),[m
+[32m+[m[32mstrval($pedidos[0]->CodigoMesa), strval($pedidos[0]->Importe));[m
+[32m+[m
+[32m+[m[32m$resp["pedidos"] = $arrayPedidos;[m
+[32m+[m
+[32m+[m[32m//return  $response->withJson($resp);[m
+ }[m
+ [m
+ public function TraerLosPedidosSinDuplicar($request,$response,$args)[m
+[36m@@ -226,6 +256,7 @@[m [mpublic function TraerDatosParaExportarExcel()[m
+ [m
+ $arrayPedidos = Pedidos::TraerTodosPedidos();[m
+ [m
+[32m+[m
+ if (count($arrayPedidos) > 0) {[m
+     $objPHPExcel = new PHPExcel();[m
+     [m
+[36m@@ -378,17 +409,16 @@[m [mfor($i=0;$i<count($arrayPedidos);$i++)[m
+       ->getStyle('G'.($i+2))[m
+       ->applyFromArray($styleTextCenter);[m
+ [m
+[31m-    $empleado=Empleado::TraerElEmpleado($arrayPedidos[$i] -> Id_empleado);    [m
+[31m-    $estadoCuenta= EstadoCuentaPedidos::TraerCuentaPedidos($arrayPedidos[$i] -> Id_estadoCuenta);[m
+[32m+[m
+ [m
+       $objPHPExcel->setActiveSheetIndex(0)[m
+             ->setCellValue('A'.($i+2),$arrayPedidos[$i]-> Tiempo_ingreso)[m
+             ->setCellValue('B'.($i+2),$arrayPedidos[$i]-> Tiempo_estimado)[m
+             ->setCellValue('C'.($i+2),$arrayPedidos[$i]-> Tiempo_llegadaMesa)[m
+[31m-            ->setCellValue('D'.($i+2),$estadoCuenta[0]["Descripcion"])[m
+[31m-            ->setCellValue('E'.($i+2),$empleado[0]["Usuario"])[m
+[32m+[m[32m            ->setCellValue('D'.($i+2),$arrayPedidos[$i]-> EstadoCuenta)[m
+[32m+[m[32m            ->setCellValue('E'.($i+2),$arrayPedidos[$i]-> Usuario)[m
+             ->setCellValue('F'.($i+2),$arrayPedidos[$i]-> CodigoMesa)[m
+[31m-            ->setCellValue('G'.($i+2),$arrayPedidos[$i]-> Importe);                 [m
+[32m+[m[32m            ->setCellValue('G'.($i+2),$arrayPedidos[$i]-> Importe);[m[41m             [m
+ }[m
+ [m
+ $styleArrayFecha = array([m
+[36m@@ -405,13 +435,18 @@[m [m$objPHPExcel->getActiveSheet()->getCell('I1')->setValue("Fecha de creación:");[m
+ $objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($styleArrayFecha);[m
+ $objPHPExcel->getActiveSheet()->getCell('I2')->setValue($fecha_creacion);[m
+ $objPHPExcel->getActiveSheet()->getStyle('I2')->applyFromArray($styleArrayFecha);[m
+[32m+[m
+[32m+[m
+  }[m
+ header('Content-Type: application/vnd.ms-excel');[m
+ header('Content-Disposition: attachment;filename="listadoEmpleados.xlsx"');[m
+ header('Cache-Control: max-age=0');[m
+ $objWriter=PHPExcel_IOFactory::createWriter($objPHPExcel,'Excel2007');[m
+ $objWriter->save('php://output');[m
+[31m-return $objWriter;[m
+[32m+[m[32m//return $objWriter;[m
+[32m+[m[32mexit;[m
+[32m+[m
+[32m+[m
+ }[m
+ [m
+ public function TraerDatosParaExportarPdf($request, $response, $args)[m
+[36m@@ -523,13 +558,17 @@[m [mpublic function PedidosCancelados($request, $response, $args)[m
+ }[m
+ [m
+ public function TraerMesaMasUsada($request, $response, $args)[m
+[31m-{[m
+[32m+[m[32m{[m[41m  [m
+[32m+[m[32m   $data = $request->getParsedBody();[m
+[32m+[m[32m   $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m   $fechaHasta= $data["fechaHasta"];[m
+    $arrayMesas= Mesas::TraerMesas();[m
+[32m+[m
+    $mayor=0;[m
+    $resp["status"] =  200;[m
+    for($i=0; $i<count($arrayMesas);$i++)[m
+    {[m
+[31m-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);[m
+[32m+[m[32m       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"], $fechaDesde, $fechaHasta);[m
+        if($cantidad >= $mayor)[m
+        {               [m
+           $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   [m
+[36m@@ -545,13 +584,17 @@[m [mpublic function TraerMesaMasUsada($request, $response, $args)[m
+ [m
+ public function TraerMesaMenosUsada($request, $response, $args)[m
+ {[m
+[32m+[m[41m [m
+[32m+[m[32m   $data = $request->getParsedBody();[m
+[32m+[m[32m   $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m   $fechaHasta= $data["fechaHasta"];[m
+    $arrayMesas= Mesas::TraerMesas();[m
+    $menor=2;[m
+    $resp["status"] =  200;[m
+    for($i=0; $i<count($arrayMesas);$i++)[m
+    {[m
+ [m
+[31m-       $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"]);[m
+[32m+[m[32m    $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"], $fechaDesde, $fechaHasta);[m
+ [m
+        if( $cantidad[0]["Cantidad"] < $menor)[m
+        { [m
+[36m@@ -568,13 +611,16 @@[m [mpublic function TraerMesaMenosUsada($request, $response, $args)[m
+ [m
+ public function TraerMesaQueMasFacturo($request, $response, $args)[m
+ {[m
+[32m+[m[32m    $data = $request->getParsedBody();[m
+[32m+[m[32m    $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m    $fechaHasta= $data["fechaHasta"];[m
+     $arrayMesas= Mesas::TraerMesas();[m
+     $importeMayor=0;[m
+     $resp["status"] =  200;[m
+     for($i=0; $i<count($arrayMesas);$i++)[m
+     {[m
+[31m-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);[m
+[31m-[m
+[32m+[m[32m        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"],$fechaDesde,$fechaHasta);[m
+[32m+[m[41m        [m
+         if($aux[0]["Importe"] >= $importeMayor)[m
+        {[m
+           $importeMayor = $aux[0]["Importe"];       [m
+[36m@@ -592,12 +638,15 @@[m [mpublic function TraerMesaQueMasFacturo($request, $response, $args)[m
+ [m
+ public function TraerMesaQueMenosFacturo($request, $response, $args)[m
+ {[m
+[32m+[m[32m    $data = $request->getParsedBody();[m
+[32m+[m[32m    $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m    $fechaHasta= $data["fechaHasta"];[m
+     $arrayMesas= Mesas::TraerMesas();[m
+     $importeMenor=50000;[m
+     $resp["status"] =  200;[m
+     for($i=0; $i<count($arrayMesas);$i++)[m
+     {    [m
+[31m-        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"]);    [m
+[32m+[m[32m        $aux = Pedidos::TraerTotalFacturado($arrayMesas[$i]["CodigoMesa"],$fechaDesde,$fechaHasta);[m
+ [m
+             if($aux[0]["Importe"] < $importeMenor)[m
+             {   [m
+[36m@@ -618,7 +667,11 @@[m [mpublic function TraerMesaQueMenosFacturo($request, $response, $args)[m
+ [m
+ public function TraerFacturaMayorImporte($request, $response, $args)[m
+ {[m
+[31m-    $pedidos=Pedidos::TraerTodosPedidos();[m
+[32m+[m
+[32m+[m[32m    $data = $request->getParsedBody();[m
+[32m+[m[32m    $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m    $fechaHasta= $data["fechaHasta"];[m
+[32m+[m[32m    $pedidos=Pedidos::TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta);[m
+     $arrayMesas= Mesas::TraerMesas();[m
+     $pedidoMayor=0;[m
+     $importeMayor=0;[m
+[36m@@ -641,7 +694,10 @@[m [mpublic function TraerFacturaMayorImporte($request, $response, $args)[m
+ [m
+ public function TraerFacturaMenorImporte($request, $response, $args)[m
+ {[m
+[31m-    $pedidos=Pedidos::TraerTodosPedidos();[m
+[32m+[m[32m    $data = $request->getParsedBody();[m
+[32m+[m[32m    $fechaDesde= $data["fechaDesde"];[m
+[32m+[m[32m    $fechaHasta= $data["fechaHasta"];[m
+[32m+[m[32m    $pedidos=Pedidos::TraerTodosPedidosEntreFechas($fechaDesde,$fechaHasta);[m
+     $arrayMesas= Mesas::TraerMesas();[m
+     $resp["status"] =  200;[m
+     $importeMenor=50000;[m
+[36m@@ -683,6 +739,7 @@[m [mpublic function TraerTiempoFaltante($request, $response, $args)[m
+     return $response->withJson($resp);[m
+ }[m
+ [m
+[32m+[m
+ public function CambiarTamanio($id)[m
+ {[m
+     $empleado = Empleado::TraerElEmpleado($id);[m
+[1mdiff --git a/clases/empleado.php b/clases/empleado.php[m
+[1mindex 7988728..60e2ae2 100644[m
+[1m--- a/clases/empleado.php[m
+[1m+++ b/clases/empleado.php[m
+[36m@@ -11,6 +11,7 @@[m [mpublic $Clave;[m
+ public $Id_rol;[m
+ public $Sueldo;[m
+ public $habilitado;[m
+[32m+[m[32mpublic $borrado;[m
+ [m
+ [m
+ public function Getid_empleado()[m
+[36m@@ -88,6 +89,16 @@[m [mpublic function GetHabilitado()[m
+     return $this->habilitado;[m
+ }[m
+ [m
+[32m+[m[32mpublic function SetBorrado($valor)[m
+[32m+[m[32m{[m
+[32m+[m[32m    $this->borrado=$valor;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mpublic function GetBorrado()[m
+[32m+[m[32m{[m
+[32m+[m[32m    return $this->borrado;[m
+[32m+[m[32m}[m
+[32m+[m
+ public function SetFoto($valor)[m
+ {[m
+     $this->foto=$valor;[m
+[36m@@ -112,6 +123,14 @@[m [mpublic static function TraerTodosLosEmpleados()[m
+     return $consulta->fetchAll(PDO::FETCH_CLASS,"empleado");[m
+ }[m
+ [m
+[32m+[m[32mpublic static function TraerTodosLosEmpleadosMenosSocios()[m
+[32m+[m[32m{[m
+[32m+[m[32m    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from empleados where Id_rol != 5");[m
+[32m+[m[32m    $consulta->execute();[m
+[32m+[m[32m    return $consulta->fetchAll(PDO::FETCH_CLASS,"empleado");[m
+[32m+[m[32m}[m
+[32m+[m
+ public static function TraerElEmpleadoPorUsuario($Usuario)[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[36m@@ -139,15 +158,16 @@[m [mpublic static function TraerMozos()[m
+ public static function InsertarElEmpleado($empleado)[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[31m-    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado)[m
+[31m-    VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado')");[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO empleados (Nombre,Apellido,Usuario,Clave,Id_rol,Sueldo,habilitado,borrado)[m
+[32m+[m[32m    VALUES('$empleado->Nombre','$empleado->Apellido','$empleado->Usuario','$empleado->Clave','$empleado->Id_rol','$empleado->Sueldo','$empleado->habilitado',0)");[m
+     return $consulta->execute();[m
+ }[m
+ [m
+ public static function BorrarElEmpleado($id_empleado)[m
+ {[m
+     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();[m
+[31m-    $consulta = $objetoAccesoDato->RetornarConsulta("DELETE from empleados where id_empleado = '$id_empleado' ");[m
+[32m+[m[32m    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE empleados set borrado = 1, habilitado = 0[m
+[32m+[m[32m    where id_empleado = '$id_empleado'");[m
+     return $consulta->execute();[m
+ }[m
+ [m
+[1mdiff --git a/enlaces/grillaBotones.html b/enlaces/grillaBotones.html[m
+[1mindex 3e3db13..fbdb567 100644[m
+[1m--- a/enlaces/grillaBotones.html[m
+[1m+++ b/enlaces/grillaBotones.html[m
+[36m@@ -23,6 +23,9 @@[m
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>[m
+     <script type="text/javascript" src="../js/grillaBotones.js"></script>[m
+     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css">[m
+[32m+[m[32m    <script src="../bootstrapCalendar/locales/bootstrap-datepicker.es.min.js"></script>[m
+[32m+[m[32m    <script src=" ../bootstrapCalendar/css/bootstrap-datepicker.css"></script>[m
+[32m+[m[32m    <script src="../bootstrapCalendar/js/bootstrap-datepicker.min.js"></script>[m
+     <link rel="icon" href="../estilos/favicon.jpg">[m
+     <title>Datos Utiles</title>[m
+ </head>[m
+[36m@@ -35,14 +38,265 @@[m
+         <div class="page-header">[m
+             <h1>Acciones Útiles</h1>[m
+         </div>[m
+[31m-        <button type="button" onclick="MesaMasUsada()" class="boton btn btn-primary btn-lg col-md-4">Mesa Más Usada</button>[m
+[31m-        <button type="button" onclick="MesaMenosUsada()" class="boton2 btn btn-primary btn-lg col-lg-offset-1">Mesa Menos Usada</button>[m
+[31m-        <button type="button" onclick="MesaMasFacturo()" class="boton3 btn btn-primary btn-lg col-lg-offset-1">Mesa Más Facturó</button>[m
+[32m+[m[32m        <button type="button" onclick="MesaMasUsadaModal()" class="boton btn btn-primary btn-lg col-md-4">Mesa Más Usada</button>[m
+[32m+[m[32m        <button type="button" onclick="MesaMenosUsadaModal()" class="boton2 btn btn-primary btn-lg col-lg-offset-1">Mesa Menos Usada</button>[m
+[32m+[m[32m        <button type="button" onclick="MesaMasFacturoModal()" class="boton3 btn btn-primary btn-lg col-lg-offset-1">Mesa Más Facturó</button>[m
+         <hr>[m
+ [m
+[31m-        <button type="button" onclick="MesaMenosFacturo()" class="boton4 btn btn-primary btn-lg col-md-4">Mesa Que Menos Facturó</button>[m
+[31m-        <button type="button" onclick="FacturaMayorImporte()" class="boton5 btn btn-primary btn-lg col-lg-offset-1">Factura Mayor Importe</button>[m
+[31m-        <button type="button" onclick="FacturaMenorImporte()" class="boton6 btn btn-primary btn-lg col-lg-offset-1">Factura Menor Importe</button>[m
+[32m+[m[32m        <button type="button" onclick="MesaMenosFacturoModal()" class="boton4 btn btn-primary btn-lg col-md-4">Mesa Que Menos Facturó</button>[m
+[32m+[m[32m        <button type="but

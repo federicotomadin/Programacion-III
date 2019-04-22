@@ -47,6 +47,7 @@ $app->group('/Pedidos',function(){
   $this->post('/TraerFacturaMayorImporte',\PedidosApi::class .':TraerFacturaMayorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->post('/TraerFacturaMenorImporte',\PedidosApi::class .':TraerFacturaMenorImporte')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidos',\PedidosApi::class .':TraerTodosLosPedidos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
+  $this->get('/TraerLosPedidosPorCodigoMesa/{usuario}',\PedidosApi::class .':TraerLosPedidosPorCodigoMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosPedidosPorCodigoMesa/{CodigoMesa}',\PedidosApi::class .':TraerTodosPedidosPorCodigoMesa')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosExcel',\PedidosApi::class .':TraerTodosLosPedidosExcel')->add(\MWparaCORS::class . ':HabilitarCORSTodos');
   $this->get('/TraerTodosLosPedidosPdf',\PedidosApi::class .':TraerDatosParaExportarPdf')->add(\MWparaCORS::class . ':HabilitarCORSTodos');

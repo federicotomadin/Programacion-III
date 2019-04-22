@@ -241,6 +241,15 @@ public static function CambiarEstadoListoParaServir($IdPedido,$IdRol)
     return $consulta->execute(); 
 }
 
+public static function CambiarEstadoEsperandoEntrega($IdPedido,$IdRol)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos 
+    set Id_estadoPedido=6
+    where  Id_pedido='$IdPedido' and Id_rol = '$IdRol'");
+    return $consulta->execute(); 
+}
+
 
 
 }

@@ -121,7 +121,7 @@ public function CambiarEstadoPedido($request,$response,$args)
      {      
         $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));  
         $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s")); 
-        ListaPedidos::CambiarEstadoListoParaServir($pedido->Id_pedido, $empleado->Id_rol);
+        ListaPedidos::CambiarEstadoEsperandoEntrega($pedido->Id_pedido, $empleado->Id_rol);
         Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido,$pedido->Id_pedido);
      }
     } 
@@ -156,6 +156,17 @@ public function CambiarEstadoPedido($request,$response,$args)
     ListaPedidos::CambiarEstadoListoParaServir($pedido->Id_pedido, $empleado->Id_rol);
     Mesas::CambiarEstadoMesaOcupada($pedido->CodigoMesa);
     }
+    
+    if($datos["estadoPedido"]=="6")
+    {
+    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+    $pedido->SetTiempo_esperandoEntrega($dateTime->format("Y/m/d H:i:s"));
+    Pedidos::ActualizarTiempoEsperandoEntrega($pedido,$pedido->Id_pedido);
+    Pedidos::ActualizarEstadoCuentaEsperandoEntrega($pedido->Id_pedido);
+    ListaPedidos::CambiarEstadoEsperandoEntrega($pedido->Id_pedido, $empleado->Id_rol);
+    Mesas::CambiarEstadoMesaOcupada($pedido->CodigoMesa);
+    }
+
     if(!ListaPedidos::CambiarEstadoPedido($datos["estadoPedido"],$IdRol[0]["Id_rol"],$datos["CodigoMesa"]))
     {       
         $resp["status"]=400;

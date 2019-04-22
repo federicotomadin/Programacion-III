@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../bower_components/bootstrapValidator/dist/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../estilos/estilos.css">
+    <script src="../bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/sweetalert2/dist/sweetalert2.min.css">
+    <script type="text/javascript" src="../js/cargarPaginaPrincipal.js"></script>
+    <link rel="icon" href="../estilos/favicon.jpg">
+    <script type="text/javascript" src="../js/descargarPedidosExcel.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+    <script type="text/javascript" src="../js/grillaVerPedidos.js"></script>
+    <script type="text/javascript" src="../js/grillaPedidosCliente.js"></script>
+    <title>Cliente</title>
+</head>
+
+<body>
+    <a class="btn btn-info" href="restauranteCliente.html">
+        <span class="glyphicon glyphicon-home"></span> Volver al Menú Principal</a>
+
+
+    <div class="page-header">
+        <h1>Estimado cliente este es su pedido</h1>
+    </div>
+    <div class="CajaInicio animated bounceInRight">
+        <h1>Listado de PEDIDOS</h1>
+        <div class="table-responsive">
+            <table class='table table-bordered table-hover'>
+                <thead id="tablaEncabezado">
+                    <tr style="font-size:10px">
+                        <th> TIEMPO INGRESO </th>
+                        <th> TIEMPO ESTIMADO </th>
+                        <th> TIEMPO LLEGADA MESA </th>
+                        <th> ESTADO CUENTA </th>
+                        <th> EMPLEADO </th>
+                        <th> IMPORTE </th>
+                        <th> FOTO </th>
+                        <th>
+                            <select id='EstadoPedido' class='form-control'><option value= "Esperando Pedido">Esperando Pedido</option>
+                                    <option value= "Comiendo">Recibi la comida y/o bebida</option>
+                                    <option value= "Esperando Cierre">Pedir la cuenta</option>                                  
+                                </select> </th>
+                        <th> TIEMPOS </th>
+                    </tr>
+                </thead>
+                <thead id="pedidos">
+                </thead>
+            </table>
+        </div>
+</body>
+
+<!-- Modal para editar -->
+<div class="modal fade" id="modalFormEstadoPedidos" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="false">×</span>
+                            <span class="sr-only">Cerrar</span>
+                        </button>
+                <h4 class="modal-title" id="myModalLabel">Pedidos</h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <!--<form role="form">-->
+                <table class='table table-bordered table-hover'>
+                    <thead id="tablaEncabezado">
+                        <tr style="font-size:10px">
+                            <th> PRODUCTO </th>
+                            <th> ESTADO PEDIDO </th>
+                            <th> TIEMPO LLEGADA MESA </th>
+                        </tr>
+                    </thead>
+                    <thead id="pedidosPendientes">
+                    </thead>
+                </table>
+                <!-- </form> -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
