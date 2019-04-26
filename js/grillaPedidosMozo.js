@@ -8,9 +8,6 @@ window.onload = function() {
         for (var i = 0; i < dato.pedidos.length; i++) {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_esperandoEntrega + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
             stringPedidos += "<td>" + ActualizarEstadoCuenta(dato.pedidos[i].EstadoCuenta) + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].CodigoMesa + "</td>";
@@ -44,8 +41,6 @@ window.onload = function() {
     }
 };
 
-
-
 function CargarEstadoPedidos(IdPedido) {
     var funcionAjax = $.ajax({
         type: 'POST',
@@ -60,7 +55,7 @@ function CargarEstadoPedidos(IdPedido) {
             if (dato.pedidosPendientes[i].Id_estadoPedido == 1 || dato.pedidosPendientes[i].Id_estadoPedido == 4) {
                 stringPedidos += "<td>" + '0000-00-00 00:00:00' + "</td>";
             } else if (dato.pedidosPendientes[i].Id_estadoPedido == 2 || dato.pedidosPendientes[i].Id_estadoPedido == 3) {
-                stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_llegadaMesa + "</td>";
+                stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_esperandoEntrega + "</td>";
             }
             stringPedidos += "</tr>";
         }

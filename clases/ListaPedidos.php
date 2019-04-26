@@ -6,10 +6,14 @@ include_once("Pedidos.php");
 class ListaPedidos
 {
 public $Id_pedido;
+public $Id_pedidoDetalle;
 public $Id_producto;
 public $Id_rol;
 public $Id_estadoPedido;
 public $CodigoMesa;
+public $Tiempo_estimado;
+public $Tiempo_esperandoEntrega;
+public $Tiempo_llegadaMesa;
 public $Cantidad;
 public $Precio; 
 
@@ -23,6 +27,17 @@ public function GetId_pedido()
 {
     return $this->Id_pedido;
 }
+
+public function SetId_pedidoDetalle($valor)
+{
+    $this->Id_pedidoDetalle=$valor;
+}
+
+public function GetId_pedidoDetalle()
+{
+    return $this->Id_pedidoDetalle;
+}
+
 
 public function SetId_producto($valor)
 {
@@ -84,6 +99,36 @@ public function GetCodigoMesa()
     return $this->CodigoMesa;
 }
 
+public function SetTiempo_estimado($valor)
+{
+    $this->Tiempo_estimado=$valor;
+}
+
+public function GetTiempo_estimado()
+{
+    return $this->Tiempo_estimado;
+}
+
+public function SetTiempo_esperandoEntrega($valor)
+{
+    $this->Tiempo_esperandoEntrega=$valor;
+}
+
+public function GetTiempo_esperandoEntrega()
+{
+    return $this->Tiempo_esperandoEntrega;
+}
+
+public function SetTiempo_llegadaMesa($valor)
+{
+    $this->Tiempo_llegadaMesa=$valor;
+}
+
+public function GetTiempo_llegadaMesa()
+{
+    return $this->Tiempo_llegadaMesa;
+}
+
 public function __contruct()
 {
 
@@ -92,8 +137,8 @@ public function __contruct()
 public static function InsertarListaPedido($pedido)
 {
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
-$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_producto,Id_rol,Id_estadoPedido,CodigoMesa,Cantidad,Precio)
-VALUES('$pedido->Id_pedido','$pedido->Id_producto','$pedido->Id_rol','$pedido->Id_estadoPedido','$pedido->CodigoMesa','$pedido->Cantidad','$pedido->Precio')");		
+$consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos(Id_pedido,Id_pedidoDetalle,Id_producto,Id_rol,Id_estadoPedido,CodigoMesa,Cantidad,Precio,Tiempo_estimado,Tiempo_esperandoEntrega,Tiempo_llegadaMesa)
+VALUES('$pedido->Id_pedido','$pedido->Id_pedidoDetalle,'$pedido->Id_producto','$pedido->Id_rol','$pedido->Id_estadoPedido','$pedido->CodigoMesa','$pedido->Cantidad','$pedido->Precio')");		
 return $consulta->execute();
 }
 
@@ -112,6 +157,16 @@ public static function TraerTodosLosPedidos()
     $consulta->execute();
     return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
+
+public static function TraerElPedidoDetallePorCodigoMesaCambiarEstado($CodigoMesa)
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * from ListaPedidos 
+    WHERE CodigoMesa = '$CodigoMesa'");
+    $consulta->execute();
+    return $consulta->fetchObject('pedidos');
+}
+
 
 public static function BorrarElPedido($IdPedido)
 {
@@ -241,13 +296,31 @@ public static function CambiarEstadoListoParaServir($IdPedido,$IdRol)
     return $consulta->execute(); 
 }
 
-public static function CambiarEstadoEsperandoEntrega($IdPedido,$IdRol)
+public static function CambiarEstadoEsperandoEntrega($Id_pedido,$Id_pedidoDetalle,$IdRol)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE lista_pedidos 
     set Id_estadoPedido=6
-    where  Id_pedido='$IdPedido' and Id_rol = '$IdRol'");
+    where  Id_pedido='$Id_pedido' and Id_pedidoDetalle = '$Id_pedidoDetalle' and Id_rol = '$IdRol'");
     return $consulta->execute(); 
+}
+
+public static function ActualizarTiempoEsperandoEntrega($Tiempo_esperandoEntrega,$IdPedido)
+{
+    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
+    $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
+    set Tiempo_esperandoEntrega='$Tiempo_esperandoEntrega', Id_estadoPedido=2
+    where Id_pedido='$IdPedido'");
+    return $consulta->execute();
+}
+
+public static function ActualizarTiempoEstimado($Tiempo_estimado,$IdPedido)
+{
+    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
+    $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
+    set Tiempo_estimado='$Tiempo_estimado', Id_estadoPedido=1
+    where Id_pedido='$IdPedido'");
+    return $consulta->execute();
 }
 
 

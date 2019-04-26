@@ -75,9 +75,12 @@ public function ConfirmarPedido($request,$response,$args)
     }
 
     if($resp["status"]==200)
-    {
+    {   
         $IdPedido=Pedidos::TraerElUltimoAgregado();
         ListaPedidos::IntertarIdPedido($datos["CodigoMesa"],$IdPedido);
+        //si el pedido se confirma ya pongo el precio para que lo vea el cliente
+        $importe = ListaPedidos::TraerImporte($IdPedido);
+        Pedidos::ColocarImporteAlCambiarDeEstado($pedido->CodigoMesa,$importe[0]["importe"]);
     }
 
     return $response->withJson($resp);  
