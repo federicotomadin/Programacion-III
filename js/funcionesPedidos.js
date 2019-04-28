@@ -9,7 +9,7 @@ function CerrarMesa(idMesa) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si, cerrar mesa!',
         cancelButtonClass: 'btn btn-danger',
-        cancelButtonText: 'No, no cerrar mesa!'
+        cancelButtonText: 'No, cerrar mesa!'
     }).then(function(result) {
         if (result.value) {
             var funcionAjax = $.ajax({

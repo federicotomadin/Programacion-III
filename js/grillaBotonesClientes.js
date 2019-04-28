@@ -1,7 +1,7 @@
 window.onload = function() {
-    // localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
-    usuario = localStorage.getItem("usuario");
-    if (usuario == null) {
+    //localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
+    cliente = localStorage.getItem('cliente');
+    if (cliente == null) {
         swal('tiene que loguearse');
         window.location.replace("../enlaces/login.html");
     }

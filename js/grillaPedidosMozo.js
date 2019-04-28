@@ -52,11 +52,9 @@ function CargarEstadoPedidos(IdPedido) {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + CambiarIdPorNombreProducto(dato.pedidosPendientes[i].Id_producto) + "</td>";
             stringPedidos += "<td>" + CambiarIdEstadoPedido(dato.pedidosPendientes[i].Id_estadoPedido) + "</td>";
-            if (dato.pedidosPendientes[i].Id_estadoPedido == 1 || dato.pedidosPendientes[i].Id_estadoPedido == 4) {
-                stringPedidos += "<td>" + '0000-00-00 00:00:00' + "</td>";
-            } else if (dato.pedidosPendientes[i].Id_estadoPedido == 2 || dato.pedidosPendientes[i].Id_estadoPedido == 3) {
-                stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_esperandoEntrega + "</td>";
-            }
+            stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_estimado + "</td>";
+            stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_esperandoEntrega + "</td>";
+            stringPedidos += "<td>" + dato.pedidosPendientes[i].Tiempo_llegadaMesa + "</td>";
             stringPedidos += "</tr>";
         }
 

@@ -236,6 +236,8 @@ public function CambiarEstadoMesa($request,$response,$args)
     $data = $request->getParsedBody();
 
     $pedido=Pedidos::TraerElPedidoPorIdPedido($data["idPedido"]);
+    $codigoMesa = ListaPedidos::TraerMesaPorIdPedido($data["idPedido"]);
+  //  $listaPedido = ListaPedidos::TraerElPedidoDetallePorCodigoMesaCambiarEstado($codigoMesa[0]["CodigoMesa"]);
 
     if($pedido->EstadoCuenta == "Cerrada")
     {
@@ -243,13 +245,11 @@ public function CambiarEstadoMesa($request,$response,$args)
         return  $response->withJson($resp);
     }
 
-    if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00" && $data["estadoMesa"]=="Comiendo")
-    {     
-    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
-    $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
-    Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido->Tiempo_llegadaMesa,$data["idPedido"]);
-    }
-
+    // if($data["estadoMesa"]=="Comiendo")
+    // {     
+    // $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
+    // ListaPedidos::ActualizarTiempoLlegadaMesa($dateTime->format("Y/m/d H:i:s"),$listaPedido->Id_pedido,$listaPedido->Id_pedidoDetalle);
+    // }
 
     $resp["status"] = 200;
     if(!Pedidos::CambiarEstadoMesa($data["idPedido"],$data["estadoMesa"]))
