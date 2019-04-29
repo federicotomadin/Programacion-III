@@ -114,13 +114,6 @@ public function CerrarMesa($request,$response,$args)
     }
 
 
-   /* if($pedido->Tiempo_ingreso!="0000-00-00 00:00:00")
-    {     
-    $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')); 
-    $pedido->SetTiempo_llegadaMesa($dateTime->format("Y/m/d H:i:s"));
-    Pedidos::ActualizarTiempoLLegadaMesa($pedido->Tiempo_llegadaMesa,$codigoMesa["CodigoMesa"]);
-    }*/
-
     $importe=ListaPedidos::TraerImportePedido($pedido[intval(count($pedido)-1)]->Id_pedido,
     $pedido[intval(count($pedido)-1)]->CodigoMesa);
 
@@ -165,8 +158,11 @@ return $response->withJson($resp);
 
 public function TraerTodosLosPedidos($request,$response,$args)
 {
-$pedidos = Pedidos::TraerTodosPedidosListos();
-return $response->withJson($pedidos);
+$pedidos = Pedidos::TraerTodosPedidosListosParaPdf();
+$arrayPedidos = array();
+
+$resp["pedidos"] = $pedidos;
+return $response->withJson($resp);
 
 }
 

@@ -1,5 +1,5 @@
 window.onload = function() {
-    //localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
+    localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
     cliente = localStorage.getItem('cliente');
     if (cliente == null) {
         swal('tiene que loguearse');

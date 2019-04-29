@@ -139,43 +139,53 @@ function DescargarPedidosPdf() {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, descargar!',
+        confirmButtonText: 'Si!',
         cancelButtonClass: 'btn btn-danger',
-        cancelButtonText: 'No, no descargar!'
-    }).then(function() {
-
-        var funcionAjax = $.ajax({
-            url: "../vendor/Pedidos/TraerTodosLosPedidos",
-            method: "GET"
-        });
-        funcionAjax.then(function(data) {
-                bajarPDF(data.pedidos);
+        cancelButtonText: 'No!'
+    }).then(function(result) {
+        if (result.value) {
+            var funcionAjax = $.ajax({
+                url: "../vendor/Pedidos/TraerTodosLosPedidos",
+                method: "GET"
+            });
+            funcionAjax.then(function(data) {
+                bajarPDF(removeNulls(data.pedidos));
                 swal("El listado fue descargado correctamente!").then(function() {
                     location.reload();
                 });
-            },
-            funcionAjax.then(function(dato) {
+            });
+            // funcionAjax.then(function(dato) {
 
-                swal("ERROR. Su tiempo de sesión se ha acabado!").then(function() {
-                    var funcionAjax = $.ajax({
-                        method: 'POST',
-                        url: '../vendor/Login/CerrarSesion'
+            //     swal("ERROR. Su tiempo de sesión se ha acabado!").then(function() {
+            //         var funcionAjax = $.ajax({
+            //             method: 'POST',
+            //             url: '../vendor/Login/CerrarSesion'
 
-                    });
-                    funcionAjax.then(function(dato) {
-                        if (dato.status == 200) {
-                            localStorage.clear();
-                            window.location.replace("../enlaces/login.html");
-                        } else if (dato.status == 400) {
-                            swal("Hubo un error al cerrar sesión del usuario!");
-                        }
-                    }, function(dato) {
-                        console.log("ERROR en la API " + dato);
-                    });
-                });
-            }));
+            //         });
+            //         funcionAjax.then(function(dato) {
+            //             if (dato.status == 200) {
+            //                 localStorage.clear();
+            //                 window.location.replace("../enlaces/login.html");
+            //             } else if (dato.status == 400) {
+            //                 swal("Hubo un error al cerrar sesión del usuario!");
+            //             }
+            //         }, function(dato) {
+            //             console.log("ERROR en la API " + dato);
+            //         });
+            //     });
+            // });
+        }
     });
 }
+
+function removeNulls(obj) {
+    var str = JSON.stringify(obj, function(key, val) {
+        if (val == null) return undefined;
+        return val;
+    });
+    return JSON.parse(str);
+}
+
 
 var json2pdf;
 

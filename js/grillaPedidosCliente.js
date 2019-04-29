@@ -99,8 +99,6 @@ function RecibiElPedido(CodigoMesa) {
         }
 
     });
-
-
 }
 
 function CambiarIdEstadoPedido(IdEstadoPedido) {

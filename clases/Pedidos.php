@@ -198,6 +198,17 @@ public static function TraerTodosPedidosListos()
     return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
 }
 
+public static function TraerTodosPedidosListosParaPdf()
+{
+    $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
+    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT ped.Tiempo_ingreso,ped.EstadoCuenta,ped.Usuario,ped.CodigoMesa,ped.Importe from pedidos ped
+    inner join lista_pedidos on lista_pedidos.Id_estadoPedido=2 or lista_pedidos.Id_estadoPedido=1 
+    or lista_pedidos.Id_estadoPedido=4 
+    where ped.Id_pedido=lista_pedidos.Id_pedido");
+    $consulta->execute();
+    return $consulta->fetchAll(PDO::FETCH_CLASS,"pedidos");
+}
+
 public static function TraerTodosPedidosPorCodigoMesa($CodigoMesa)
 {
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
