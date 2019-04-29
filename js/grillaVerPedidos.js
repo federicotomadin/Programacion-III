@@ -47,7 +47,7 @@ function CargarAutomatico() {
             i++;
         }
         document.getElementById("pedidos").innerHTML = stringPedidos;
-    })
+    });
 }
 
 function CambiarEstado(CodigoMesa) {

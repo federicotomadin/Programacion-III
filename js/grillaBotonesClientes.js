@@ -1,5 +1,8 @@
 window.onload = function() {
-    localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
+
+
+
+    // localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
     cliente = localStorage.getItem('cliente');
     if (cliente == null) {
         swal('tiene que loguearse');
@@ -11,6 +14,7 @@ window.onload = function() {
         $('#modalFormMesa').modal('hide');
     } else {
         $('#modalFormMesa').modal('show');
+        localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
     }
 };
 

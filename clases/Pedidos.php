@@ -322,14 +322,14 @@ public static function ColocarImporteAlCambiarDeEstado($CodigoMesa,$Importe)
     return $consulta->execute();
 }
 
-// public static function ActualizarTiempoLLegadaMesaEstado($Pedido,$IdPedido)
-// {
-//     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
-//     $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
-//     set Tiempo_llegadaMesa='$Pedido->Tiempo_llegadaMesa', EstadoCuenta='Comiendo'
-//     where Id_pedido='$IdPedido'");
-//     return $consulta->execute();
-// }
+public static function ActualizarTiempoLLegadaMesaEstado($Pedido,$IdPedido)
+{
+    $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
+    $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
+    set Tiempo_llegadaMesa='$Pedido->Tiempo_llegadaMesa', EstadoCuenta='Comiendo'
+    where Id_pedido='$IdPedido'");
+    return $consulta->execute();
+}
 
 // public static function ActualizarTiempoEsperandoEntrega($Pedido,$IdPedido)
 // {

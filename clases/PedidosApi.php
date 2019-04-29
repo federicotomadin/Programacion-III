@@ -74,6 +74,8 @@ public function ConfirmarPedido($request,$response,$args)
        $resp["status"] = 400;
     }
 
+    
+
     if($resp["status"]==200)
     {   
         $IdPedido=Pedidos::TraerElUltimoAgregado();

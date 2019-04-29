@@ -1,4 +1,8 @@
 window.onload = function() {
+    setInterval(CargarAutomatico, 1000);
+};
+
+function CargarAutomatico() {
     var funcionAjax = $.ajax({
         method: "GET",
         url: "../vendor/Pedidos/TraerLosPedidos"
@@ -21,24 +25,24 @@ window.onload = function() {
 
         document.getElementById("pedidos").innerHTML = stringPedidos;
     });
+}
 
-    function ActualizarEstadoCuenta($estadoCuenta) {
-        switch ($estadoCuenta) {
-            case $estadoCuenta = "En Preparacion":
-                return "En Curso";
-            case $estadoCuenta = "Comiendo":
-                return "Consumiendo";
-            case $estadoCuenta = "Sin Tiempo":
-                return "Esperando";
-            case $estadoCuenta = "Cancelada":
-                return "Cancelada";
-            case $estadoCuenta = "Cerrada":
-                return "Cerrada";
-            case $estadoCuenta = "Esperando Cierre":
-                return "Esperando Cierre";
-        }
+function ActualizarEstadoCuenta($estadoCuenta) {
+    switch ($estadoCuenta) {
+        case $estadoCuenta = "En Preparacion":
+            return "En Curso";
+        case $estadoCuenta = "Comiendo":
+            return "Consumiendo";
+        case $estadoCuenta = "Sin Tiempo":
+            return "Esperando";
+        case $estadoCuenta = "Cancelada":
+            return "Cancelada";
+        case $estadoCuenta = "Cerrada":
+            return "Cerrada";
+        case $estadoCuenta = "Esperando Cierre":
+            return "Esperando Cierre";
     }
-};
+}
 
 function CargarEstadoPedidos(IdPedido) {
     var funcionAjax = $.ajax({

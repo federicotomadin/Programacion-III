@@ -11,7 +11,6 @@ window.onload = function() {
         for (var i = 0; i < dato.pedidos.length; i++) {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
-            stringPedidos += "<td>" + dato.pedidos[i].Tiempo_estimado + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_llegadaMesa + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].EstadoCuenta + "</td>";
             stringPedidos += "<td>" + dato.pedidos[i].Usuario + "</td>";
