@@ -27,23 +27,6 @@ function CargarAutomatico() {
     });
 }
 
-function ActualizarEstadoCuenta($estadoCuenta) {
-    switch ($estadoCuenta) {
-        case $estadoCuenta = "En Preparacion":
-            return "En Curso";
-        case $estadoCuenta = "Comiendo":
-            return "Consumiendo";
-        case $estadoCuenta = "Sin Tiempo":
-            return "Esperando";
-        case $estadoCuenta = "Cancelada":
-            return "Cancelada";
-        case $estadoCuenta = "Cerrada":
-            return "Cerrada";
-        case $estadoCuenta = "Esperando Cierre":
-            return "Esperando Cierre";
-    }
-}
-
 function CargarEstadoPedidos(IdPedido) {
     var funcionAjax = $.ajax({
         type: 'POST',
@@ -66,6 +49,25 @@ function CargarEstadoPedidos(IdPedido) {
         document.getElementById("pedidosPendientes").innerHTML = stringPedidos;
     });
 }
+
+function ActualizarEstadoCuenta($estadoCuenta) {
+    switch ($estadoCuenta) {
+        case $estadoCuenta = "En Preparacion":
+            return "En Curso";
+        case $estadoCuenta = "Comiendo":
+            return "Consumiendo";
+        case $estadoCuenta = "Sin Tiempo":
+            return "Esperando";
+        case $estadoCuenta = "Cancelada":
+            return "Cancelada";
+        case $estadoCuenta = "Cerrada":
+            return "Cerrada";
+        case $estadoCuenta = "Esperando Cierre":
+            return "Esperando Cierre";
+    }
+}
+
+
 
 function RecibiElPedido(CodigoMesa) {
     swal({

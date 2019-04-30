@@ -1,13 +1,15 @@
 window.onload = function() {
+    setInterval(CargarAutomatico, 1000);
+};
+
+function CargarAutomatico() {
+
     var funcionAjax = $.ajax({
         type: "GET",
         url: "../vendor/Pedidos/TraerLosPedidosSinDuplicar"
     });
     funcionAjax.then(function(dato) {
         var stringPedidos = " ";
-        // dato.pedidos = dato.pedidos.filter(function(elemento) {
-        //     return elemento.unique();
-        // });
         for (var i = 0; i < dato.pedidos.length; i++) {
             stringPedidos += "<tr>";
             stringPedidos += "<td>" + dato.pedidos[i].Tiempo_ingreso + "</td>";
@@ -23,4 +25,4 @@ window.onload = function() {
         }
         document.getElementById("pedidos").innerHTML = stringPedidos;
     });
-};
+}

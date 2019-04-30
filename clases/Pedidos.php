@@ -2,8 +2,6 @@
 include_once("../bd/AccesoDatos.php");
 include_once("ListaPedidos.php");
 
-
-
 class Pedidos
 {
 public $Id_pedido;
@@ -322,11 +320,11 @@ public static function ColocarImporteAlCambiarDeEstado($CodigoMesa,$Importe)
     return $consulta->execute();
 }
 
-public static function ActualizarTiempoLLegadaMesaEstado($Pedido,$IdPedido)
+public static function ActualizarTiempoLLegadaMesaEstado($Tiempo_llegadaMesa,$IdPedido)
 {
     $objetoAcceso = AccesoDatos::DameUnObjetoAcceso();    
     $consulta = $objetoAcceso->RetornarConsulta("UPDATE pedidos 
-    set Tiempo_llegadaMesa='$Pedido->Tiempo_llegadaMesa', EstadoCuenta='Comiendo'
+    set Tiempo_llegadaMesa='$Tiempo_llegadaMesa', EstadoCuenta='Comiendo'
     where Id_pedido='$IdPedido'");
     return $consulta->execute();
 }

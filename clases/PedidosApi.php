@@ -74,8 +74,6 @@ public function ConfirmarPedido($request,$response,$args)
        $resp["status"] = 400;
     }
 
-    
-
     if($resp["status"]==200)
     {   
         $IdPedido=Pedidos::TraerElUltimoAgregado();
@@ -582,13 +580,13 @@ public function TraerMesaMasUsada($request, $response, $args)
    $resp["status"] =  200;
    for($i=0; $i<count($arrayMesas);$i++)
    {
+  
        $cantidad = Pedidos::TraerCantidadMesas($arrayMesas[$i]["CodigoMesa"], $fechaDesde, $fechaHasta);
        if($cantidad >= $mayor)
        {               
           $CodigoMesa = $arrayMesas[$i]["CodigoMesa"];   
           $mayor=$cantidad;  
        }   
-   
    }  
     $resp["IdMesa"] =  $CodigoMesa;
     $resp["Cantidad"] = $mayor[0]["Cantidad"];

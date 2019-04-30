@@ -174,8 +174,7 @@ public function CambiarEstadoPedido($request,$response,$args)
     if($datos["estadoPedido"]=="2")
     {
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
-   // $pedido->SetTiempo_esperandoEntrega($dateTime->format("Y/m/d H:i:s"));
-    Pedidos::ActualizarTiempoLLegadaMesaEstado($pedido,$pedido->Id_pedido);
+    Pedidos::ActualizarTiempoLLegadaMesaEstado($dateTime->format("Y/m/d H:i:s"),$pedido->Id_pedido);
     ListaPedidos::ActualizarTiempoEsperandoEntrega($dateTime->format("Y/m/d H:i:s"),$pedido->Id_pedido, $listaPedido->Id_pedidoDetalle);
     Mesas::CambiarEstadoMesaOcupada($pedido->CodigoMesa);
     Pedidos::ActualizarEstadoCuentaComiendo($pedido->Id_pedido);
