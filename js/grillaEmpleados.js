@@ -1,5 +1,3 @@
-
-
 window.onload = function() {
     var funcionAjax = $.ajax({
         type: "GET",
@@ -8,62 +6,75 @@ window.onload = function() {
 
     funcionAjax.then(function(dato) {
             var stringEmpleados = " ";
-            for (var i = 0; i < dato.empleados.length; i++) {
-                if (dato.empleados[i].habilitado == 1) {
-                    stringEmpleados += "<td>" + dato.empleados[i].Nombre + "</td>";
-                    stringEmpleados += "<td>" + dato.empleados[i].Apellido + "</td>";
-                    stringEmpleados += "<td>" + dato.empleados[i].Usuario + "</td>";
-                    stringEmpleados += "<td>" + cambiarIdPorNombreRol(parseInt(dato.empleados[i].Id_rol)) + "</td>";
-                    stringEmpleados += "<td>" + dato.empleados[i].Sueldo + "</td>";
-                    stringEmpleados += "<td>" + cambiarHabilitacion(parseInt(dato.empleados[i].habilitado)) + "</td>";
+            var variable = $('#palabraBuscada').val();
+
+            if (variable != "") {
+                var nuevoArray = dato.empleados;
+                var arrayEmpleados = nuevoArray.filter(function(empleado) {
+                    return empleado.Nombre === variable;
+                });
+            } else
+                var nuevoArray = dato.empleados;
+            var arrayEmpleados = nuevoArray.filter(function(empleado) {
+                return empleado.Nombre;
+            });
+
+            for (var i = 0; i < arrayEmpleados.length; i++) {
+                if (arrayEmpleados[i].habilitado == 1) {
+                    stringEmpleados += "<td>" + arrayEmpleados[i].Nombre + "</td>";
+                    stringEmpleados += "<td>" + arrayEmpleados[i].Apellido + "</td>";
+                    stringEmpleados += "<td>" + arrayEmpleados[i].Usuario + "</td>";
+                    stringEmpleados += "<td>" + cambiarIdPorNombreRol(parseInt(arrayEmpleados[i].Id_rol)) + "</td>";
+                    stringEmpleados += "<td>" + arrayEmpleados[i].Sueldo + "</td>";
+                    stringEmpleados += "<td>" + cambiarHabilitacion(parseInt(arrayEmpleados[i].habilitado)) + "</td>";
                     stringEmpleados += "<td><button id='suspender' class='btn btn-warning' onclick='SuspenderEmpleado(" +
-                        dato.empleados[i].id_empleado + ")'>" +
+                        arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-edit'></span>Suspender Empleado</button>" +
-                        "<td><button class='btn btn-success' onclick='HabilitarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td><button class='btn btn-success' onclick='HabilitarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-ok'></span >Habilitar Empleado</button>" +
-                        "<td><button class='btn btn-danger' onclick='BorrarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td><button class='btn btn-danger' onclick='BorrarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-remove'></span >Borrar Empleado</button>" +
-                        "<td><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-play'></span >Cant Operaciones</button>";
                     stringEmpleados += "</tr>";
                 }
 
-                if (dato.empleados[i].habilitado == 0 && dato.empleados[i].borrado == 0) {
+                if (arrayEmpleados[i].habilitado == 0 && arrayEmpleados[i].borrado == 0) {
                     stringEmpleados += "<tr>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + dato.empleados[i].Nombre + "</td>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + dato.empleados[i].Apellido + "</td>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + dato.empleados[i].Usuario + "</td>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + cambiarIdPorNombreRol(parseInt(dato.empleados[i].Id_rol)) + "</td>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + dato.empleados[i].Sueldo + "</td>";
-                    stringEmpleados += "<td class='filaSuspendida'>" + cambiarHabilitacion(parseInt(dato.empleados[i].habilitado)) + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + arrayEmpleados[i].Nombre + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + arrayEmpleados[i].Apellido + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + arrayEmpleados[i].Usuario + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + cambiarIdPorNombreRol(parseInt(arrayEmpleados[i].Id_rol)) + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + arrayEmpleados[i].Sueldo + "</td>";
+                    stringEmpleados += "<td class='filaSuspendida'>" + cambiarHabilitacion(parseInt(arrayEmpleados[i].habilitado)) + "</td>";
                     stringEmpleados += "<td class='filaSuspendida'><button id='suspender' class='btn btn-warning' onclick='SuspenderEmpleado(" +
-                        dato.empleados[i].id_empleado + ")'>" +
+                        arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-edit'></span>Suspender Empleado</button>" +
-                        "<td class='filaSuspendida'><button class='btn btn-success' onclick='HabilitarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaSuspendida'><button class='btn btn-success' onclick='HabilitarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-ok'></span >Habilitar Empleado</button>" +
-                        "<td class='filaSuspendida'><button class='btn btn-danger' onclick='BorrarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaSuspendida'><button class='btn btn-danger' onclick='BorrarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-remove'></span >Borrar Empleado</button>" +
-                        "<td class='filaSuspendida'><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaSuspendida'><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-play'></span >Cant Operaciones</button>";
                     stringEmpleados += "</tr>";
                 }
 
-                if (dato.empleados[i].habilitado == 0 && dato.empleados[i].borrado == 1) {
+                if (arrayEmpleados[i].habilitado == 0 && arrayEmpleados[i].borrado == 1) {
                     stringEmpleados += "<tr>";
-                    stringEmpleados += "<td class='filaBorrada'>" + dato.empleados[i].Nombre + "</td>";
-                    stringEmpleados += "<td class='filaBorrada'>" + dato.empleados[i].Apellido + "</td>";
-                    stringEmpleados += "<td class='filaBorrada'>" + dato.empleados[i].Usuario + "</td>";
-                    stringEmpleados += "<td class='filaBorrada'>" + cambiarIdPorNombreRol(parseInt(dato.empleados[i].Id_rol)) + "</td>";
-                    stringEmpleados += "<td class='filaBorrada'>" + dato.empleados[i].Sueldo + "</td>";
-                    stringEmpleados += "<td class='filaBorrada'>" + cambiarHabilitacion(parseInt(dato.empleados[i].habilitado)) + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + arrayEmpleados[i].Nombre + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + arrayEmpleados[i].Apellido + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + arrayEmpleados[i].Usuario + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + cambiarIdPorNombreRol(parseInt(arrayEmpleados[i].Id_rol)) + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + arrayEmpleados[i].Sueldo + "</td>";
+                    stringEmpleados += "<td class='filaBorrada'>" + cambiarHabilitacion(parseInt(arrayEmpleados[i].habilitado)) + "</td>";
                     stringEmpleados += "<td class='filaBorrada'><button id='suspender' class='btn btn-warning' onclick='SuspenderEmpleado(" +
-                        dato.empleados[i].id_empleado + ")'>" +
+                        arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-edit'></span>Suspender Empleado</button>" +
-                        "<td class='filaBorrada'><button class='btn btn-success' onclick='HabilitarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaBorrada'><button class='btn btn-success' onclick='HabilitarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-ok'></span >Habilitar Empleado</button>" +
-                        "<td class='filaBorrada'><button class='btn btn-danger' onclick='BorrarEmpleado(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaBorrada'><button class='btn btn-danger' onclick='BorrarEmpleado(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-remove'></span >Borrar Empleado</button>" +
-                        "<td class='filaBorrada'><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + dato.empleados[i].id_empleado + ")'>" +
+                        "<td class='filaBorrada'><button data-toggle='modal' data-target='#modalCalendario' class='btn btn-info' onclick='TraerModalDeFecha(" + arrayEmpleados[i].id_empleado + ")'>" +
                         "<span class='glyphicon glyphicon-play'></span >Cant Operaciones</button>";
                     stringEmpleados += "</tr>";
                 }
@@ -71,7 +82,7 @@ window.onload = function() {
             document.getElementById("empleados").innerHTML = stringEmpleados;
         },
         function(dato) {
-            alert("ERROR no se pudieron cargar los pedidos" + dato.empleados);
+            alert("ERROR no se pudieron cargar los pedidos" + arrayEmpleados);
         });
 };
 
