@@ -1,23 +1,29 @@
-window.onload = function() {
+function BuscarEmpleado() {
     var funcionAjax = $.ajax({
         type: "GET",
         url: "../vendor/Empleado/TraerTodosLosEmpleadosMenosSocios"
     });
 
-    funcionAjax.then(function(dato) {
-            var stringEmpleados = " ";
-            var variable = $('#palabraBuscada').val();
 
-            if (variable != "") {
+
+    funcionAjax.then(function(dato) {
+
+            var stringEmpleados = " ";
+            var arrayEmpleados = "";
+
+            var palabraBuscada = $('#palabraBuscada').val();
+
+            if (palabraBuscada != "") {
                 var nuevoArray = dato.empleados;
-                var arrayEmpleados = nuevoArray.filter(function(empleado) {
-                    return empleado.Nombre === variable;
+                arrayEmpleados = nuevoArray.filter(function(empleado) {
+                    return empleado.Nombre.match(palabraBuscada);
                 });
-            } else
-                var nuevoArray = dato.empleados;
-            var arrayEmpleados = nuevoArray.filter(function(empleado) {
-                return empleado.Nombre;
-            });
+            }
+            // } else
+            // nuevoArray = dato.empleados;
+            //  arrayEmpleados = nuevoArray.filter(function(empleado) {
+            //     return empleado.Nombre;
+            // });
 
             for (var i = 0; i < arrayEmpleados.length; i++) {
                 if (arrayEmpleados[i].habilitado == 1) {
@@ -84,7 +90,9 @@ window.onload = function() {
         function(dato) {
             alert("ERROR no se pudieron cargar los pedidos" + arrayEmpleados);
         });
-};
+}
+
+
 
 function cambiarIdPorNombreRol(Idrol) {
     switch (Idrol) {

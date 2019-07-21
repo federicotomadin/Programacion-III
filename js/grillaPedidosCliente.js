@@ -93,9 +93,10 @@ function RecibiElPedido(CodigoMesa) {
                     if (dato.status == 200) {
                         swal('El estado fue cambiado correctamente!').then(function() {
                             window.location.reload();
-                        }, function() {
-                            swal("OCURRIO ALGO INESPERADO!");
-                        })
+                        });
+                    }
+                    if (dato.status == 400) {
+                        swal("YA SE RECIBIÓ EL PEDIDO ANTERIORMENTE!");
                     }
                 },
                 function(dato) {

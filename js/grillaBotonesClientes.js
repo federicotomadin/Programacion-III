@@ -1,7 +1,5 @@
 window.onload = function() {
 
-
-
     // localStorage.setItem("CodigoMesa", $('#CodigoMesa').val());
     cliente = localStorage.getItem('cliente');
     if (cliente == null) {
@@ -10,7 +8,7 @@ window.onload = function() {
     }
 
     var codigoMesa = localStorage.getItem('CodigoMesa');
-    if (codigoMesa != "") {
+    if (codigoMesa != "" || codigoMesa == null) {
         $('#modalFormMesa').modal('hide');
     } else {
         $('#modalFormMesa').modal('show');

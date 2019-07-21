@@ -10,7 +10,7 @@ function EnviarDatos() {
         if (dato.status == "200" && dato.tipo == "Cliente") {
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success', { button: 'aceptar', }
             ).then(function() {
                 localStorage.setItem("cliente", dato.Usuario);
@@ -21,7 +21,7 @@ function EnviarDatos() {
         } else if (dato.status == "200" && dato.tipo == "Socio") {
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success', { button: 'aceptar', }
             ).then(function() {
                 console.log(dato);
@@ -41,7 +41,7 @@ function EnviarDatos() {
             localStorage.setItem("token", dato.token);
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success'
             ).then(function() {
                 window.location.replace("../enlaces/restauranteMozo.html");
@@ -55,7 +55,7 @@ function EnviarDatos() {
             localStorage.setItem("token", dato.token);
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success'
             ).then(function() {
                 window.location.replace("../enlaces/restauranteCocinero.html");
@@ -69,7 +69,7 @@ function EnviarDatos() {
             localStorage.setItem("token", dato.token);
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success'
             ).then(function() {
                 window.location.replace("../enlaces/restauranteBartender.html");
@@ -83,7 +83,7 @@ function EnviarDatos() {
             localStorage.setItem("token", dato.token);
             swal(
                 'USUARIO VÁLIDO!',
-                'Usted esta registrado en la base de datos!',
+                'Usted está registrado en la base de datos!',
                 'success'
             ).then(function() {
                 window.location.replace("../enlaces/restauranteCervecero.html");

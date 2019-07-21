@@ -112,6 +112,11 @@ public function CambiarEstadoPedido($request,$response,$args)
     {
     $pedido= Pedidos::TraerElPedidoPorCodigoMesaCambiarEstado($datos["CodigoMesa"]);
     $listaPedido = ListaPedidos::TraerElPedidoDetallePorCodigoMesaCambiarEstado($datos["CodigoMesa"]);
+    if($listaPedido->Tiempo_llegadaMesa != '0000-00-00 00:00:00')
+    {
+        $resp["status"] = 400;
+        return $response->withJson($resp);
+    }
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     ListaPedidos::ActualizarTiempoLLegadaMesa($dateTime->format("Y/m/d H:i:s"),$pedido->Id_pedido, $listaPedido->Id_pedidoDetalle);
     Pedidos::ActualizarEstadoCuentaComiendo($pedido->Id_pedido);
