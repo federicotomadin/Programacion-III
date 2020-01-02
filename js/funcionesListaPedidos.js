@@ -110,6 +110,8 @@ window.onload = function() {
 
 function AsignarMesaAbc11() {
 
+    console.log("estoy aca");
+
     var boton = document.querySelector("#abc11");
     if (boton.style.backgroundColor == "yellow" || boton.style.backgroundColor == "blue" ||
         boton.style.backgroundColor == "red") {

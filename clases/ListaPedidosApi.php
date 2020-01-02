@@ -107,6 +107,7 @@ function VerPedidosPorIdPedido($request,$response,$args)
 public function CambiarEstadoPedido($request,$response,$args)
 {
     $datos=$request->getParsedBody();
+    $listaPedido = ListaPedidos::TraerElPedidoDetallePorCodigoMesaCambiarEstado($datos["CodigoMesa"]);
 
     if($datos["estadoPedido"]=="4")
     {

@@ -16,7 +16,7 @@ window.onload = function() {
 
 function CerrarSesion() {
     swal({
-        title: 'Desea cerrar Sesión?',
+        title: 'Desea cerrar Sesión la concha de la lora?',
         type: 'warning',
         showCancelButton: true,
         showCloseButton: true,
@@ -34,15 +34,20 @@ function CerrarSesion() {
                 method: 'POST',
                 url: '../vendor/Login/CerrarSesion',
             });
-
-
             funcionAjax.then(function(dato) {
                 if (dato.status == 200) {
-                    swal('Usted ha cerrado su sesión!').then(function() {
+                    swal({ 
+                        title:'SESION CERRADA',
+                        timer: 1000,
+                        showConfirmButton: false                                     
+                    }).then(function() {
                         localStorage.clear();
                         window.location.replace("../enlaces/login.html");
                     }, function() {
-                        swal("OCURRIO ALGO INESPERADO!");
+                        swal({ 
+                            title:'SESION CERRADA',
+                            timer: 1000,
+                            showConfirmButton: false });
                     });
                 } else if (dato.status == 400) {
                     swal("Hubo un error al cerrar sesión del usuario!");
