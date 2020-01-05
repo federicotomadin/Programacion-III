@@ -112,11 +112,18 @@ function CambiarEstadoMesa(Id_pedido) {
             });
             funcionAjax.then(function(dato) {
                     if (dato.status == 200) {
-                        swal("El estado fue cambiado correctamente!").then(function() {
-                            location.reload();
-                        });
+                        swal({ 
+                            title:'ESTADO CAMBIADO',
+                            timer: 1000,
+                            showConfirmButton: false }).then(function() {
+                                location.reload();
+                            });
                     } else if (dato.status == 403) {
-                        swal("ERROR. una mesa cerrada no puede ser abierta nuevamente");
+                        swal({ 
+                            title:'Una mesa cerrada no puede ser abierta nuevamente',
+                            timer: 1000,
+                            showConfirmButton: false });
+                         
                     }
                 },
                 function(dato) {

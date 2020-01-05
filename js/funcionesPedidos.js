@@ -19,11 +19,19 @@ function CerrarMesa(idMesa) {
             }).then(function(dato) {
                 console.log(dato.status);
                 if (dato.status === 200) {
-                    swal("La mesa fue cerrada correctamente!").then(function() {
-                        location.reload();
-                    });
+                    swal({ 
+                        title:'MESA CERRADA',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });
                 } else if (dato.status === 401) {
-                    swal("ERROR. No se puede cerrar una mesa antes de la orden del mozo");
+                    swal({ 
+                        title:'No se puede cerrar la mesa antes de la orden del mozo',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });
                 }
             });
         } else {
@@ -63,13 +71,23 @@ function ConfirmarPedido() {
                 });
                 funcionAjax.then(function(dato) {
                     if (dato.status == 200) {
-                        swal("El pedido fue confirmado correctamente!").then(function() {
-                            location.reload("restauranteMozo.html");
-                        });
+                        swal({ 
+                            title:'PEDIDO CREADO',
+                            timer: 1000,
+                            showConfirmButton: false }).then(function() {
+                                location.reload("restauranteMozo.html");
+                            });
                     } else if (dato.status == 403) {
-                        swal("ERROR. No se puede confirmar mesa de un pedido que no se tomó");
+                        swal({ 
+                            title:'ERROR. No se puede confirmar mesa de un pedido que no se tomó',
+                            timer: 1000,
+                            showConfirmButton: false });
+                      
                     } else if (dato.status == 404) {
-                        swal("ERROR. Ocurrio un error interno en el servidor");
+                        swal({ 
+                            title:'ERROR. Error interno en el ser server',
+                            timer: 1000,
+                            showConfirmButton: false });
                     }
                 });
             });

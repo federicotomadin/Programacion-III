@@ -91,12 +91,20 @@ function RecibiElPedido(CodigoMesa) {
             });
             funcionAjax.then(function(dato) {
                     if (dato.status == 200) {
-                        swal('El estado fue cambiado correctamente!').then(function() {
-                            window.location.reload();
-                        });
+                        swal({ 
+                            title:'PEDIDO CREADO',
+                            timer: 1000,
+                            showConfirmButton: false }).then(function() {
+                                location.reload();
+                            });
                     }
                     if (dato.status == 400) {
-                        swal("YA SE RECIBIÓ EL PEDIDO ANTERIORMENTE!");
+                        swal({ 
+                            title:'YA SE RECIBIÓ EL PEDIDO ANTERIORMENTE',
+                            timer: 1000,
+                            showConfirmButton: false }).then(function() {
+                                location.reload();
+                            });                    
                     }
                 },
                 function(dato) {
@@ -153,11 +161,19 @@ function CambiarEstadoMesa(Id_pedido) {
         });
         funcionAjax.then(function(dato) {
                 if (dato.status == 200) {
-                    swal("El estado fue cambiado correctamente!").then(function() {
-                        location.reload();
-                    });
+                    swal({ 
+                        title:'ESTADO CAMBIADO',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });
                 } else if (dato.status == 403) {
-                    swal("ERROR. una mesa cerrada no puede ser abierta nuevamente");
+                    swal({ 
+                        title:'Una mesa cerrada no puede ser abierta nuevamente',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });
                 }
             },
             function(dato) {

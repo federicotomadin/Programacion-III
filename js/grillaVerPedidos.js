@@ -74,11 +74,12 @@ function CambiarEstado(CodigoMesa) {
             })
             funcionAjax.then(function(dato) {
                     if (dato.status == 200) {
-                        swal('El estado fue cambiado correctamente!').then(function() {
-                            window.location.reload();
-                        }, function() {
-                            swal("OCURRIO ALGO INESPERADO!");
-                        })
+                        swal({ 
+                            title:'ESTADO CAMBIADO',
+                            timer: 1000,
+                            showConfirmButton: false }).then(function() {
+                                location.reload();
+                            });
                     }
                 },
                 function(dato) {

@@ -14,7 +14,6 @@ class AccesoDatos
        
            $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-           
          /*  $this->_objetoPDO = new PDO("mysql:host=localhost;dbname=u663828753_resta", $username ,$password);
 
             $this->_objetoPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);

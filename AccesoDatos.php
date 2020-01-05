@@ -6,19 +6,19 @@ class AccesoDatos
  
     private function __construct()
     {
-        $username = 'u663828753_admin';
-        $servername= 'mysql.hostinger.com.ar';
-        $database= 'u663828753_resta';
-        $password= '5dEg9E2hJAse';
+        $username = 'ottos_25007339';
+        $servername= 'sql208.tonohost.com';
+        $database= 'ottos_25007339_restaurante';
+        $password= 'fede1299';
         try {     
        
-        //    $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+           $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=ottos_25007339_restaurante; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
            
-            $this->_objetoPDO = new PDO("mysql:host=localhost;dbname=u663828753_resta", $username ,$password);
+         /*  $this->_objetoPDO = new PDO("mysql:host=localhost;dbname=ottos_25007339_restaurante", $username ,$password);
 
             $this->_objetoPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-            $this->_objetoPDO->exec("SET CHARACTER SET utf8");
+            $this->_objetoPDO->exec("SET CHARACTER SET utf8");*/
  
         } catch (PDOException $e) {
  

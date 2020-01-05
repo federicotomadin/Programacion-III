@@ -180,9 +180,12 @@ function InsertarPedido() {
                     var precio2 = precioTemporal + dato.precio * parseInt(dato.cantidad);
                     localStorage.setItem("PrecioTotal", precio2);
                     $('#PrecioTotal').val(precio2);
-                    swal('El pedido fue cargado correctamente!').then(function() {
-                        location.reload();
-                    })
+                    swal({ 
+                        title:'PEDIDO CREADO',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });
                 } else if (dato.status == 400) {
                     swal("ERROR. El pedido no pudo ser cargado");
                 } else if (dato.status == null) {

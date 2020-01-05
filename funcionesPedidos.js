@@ -19,11 +19,19 @@ function CerrarMesa(idMesa) {
             }).then(function(dato) {
                 console.log(dato.status);
                 if (dato.status === 200) {
-                    swal("La mesa fue cerrada correctamente!").then(function() {
-                        location.reload();
-                    });
+                    swal({ 
+                        title:'CERRADA CORRECTAMENTE',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });               
                 } else if (dato.status === 401) {
-                    swal("ERROR. No se puede cerrar una mesa antes de la orden del mozo");
+                    swal({ 
+                        title:'No se puede cerrar una mesa antes de la orden del mozo',
+                        timer: 1000,
+                        showConfirmButton: false }).then(function() {
+                            location.reload();
+                        });           
                 }
             });
         } else {

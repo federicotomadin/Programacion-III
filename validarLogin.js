@@ -109,6 +109,6 @@ function EnviarDatos() {
         }
     }, function(dato) {
         alert(console.log(dato.status));
-        console.log("ERROR" + dato.tipo);
+        console.log("ERROR" + dato);
     });
 }
