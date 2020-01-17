@@ -12,7 +12,6 @@ class AccesoDatos
         $password= '225fbb00';
         try {     
        
-            mysql://b79b71c21d6cb4:225fbb00@us-cdbr-iron-east-05.cleardb.net/heroku_7869f6aa8a7abd0?reconnect=true
 
           /* $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));*/
 
