@@ -3,6 +3,7 @@
 namespace Intervention\Image;
 
 use GuzzleHttp\Psr7\Stream;
+use Intervention\Image\Exception\NotReadableException;
 use Psr\Http\Message\StreamInterface;
 
 abstract class AbstractDecoder
@@ -57,7 +58,7 @@ abstract class AbstractDecoder
     }
 
     /**
-     * Init from fiven URL
+     * Init from given URL
      *
      * @param  string $url
      * @return \Intervention\Image\Image
@@ -65,13 +66,13 @@ abstract class AbstractDecoder
     public function initFromUrl($url)
     {
         
-        $options = array(
-            'http' => array(
+        $options = [
+            'http' => [
                 'method'=>"GET",
                 'header'=>"Accept-language: en\r\n".
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2\r\n"
-          )
-        );
+          ]
+        ];
         
         $context  = stream_context_create($options);
         
@@ -80,7 +81,7 @@ abstract class AbstractDecoder
             return $this->initFromBinary($data);
         }
 
-        throw new \Intervention\Image\Exception\NotReadableException(
+        throw new NotReadableException(
             "Unable to init from given url (".$url.")."
         );
     }
@@ -123,7 +124,7 @@ abstract class AbstractDecoder
             return $this->initFromBinary($data);
         }
 
-        throw new \Intervention\Image\Exception\NotReadableException(
+        throw new NotReadableException(
             "Unable to init from given stream"
         );
     }
@@ -262,7 +263,7 @@ abstract class AbstractDecoder
             return false;
         }
 
-        return base64_encode(base64_decode($this->data)) === $this->data;
+        return base64_encode(base64_decode($this->data)) === str_replace(["\n", "\r"], '', $this->data);
     }
 
     /**
@@ -342,7 +343,7 @@ abstract class AbstractDecoder
                 return $this->initFromBinary(base64_decode($this->data));
 
             default:
-                throw new Exception\NotReadableException("Image source not readable");
+                throw new NotReadableException("Image source not readable");
         }
     }
 

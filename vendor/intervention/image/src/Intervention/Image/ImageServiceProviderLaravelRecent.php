@@ -4,7 +4,7 @@ namespace Intervention\Image;
 
 use Illuminate\Support\ServiceProvider;
 
-class ImageServiceProviderLaravel5 extends ServiceProvider
+class ImageServiceProviderLaravelRecent extends ServiceProvider
 {
     /**
      * Determines if Intervention Imagecache is installed
@@ -23,9 +23,9 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes(array(
+        $this->publishes([
             __DIR__.'/../../config/config.php' => config_path('image.php')
-        ));
+        ]);
 
         // setup intervention/imagecache if package is installed
         $this->cacheIsInstalled() ? $this->bootstrapImageCache() : null;
@@ -48,7 +48,7 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
 
         // create image
         $app->singleton('image', function ($app) {
-            return new ImageManager($app['config']->get('image'));
+            return new ImageManager($this->getImageConfig($app));
         });
 
         $app->alias('image', 'Intervention\Image\ImageManager');
@@ -59,14 +59,14 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
      *
      * @return void
      */
-    private function bootstrapImageCache()
+    protected function bootstrapImageCache()
     {
         $app = $this->app;
         $config = __DIR__.'/../../../../imagecache/src/config/config.php';
 
-        $this->publishes(array(
+        $this->publishes([
             $config => config_path('imagecache.php')
-        ));
+        ]);
 
         // merge default config
         $this->mergeConfigFrom(
@@ -80,10 +80,27 @@ class ImageServiceProviderLaravel5 extends ServiceProvider
             $filename_pattern = '[ \w\\.\\/\\-\\@\(\)]+';
 
             // route to access template applied image file
-            $app['router']->get(config('imagecache.route').'/{template}/{filename}', array(
+            $app['router']->get(config('imagecache.route').'/{template}/{filename}', [
                 'uses' => 'Intervention\Image\ImageCacheController@getResponse',
                 'as' => 'imagecache'
-            ))->where(array('filename' => $filename_pattern));
+            ])->where(['filename' => $filename_pattern]);
         }
+    }
+
+    /**
+     * Return image configuration as array
+     *
+     * @param  Application $app
+     * @return array
+     */
+    private function getImageConfig($app)
+    {
+        $config = $app['config']->get('image');
+
+        if (is_null($config)) {
+            return [];
+        }
+
+        return $config;
     }
 }
