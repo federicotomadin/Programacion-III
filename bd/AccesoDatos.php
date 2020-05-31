@@ -9,14 +9,23 @@ class AccesoDatos
         $username = 'b79b71c21d6cb4';
         $servername= 'mysql.hostinger.com.ar';
         $database= 'u663828753_resta';
-        $password= '225fbb00';
-        try {     
+        $password= 'o=w1QivNmg$OMW_q';
+
+        // $username = 'id12137946_b79b71c21d6cb4';
+        // $servername= 'localhost';
+        // $database= 'id12137946_u663828753_resta';
+        // $password= '9CbL!t|4{PsFWG7I';
+
        
 
-          /* $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));*/
+        try {     
+       
+          $this->_objetoPDO = new PDO('mysql:host=localhost;dbname=u663828753_resta; charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
-          $this->_objetoPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-          $this->_objetoPDO = new PDO("mysql:host=us-cdbr-iron-east-05.cleardb.net;dbname=heroku_7869f6aa8a7abd0", $username ,$password);
+        //   $this->_objetoPDO = new PDO("mysql:host=localhost;dbname=id12137946_u663828753_resta",
+        //   $this->_objetoPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+     
+        //    $username ,$password);
 
             $this->_objetoPDO->exec("SET CHARACTER SET utf8");
  

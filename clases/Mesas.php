@@ -56,7 +56,6 @@ public static function CambiarEstadoMesaEsperandoPedido($CodigoMesa)
     $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
     $consulta = $objetoAccesoDato->RetornarConsulta("UPDATE mesas set EstadoMesa = 'EsperandoPedido' where CodigoMesa = '$CodigoMesa'");
     $consulta->execute();
-    return $consulta->fetchAll(PDO::FETCH_CLASS,"mesas");
 }
 
 public static function TraerLasMesasLibres()

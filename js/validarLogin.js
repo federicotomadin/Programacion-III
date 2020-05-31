@@ -9,10 +9,10 @@ function EnviarDatos() {
     funcionAjax.then(function(dato) {
         if (dato.status == "200" && dato.tipo == "Cliente") {
             swal({
-               title: 'USUARIO VÁLIDO',
-               text: 'Usted está registrado/a',
-               timer: 1000,
-               showConfirmButton: false                   
+                title: 'USUARIO VÁLIDO',
+                text: 'Usted está registrado/a',
+                timer: 1000,
+                showConfirmButton: false
             }).then(function() {
                 localStorage.setItem("cliente", dato.Usuario);
                 window.location.replace("../enlaces/restauranteCliente.html");
@@ -24,8 +24,8 @@ function EnviarDatos() {
                 title: 'USUARIO VÁLIDO',
                 text: 'Usted está registrado/a',
                 timer: 1000,
-                showConfirmButton: false                   
-             }).then(function() {
+                showConfirmButton: false
+            }).then(function() {
                 console.log(dato);
                 localStorage.setItem("hora", dato.hora);
                 localStorage.setItem("usuario", dato.Usuario);
@@ -45,8 +45,8 @@ function EnviarDatos() {
                 title: 'USUARIO VÁLIDO',
                 text: 'Usted está registrado/a',
                 timer: 2000,
-                showConfirmButton: false                   
-             }).then(function() {
+                showConfirmButton: false
+            }).then(function() {
                 window.location.replace("../enlaces/restauranteMozo.html");
             }, function() {
                 swal('Ocurrio algo inesperado!');
@@ -60,8 +60,8 @@ function EnviarDatos() {
                 title: 'USUARIO VÁLIDO',
                 text: 'Usted está registrado/a',
                 timer: 2000,
-                showConfirmButton: false                   
-             }).then(function() {
+                showConfirmButton: false
+            }).then(function() {
                 window.location.replace("../enlaces/restauranteCocinero.html");
             }, function() {
                 swal('Ocurrio algo inesperado!');
@@ -75,8 +75,8 @@ function EnviarDatos() {
                 title: 'USUARIO VÁLIDO',
                 text: 'Usted está registrado/a',
                 timer: 2000,
-                showConfirmButton: false                   
-             }).then(function() {
+                showConfirmButton: false
+            }).then(function() {
                 window.location.replace("../enlaces/restauranteBartender.html");
             }, function() {
                 swal('Ocurrio algo inesperado!');
@@ -90,8 +90,8 @@ function EnviarDatos() {
                 title: 'USUARIO VÁLIDO',
                 text: 'Usted está registrado/a',
                 timer: 2000,
-                showConfirmButton: false                   
-             }).then(function() {
+                showConfirmButton: false
+            }).then(function() {
                 window.location.replace("../enlaces/restauranteCervecero.html");
             }, function() {
                 swal('Ocurrio algo inesperado!');
@@ -109,6 +109,7 @@ function EnviarDatos() {
         }
     }, function(dato) {
         alert(console.log(dato.status));
-        console.log("ERROR" + dato.tipo);
+        console.log("ERROR" + dato);
+        console.log("ERROR" + dato);
     });
 }

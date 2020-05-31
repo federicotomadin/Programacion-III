@@ -50,7 +50,7 @@ public function ConfirmarPedido($request,$response,$args)
 
     $pedido->SetCodigoMesa($datos["CodigoMesa"]);
     $pedido->SetEstadoCuenta("Sin Tiempo");
-    $pedido->SetImporte(Null);
+    $pedido->SetImporte(null);
 
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $pedido->SetTiempo_ingreso($dateTime->format("Y/m/d H:i:s"));
@@ -68,6 +68,7 @@ public function ConfirmarPedido($request,$response,$args)
     ,"../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"]."."."png"
     ,100,40,$jpgQuality=100);
     $pedido->SetFoto("../fotosPedidosCambiadas/".$idPedidoFoto.$datos["CodigoMesa"]."."."png");
+
 
     if(!Pedidos::InsertarElPedido($pedido))
     {

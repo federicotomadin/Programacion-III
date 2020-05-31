@@ -39,7 +39,7 @@ public function InsertarPedido($request,$response,$args)
     $resp["cantidad"] = $datos["Cantidad"];
     $idRol= Productos::TraerIdRol($datos["IdProducto"]);
 
-    $listaPedido->SetId_pedido(Null);
+    $listaPedido->SetId_pedido(null);
     //$listaPedido->SetId_pedidoDetalle(Null);
     $listaPedido->SetId_producto($datos["IdProducto"]);
    
@@ -50,11 +50,13 @@ public function InsertarPedido($request,$response,$args)
     $listaPedido->SetPrecio($precio[0]["Precio"] * $datos["Cantidad"]);
 
 
+
     if(!ListaPedidos::InsertarListaPedido($listaPedido))
     {
     return $resp["status"]=400;
     }
 
+  
     Mesas::CambiarEstadoMesaEsperandoPedido($datos["CodigoMesa"]);
     $dateTime = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
     $operacion = new Operaciones();

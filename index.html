@@ -11,23 +11,25 @@
 </head>
 
 <body>
-
     <div class="page-header">
         <h1>Restaurante</h1>
+        <button style="width: 200px; height: 100px; text-align: center;" onclick="Ingresar()" class="btn btn-lg btn-info">
+            <span class="glyphicon glyphicon-home"></span> Entrar
+        </button>
     </div>
     <div class="row">
         <div class="col-lg-offset-2 col-xs-2 col-md-4">
             <div class="CajaInicio animated bounceInRight">
                 <input id="imagenPrincipal" type="image" src="estilos/restaurante.jpg" />
-                <div class="col-lg-4">
-                    <a href="enlaces/login.html" class="btn btn-lg btn-info">
-                        <span class="glyphicon glyphicon-home"></span> Entrar
-                    </a>
-                </div>
             </div>
         </div>
     </div>
 
+    <script>
+        function Ingresar() {
+            window.location.replace("enlaces/login.html");
+        }
+    </script>
 </body>
 
 </html>

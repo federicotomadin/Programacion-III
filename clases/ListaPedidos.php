@@ -136,6 +136,12 @@ public function __contruct()
 
 public static function InsertarListaPedido($pedido)
 {
+
+ if ($pedido->Id_pedido == null)
+ {
+    $pedido->Id_pedido = 0;
+ }
+
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
 $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO lista_pedidos (Id_pedido,Id_producto,Id_rol,Id_estadoPedido,CodigoMesa,Cantidad,Precio)
 VALUES('$pedido->Id_pedido','$pedido->Id_producto','$pedido->Id_rol','$pedido->Id_estadoPedido','$pedido->CodigoMesa','$pedido->Cantidad','$pedido->Precio')");		

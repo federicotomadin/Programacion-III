@@ -92,6 +92,9 @@ public function __construct()
 
 public static function InsertarElPedido($pedido)
 { 
+    if($pedido->Importe = null) {
+        $pedido->Importe = 0;
+    }
 $objetoAccesoDato = AccesoDatos::DameUnObjetoAcceso();
 $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO pedidos(Tiempo_ingreso,EstadoCuenta,Usuario,CodigoMesa,Importe,foto)
 VALUES('$pedido->Tiempo_ingreso',
